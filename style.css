@@ -1,0 +1,182 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 5px solid #444;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+header p {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+header .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    font-size: 1.1em;
+}
+
+header .contact-info div {
+    color: #bbbbbb;
+}
+
+header .contact-info a {
+    color: #80b3ff;
+    text-decoration: none;
+}
+
+header .contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Section Styles */
+section {
+    padding: 40px 20px;
+    margin: 0 10%;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+section h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 5px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+section p {
+    font-size: 1.1em;
+    line-height: 1.7;
+}
+
+/* Skills Section */
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.skills div {
+    flex: 1 1 200px;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+}
+
+/* Experience & Education Sections */
+.experience,
+.education {
+    margin-top: 20px;
+}
+
+.experience-item,
+.education-item {
+    margin-bottom: 20px;
+}
+
+.experience-item h3,
+.education-item h3 {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #80b3ff;
+}
+
+.experience-item ul,
+.education-item ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.experience-item ul li,
+.education-item ul li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.description-box {
+    white-space: pre-line; /* Preserva quebras de linha no texto */
+    display: block;
+    padding: 10px;
+    /* background-color: #f1f1f1; /* Fundo opcional */ 
+    /* border: 1px solid #ddd; /* Borda opcional */
+    /* border-radius: 5px; */
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    line-height: 1.5; /* Espaçamento entre linhas */
+}
+
+/* Button Styling */
+.download-btn {
+    background-color: #444444; /* Dark background */
+    color: #e0e0e0; /* Light text */
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Hover Effect */
+.download-btn:hover {
+    background-color: #80b3ff; /* Light blue on hover */
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Slightly darker shadow on hover */
+}
+
+/* Focus Effect */
+.download-btn:focus {
+    outline: none; /* Remove default focus outline */
+    border: 2px solid #ffffff; /* White border on focus */
+}
+
+/* Active Effect (When button is clicked) */
+.download-btn:active {
+    transform: translateY(1px); /* Button pressed effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 15px 20px;
+    background-color: #1e1e1e;
+    color: #bbbbbb;
+    margin-top: 40px;
+    font-size: 0.9em;
+}

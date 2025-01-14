@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Resume - Patrick Faustino Camello</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="script.js"></script>
+    </head>    
+    <body>
+        <header>
+            <h1>Patrick Faustino Camello</h1>
+            <p>Back-End Developer | .NET Specialist | 8+ Years of Experience</p>
+            <div class="contact-info">
+                <div>Email: <a href="mailto:patrickcamelo@yahoo.com.br">patrickcamelo@yahoo.com.br</a></div>
+                <div>Phone: +55 (21) 98184-9401</div>
+                <div>LinkedIn: <a href="https://www.linkedin.com/in/patrickcamello">Patrick Camello</a></div>
+                <div>GitHub: <a href="https://github.com/drakopit">DrakoPit</a></div>
+                <div id="timeExperience"></div>
+                <!-- <div>
+                    <button id="downloadResume" class="download-btn" onclick="getResumePDF()">Print Resume</button>
+                </div> -->
+            </div>
+        </header>
+
+        <section>
+            <h2>Professional Summary</h2>
+            <p> I am a Back-End Developer III with solid experience in software
+                development, cybersecurity, and modern methodologies such as
+                SOLID, Clean Architecture, and DDD. Currently pursuing a Systems
+                Analysis and Development degree, I hold certifications in Python, C+
+                +, HTML, data structures, and API concepts. Throughout my career,
+                I have contributed to renowned companies such as Act Digital, GFT
+                Technologies, and Casas Bahia Tecnologia, with highlights including
+                creating innovative systems, enhancing security in legacy systems,
+                and process automation.
+                I have expertise in technologies such as .NET, Python, Kubernetes,
+                Docker, AWS, and Terraform. Fluent in advanced English, I am
+                committed to continuous growth in the tech field. My skill set includes
+                programming, network management, and maintaining complex
+                systems, focusing on delivering robust and efficient solutions to
+                technical challenges.</p>
+        </section>
+
+        <section>
+            <h2>Skills</h2>
+            <div class="skills">
+                <div>.NET, C#, ASP.NET Core</div>
+                <div>Python, SQL, Oracle</div>
+                <div>Kubernetes, Docker, AWS</div>
+                <div>Microservices Architecture</div>
+                <div>Problem Solving</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Experience</h2>
+            <div class="experience">
+                <div class="experience-item">
+                    <h3>BackEnd Developer III</h3>
+                    <p><strong>ACT Digital</strong> | Oct 2024 – Nov 2024</p>
+                    <div class="description-box">
+                        Participation in the project to modernize service authentication, migrating from a JWT/OAuth-based model to the adoption of Microsoft OpenID Connect. The initiative enhanced security, simplified identity management, and provided better integration with the Microsoft ecosystem.
+                    </div>                    
+                </div>
+                <div class="experience-item">
+                    <h3>BackEnd Developer III</h3>
+                    <p><strong>GFT Technologies</strong> | Sep 2024 – Oct 2024</p>
+                    <div class="description-box">
+                        Analysis of account transfer data for forecasting calculations, failure identification, and process improvement, contributing to greater efficiency and accuracy in financial operations.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>Developer System Analyst</h3>
+                    <p><strong>Casas Bahia Tecnologia</strong> | Apr 2023 – Apr 2024</p>
+                    <div class="description-box">
+                        Currently working at Cyber Security area,I've developed defense methods against attacks, made legacy systems tougher and worked on inovating already existing systems. I was part of the staff group,promoting new aplications and all kinds of process related to this area.
+                        
+                        We make use of several kinds of technologies. Such as Kubernetes,Docker,GitFlow,.Net C#,TypeScript,Ingress,Yaml,Event Driven and else.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>System Analyst III</h3>
+                    <p><strong>BRQ Digital Solutions</strong> | Apr 2022 – Feb 2023</p>
+                    <div class="description-box">
+                        I work for one of BRQ's clients, developing, enhancing, and correcting solutions for the financial market. The demands involve systems responsible for managing taxes, ancillary obligations, fiscal and tax systems, systems that consolidate values from accounting events across various systems and make them available to SAP, and provide Accounts Payable from one institution to another on a monthly basis.
+                        
+                        We use SCRUM and OKR methodologies as our main work tools, Python as our primary programming language, and .NET for some tasks. We also utilize AWS Cloud (S3, Lambda, EC2, ECS, Role, Secret Manager, API Gateway...), Terraform to automate some processes, Angular, MySQL, GitLab, Jira, Teams, among others.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>System Development Analyst III</h3>
+                    <p><strong>Altran Consultoria em Tecnologia Brasil</strong> | Apr 2021 – Apr 2022</p>
+                    <div class="description-box">
+                        Development of systems using the latest tools available on the market, maintaining the code and allowing for easy maintenance.
+                        
+                        Support for the main registration system and creation of the new system.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>System Analyst III</h3>
+                    <p><strong>Concrete Solutions</strong> | Oct 2020 – Apr 2021</p>
+                    <div class="description-box">
+                        I worked on the payment management system for Via Varejo, using .NET Core, SQL Server, AWS, BFF, WEB API, concurrency concepts, among others. The system involved evolving the application to improve its performance. I also worked on a frictionless system for an international company, using Node.js, Docker, Kubernetes, and other tools for system development.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>System Analyst II</h3>
+                    <p><strong>Ayesa</strong> | Aug 2020 – Oct 2020</p>
+                    <div class="description-box">
+                        I worked on the development of a new clock installation system, using WebForms, SQL Server, .NET Framework, Entity Framework, and MVVM.
+                        
+                        I also worked on the maintenance of invoice systems, registration systems, among many others.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>.Net Developer Analyst II</h3>
+                    <p><strong>Working Minds</strong> | Apr 2020 – Aug 2020</p>
+                    <div class="description-box">
+                        I worked as a Developer Analyst on a WKM ERP module that enabled communication for third-party e-commerce platforms as well as proprietary servers. This module was developed using .NET Framework 4.5 and Akka.NET for asynchronous communication and parallelism. We used Agile SCRUM methodology, Entity Framework as ORM, and SQL Server as the database.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>.Net System Analyst I</h3>
+                    <p><strong>Global Tecnologia</strong> | Mar 2019 – Feb 2020</p>
+                    <div class="description-box">
+                        I worked as a DevOps engineer, developing, maintaining, and performing all the tasks required of a DevOps professional. As a contractor, I worked for Icatu Seguros, Globo, MedGrupo, SuperGásBrás, among others. I developed applications ranging from desktop to web and mobile applications.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>Support Analyst</h3>
+                    <p><strong>WorldZone Tecnologia</strong> | Jan 2019 – Mar 2019</p>
+                    <div class="description-box">
+                        Maintaining the physical structure of computers, the local area network (LAN) infrastructure, and operating systems.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>.NET Programmer (Full Stack)</h3>
+                    <p><strong>Xnet Informatica</strong> | Sep 2018 – Jan 2019</p>
+                    <div class="description-box">
+                        Responsible for maintaining a receptive tourism web application, including the development and optimization of stored procedures, queries, and functions to enhance application performance.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>Software Developer Intern</h3>
+                    <p><strong>TCE-RJ (Rio de Janeiro State Court of Accounts)</strong> | Dec 2017 – Sep 2018</p>
+                    <div class="description-box">
+                        Design and develop custom systems to meet unique demands, optimize and modernize legacy systems, and craft efficient database solutions, including queries, stored procedures, and triggers.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>Software Developer Intern</h3>
+                    <p><strong>INCA (National Cancer Institute)</strong> | Aug 2017 – Dec 2017</p>
+                    <div class="description-box">
+                        Design data models using normalization techniques; Prepare system documentation; Develop code in programming languages; Assist in the development of programs on the .NET platform.
+                    </div>
+                </div>
+                <div class="experience-item">
+                    <h3>Soldier</h3>
+                    <p><strong>Brazilian Army</strong> | Jun 2013 – Jul 2014</p>
+                    <div class="description-box">
+                        I worked with Network Management, maintaining the website and computers at 2º RCG, ensuring the site and all computers were operational.
+                        Skills: Programming, Network Management, Office Suite, Software Technician, Assembly and Maintenance of Computers.
+                    </div>
+                </div>
+        </section>
+
+        <section>
+            <h2>Education</h2>
+            <div class="education">
+                <div class="education-item">
+                    <h3>Assosiation Degree in System Analysis and Development</h3>
+                    <p><strong>UNESA - Universidade Estácio de Sá</strong> | 2023 – Present</p>
+                </div>
+                <div class="education-item">
+                    <h3>Certifications</h3>
+                    <ul>
+                        <li>Python Certification</li>
+                        <li>Data Structures and API Concepts</li>
+                        <li>C++ Programming</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© Patrick Faustino Camello | This resume was last updated on January, 2025</p>
+        </footer>
+    </body>
+</html>

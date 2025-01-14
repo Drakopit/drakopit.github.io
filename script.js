@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Only update the duration element once
     const durationElement = document.getElementById('timeExperience');
-    durationElement.innerHTML = `Experience Duration: ${totalYears} years ${totalMonths} months`;
+    durationElement.innerHTML = `Experience Time: ${totalYears} years ${totalMonths} months`;
 
     function calculateExperienceDuration(startDate, endDate) {
         const diffYears = endDate.getFullYear() - startDate.getFullYear();

@@ -123,20 +123,6 @@ section p {
     margin-bottom: 10px;
 }
 
-/*
-.description-box {
-    white-space: pre-line; // Preserva quebras de linha no texto
-    display: block;
-    padding: 10px;
-    background-color: #f1f1f1; // Fundo opcional
-    border: 1px solid #ddd; // Borda opcional
-    border-radius: 5px;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    line-height: 1.5; // Espaçamento entre linhas
-}
-*/
-
 /* Button Styling */
 .download-btn {
     background-color: #444444; /* Dark background */

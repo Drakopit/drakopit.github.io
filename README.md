@@ -1,17 +1,9 @@
-# My Online Resume
+# Patrick Faustino Camello · Portfolio
 
-Welcome to my online resume! You can find the detailed version of my resume below:
+The [portfolio](https://drakopit.github.io/) covers my IAM engineering work at Bradesco and the projects I build in public.
 
-- **Name**: Patrick Faustino Camello
-- **Profession**: Software Engineer
-- **Link to Resume**: [https://drakopit.github.io](https://drakopit.github.io)
+This site uses plain HTML and CSS. Open `index.html` locally or serve the repository root with a static HTTP server.
 
-## About Me
-
-I am a passionate software engineer with extensive experience in [technologies, programming languages, etc.].
-
-## Contact
-
-- **Email**: patrickcamelo@yhaoo.com.br
-- **LinkedIn**: [\[Patrick F. Camello\]](https://www.linkedin.com/in/patrickcamello/)
-- **GitHub**: [\[DrakoPit\]](https://github.com/Drakopit)
+- [GitHub](https://github.com/Drakopit)
+- [LinkedIn](https://www.linkedin.com/in/patrickcamello/)
+- [GameForgeJS documentation](https://drakopit.github.io/GameForgeJS/)

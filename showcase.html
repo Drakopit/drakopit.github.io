@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore browser-game ideas built with GameForgeJS, from grid-based strategy to small walkable worlds.">
+  <meta property="og:title" content="What Can Be Built · Patrick Camello">
+  <meta property="og:description" content="A visual tour of GameForgeJS examples, engine architecture, and related tools.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://drakopit.github.io/showcase.html">
+  <link rel="stylesheet" href="portfolio.css">
+  <title>What Can Be Built · Patrick Camello</title>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="./"><span class="monogram" aria-hidden="true">PC</span> Patrick Camello</a>
+      <nav aria-label="Primary">
+        <a href="./#bradesco">Current work</a>
+        <a href="showcase.html" aria-current="page">Showcase</a>
+        <a href="engine.html">Engine</a>
+        <a href="demos/">Demos</a>
+        <a href="gameforgejs.html">GameForgeJS</a>
+        <a href="./#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="shell page-hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">GameForgeJS in practice</p>
+        <h1 id="page-title">What can be built?</h1>
+        <p class="intro-copy">Start with a scene, compose behavior from reusable parts, and shape it into a game. These examples show a few directions the engine can take—from a tactical grid to a small world you can walk through.</p>
+        <div class="actions">
+          <a class="button primary" href="demos/">Explore public demos</a>
+          <a class="button" href="engine.html">See the engine</a>
+        </div>
+      </div>
+      <div class="page-hero-visual">
+        <div class="engine-map" aria-label="Illustrative game architecture preview" role="img">
+          <div class="engine-layer"><span class="layer-icon">01</span><span><strong>Compose a scene</strong><span>Build a world from entities</span></span></div>
+          <span class="engine-arrow" aria-hidden="true">↓</span>
+          <div class="engine-layer"><span class="layer-icon">02</span><span><strong>Add behavior</strong><span>Reuse components and systems</span></span></div>
+          <span class="engine-arrow" aria-hidden="true">↓</span>
+          <div class="engine-layer"><span class="layer-icon">03</span><span><strong>Bring it to life</strong><span>Input, rendering, audio, physics</span></span></div>
+        </div>
+        <p class="preview-caption">An illustrative view of the engine’s building blocks.</p>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="featured-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Featured · In development</p>
+          <h2 id="featured-title">Highland Tactics 3D</h2>
+        </div>
+        <span class="status-pill">In development</span>
+      </div>
+      <div class="demo-card">
+        <div>
+          <p class="card-kicker">3D tactics · JRPG sandbox</p>
+          <p>The Highland Tactics concept is being developed toward a multi-map JRPG experience: free exploration, a dedicated tactical combat view, and compact character, progression, inventory, equipment, and shop systems.</p>
+          <a class="text-link" href="demos/highland-tactics-3d.html">See the in-development overview</a>
+        </div>
+        <div>
+          <div class="demo-preview highland-preview" role="img" aria-label="Illustrative stepped highland terrain with a small character; not a game screenshot">
+            <span class="ridge" aria-hidden="true"></span>
+            <span class="plateau" aria-hidden="true"></span>
+            <span class="pawn" aria-hidden="true"></span>
+          </div>
+          <p class="preview-caption">Conceptual illustration · not a playable build or project screenshot</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="examples-title">
+      <p class="eyebrow">A few starting points</p>
+      <h2 class="section-title" id="examples-title">Small examples, different play</h2>
+      <p class="section-lede">The previews are original illustrations, not screenshots of hosted builds. Source links are included only for public repositories.</p>
+      <div class="demo-list">
+        <article class="demo-card">
+          <div>
+            <p class="card-kicker">Turn-based · JavaScript</p>
+            <h3>Plan a move</h3>
+            <p>A grid-based strategy example demonstrates how turn-based play can be built with GameForgeJS.</p>
+            <a class="text-link" href="demos/turn-based-strategy.html">Explore the strategy demo</a>
+          </div>
+          <div>
+            <div class="demo-preview game-board-preview" role="img" aria-label="Illustrative strategy map with a player unit and destination">
+              <span></span><span class="tile-woods"></span><span></span><span class="tile-water"></span><span class="tile-water"></span><span></span>
+              <span></span><span class="tile-woods"></span><span></span><span class="tile-water"></span><span></span><span></span>
+              <span class="tile-unit"></span><span></span><span class="tile-woods"></span><span></span><span></span><span class="tile-goal"></span>
+              <span></span><span></span><span></span><span class="tile-woods"></span><span></span><span></span>
+            </div>
+            <p class="preview-caption">Illustrative grid-map preview</p>
+          </div>
+        </article>
+        <article class="demo-card">
+          <div>
+            <p class="card-kicker">Walk sample · JavaScript</p>
+            <h3>Explore a small world</h3>
+            <p>A compact walking sample offers a different way to explore scenes, movement, and rendering.</p>
+            <a class="text-link" href="demos/walk-sample.html">Explore the walk sample</a>
+          </div>
+          <div>
+            <div class="demo-preview walk-preview" role="img" aria-label="Illustrative landscape with a small character and distant landmark">
+              <span class="sun" aria-hidden="true"></span>
+              <span class="landmark" aria-hidden="true"></span>
+            </div>
+            <p class="preview-caption">Illustrative world preview</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section split-section" aria-labelledby="architecture-title">
+      <div>
+        <p class="eyebrow">From idea to game</p>
+        <h2 class="section-title" id="architecture-title">Keep the pieces composable</h2>
+        <p>GameForgeJS uses an entity-component-system design. Scenes organize play; components hold reusable pieces of state; systems provide the behavior that brings those pieces together.</p>
+        <a class="text-link" href="engine.html">Explore the engine architecture</a>
+      </div>
+      <div class="content-grid">
+        <article class="content-card">
+          <p class="card-kicker">01 · Organize</p>
+          <h3>Scenes</h3>
+          <p>Group a level or game state into a focused place to build.</p>
+        </article>
+        <article class="content-card">
+          <p class="card-kicker">02 · Compose</p>
+          <h3>Entities &amp; components</h3>
+          <p>Put together the parts that describe an object in your game.</p>
+        </article>
+        <article class="content-card">
+          <p class="card-kicker">03 · Extend</p>
+          <h3>Systems &amp; modules</h3>
+          <p>Connect behavior with input, audio, rendering, or physics modules.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="ecosystem-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Explore the project</p>
+          <h2 id="ecosystem-title">Engine and public examples</h2>
+        </div>
+      </div>
+      <div class="content-grid">
+        <article class="content-card">
+          <p class="card-kicker">Engine &amp; docs</p>
+          <h3>GameForgeJS</h3>
+          <p>Read the project overview or browse the engine source.</p>
+          <a class="text-link" href="gameforgejs.html">GameForgeJS landing page</a>
+          <a class="text-link" href="https://drakopit.github.io/GameForgeJS/">Documentation site</a>
+          <a class="text-link" href="https://github.com/Drakopit/GameForgeJS">Source repository</a>
+        </article>
+        <article class="content-card">
+          <p class="card-kicker">Public example</p>
+          <h3>Turn-Based Strategy</h3>
+          <p>A pure-JavaScript grid-based strategy example.</p>
+          <a class="text-link" href="https://github.com/Drakopit/TBS_GameForgeJS">Turn-based strategy source</a>
+        </article>
+        <article class="content-card">
+          <p class="card-kicker">Public example</p>
+          <h3>Walk Sample</h3>
+          <p>A small sample for exploring a browser-game scene.</p>
+          <a class="text-link" href="https://github.com/Drakopit/GameForgeJSWalkSample">Walk sample source</a>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="shell site-footer">
+    <span>© Patrick Faustino Camello</span>
+    <div class="footer-links">
+      <a href="engine.html">Engine</a>
+      <a href="demos/">Demos</a>
+      <a href="https://github.com/Drakopit/drakopit.github.io">Website source</a>
+    </div>
+  </footer>
+</body>
+</html>

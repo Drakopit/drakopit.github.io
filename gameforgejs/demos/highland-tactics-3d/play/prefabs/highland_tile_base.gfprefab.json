@@ -1,0 +1,50 @@
+{
+  "format": "gameforgejs.prefab",
+  "version": 1,
+  "dimension": "3d",
+  "id": "highland_tile_base",
+  "name": "Highland stone tile base",
+  "nodes": [
+    {
+      "id": "root",
+      "name": "Stone tile base",
+      "type": "MeshInstance3D",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ]
+      },
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

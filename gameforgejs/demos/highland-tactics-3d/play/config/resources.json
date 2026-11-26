@@ -2,12 +2,28 @@
   "schemaVersion": 1,
   "jsons": [
     {
+      "name": "hearthvale",
+      "path": "../scenes/hearthvale.gfscene.json"
+    },
+    {
+      "name": "mistfell",
+      "path": "../scenes/mistfell.gfscene.json"
+    },
+    {
+      "name": "ashen-ridge",
+      "path": "../scenes/ashen-ridge.gfscene.json"
+    },
+    {
       "name": "battlefield",
       "path": "../scenes/battlefield.gfscene.json"
     },
     {
       "name": "prompts",
       "path": "./prompts.json"
+    },
+    {
+      "name": "highland_tile_base",
+      "path": "../prefabs/highland_tile_base.gfprefab.json"
     }
   ],
   "shaders": [

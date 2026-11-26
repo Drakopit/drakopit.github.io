@@ -1,6 +1,6 @@
 import { GameObject } from 'gameforgejs/2d';
 import { Vector3D } from 'gameforgejs/core';
-import { Geometry3D, Mesh, PrimitiveMesh, SceneManifest3D, SurfaceMaterial, UnlitMaterial } from 'gameforgejs/3d';
+import { Geometry3D, Mesh, PrimitiveMesh, UnlitMaterial } from 'gameforgejs/3d';
 import { BattleRules, Facings, GetAbilityProfile, MapScale } from '../data/BattleRules.js';
 const highlight = PrimitiveMesh.Plane(MapScale.tile * 0.92, MapScale.tile * 0.92);
 const facingArrow = new Geometry3D({
@@ -9,101 +9,27 @@ const facingArrow = new Geometry3D({
     uvs: [0, 0, 1, 0, 0.5, 1], indices: [0, 1, 2],
 });
 
-/** Actual 3D terraces and world-space range overlays, not a painted isometric grid. */
+/** Tactical overlays on terrain authored in the active .gfscene.json. */
 export class TerrainView extends GameObject {
-    constructor(scene, grid, document, options = {}) {
+    constructor(scene, grid) {
         super();
         this.scene = scene;
         this.grid = grid;
         this.meshes = [];
         this.tiles = [];
         this.facingArrows = [];
-        const stone = new SurfaceMaterial({ preset: 'stone', albedoColor: options.palette ?? '#88775d', scale: 2 });
-        this.stone = stone;
-        if (document) {
-            const manifest = document.ToManifest3D();
-            const detailIds = new Set(document.Nodes({ layer: 'terrain-detail' }).map(node => node.id));
-            this.meshes.push(...SceneManifest3D.Populate(scene, {
-                transforms: manifest.transforms,
-                objects: manifest.objects.filter(object => detailIds.has(object.id)),
-            }).objects);
-        }
         for (let row = 0; row < grid.rows; row++)
             for (let col = 0; col < grid.cols; col++) {
                 const tile = grid.Get(col, row);
                 if (!tile)
                     continue;
-                const p = this.World(tile), height = p.y;
-                const ground = new Mesh({ name: `Highland tile ${col},${row}`, geometry: PrimitiveMesh.Cube(1), material: stone, castShadow: true });
-                ground.transform.SetPosition(p.x, height / 2, p.z);
-                ground.transform.SetScale(MapScale.tile * 0.96, height, MapScale.tile * 0.96);
-                scene.Add(ground);
-                this.meshes.push(ground);
+                const p = this.World(tile);
                 const overlay = new Mesh({ geometry: highlight, material: new UnlitMaterial({ color: [0.1, 0.7, 1, 0.4], transparent: true }), castShadow: false });
                 overlay.transform.SetPosition(p.x, p.y + 0.01, p.z);
                 scene.Add(overlay);
                 this.meshes.push(overlay);
                 this.tiles.push({ tile, overlay });
             }
-        for (const marker of options.markers ?? []) {
-            const tile = grid.Get(marker.col, marker.row);
-            if (!tile) continue;
-            const p = this.World(tile);
-            const beacon = new Mesh({
-                name: marker.label,
-                geometry: PrimitiveMesh.Cube(1),
-                material: new UnlitMaterial({ color: marker.color ?? [1, 0.77, 0.25, 1] }),
-                castShadow: false,
-            });
-            beacon.transform.SetPosition(p.x, p.y + 0.48, p.z);
-            beacon.transform.SetScale(0.16, 0.88, 0.16);
-            scene.Add(beacon);
-            this.meshes.push(beacon);
-        }
-        if (options.structures?.length) {
-            const wall = new SurfaceMaterial({ preset: 'stone', albedoColor: '#c4b397', scale: 2 });
-            const door = new SurfaceMaterial({ preset: 'stone', albedoColor: '#4d3e35', scale: 2 });
-            for (const structure of options.structures) {
-                const tile = grid.Get(structure.col, structure.row);
-                if (!tile) continue;
-                const p = this.World(tile);
-                const color = structure.kind === 'pine' ? '#4c7957'
-                    : structure.kind === 'crystal' ? '#b884ce' : structure.roof ?? '#858d8a';
-                const accent = new SurfaceMaterial({ preset: 'stone', albedoColor: color, scale: 2 });
-                const parts = structure.kind === 'pine' ? [
-                    { material: door, y: 0.48, z: 0, scale: [0.2, 0.96, 0.2] },
-                    { material: accent, y: 1.12, z: 0, scale: [0.75, 0.95, 0.75] },
-                    { material: accent, y: 1.68, z: 0, scale: [0.45, 0.55, 0.45] },
-                ] : structure.kind === 'stone' || structure.kind === 'crystal' ? [
-                    { material: wall, y: 0.13, z: 0, scale: [0.85, 0.26, 0.85] },
-                    { material: accent, y: 0.85, z: 0, scale: [0.46, 1.5, 0.46] },
-                ] : [
-                    { material: wall, y: 0.58, z: 0, scale: [0.92, 1.16, 0.92] },
-                    { material: accent, y: 1.25, z: 0, scale: [1.05, 0.2, 1.05] },
-                    { material: door, y: 0.3, z: 0.47, scale: [0.27, 0.6, 0.04] },
-                ];
-                for (const part of parts) {
-                    const mesh = new Mesh({ name: structure.name, geometry: PrimitiveMesh.Cube(1), material: part.material, castShadow: true });
-                    mesh.transform.SetPosition(p.x, p.y + part.y, p.z + part.z);
-                    mesh.transform.SetScale(...part.scale);
-                    scene.Add(mesh);
-                    this.meshes.push(mesh);
-                }
-                if (structure.specialty) {
-                    const signColor = { weapon: '#e5aa73', armor: '#a9c8e0', consumable: '#a9dfad', rest: '#d2b2e3' }[structure.specialty];
-                    const sign = new Mesh({
-                        name: `${structure.name} sign`,
-                        geometry: PrimitiveMesh.Cube(1),
-                        material: new UnlitMaterial({ color: signColor }),
-                        castShadow: false,
-                    });
-                    sign.transform.SetPosition(p.x, p.y + 0.93, p.z + 0.48);
-                    sign.transform.SetScale(0.5, 0.27, 0.06);
-                    scene.Add(sign);
-                    this.meshes.push(sign);
-                }
-            }
-        }
     }
     World(tile) { return new Vector3D((tile.col - (this.grid.cols - 1) / 2) * MapScale.tile, MapScale.base + tile.h * MapScale.elevation, (tile.row - (this.grid.rows - 1) / 2) * MapScale.tile); }
     Highlights(turn, exploreRoute = null) {

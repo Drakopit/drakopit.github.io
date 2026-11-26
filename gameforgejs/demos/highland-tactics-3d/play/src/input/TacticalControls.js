@@ -18,7 +18,7 @@ export class TacticalControls {
 
     Update(dt) {
         const l = this.level, t = l.turn;
-        if (typeof document !== 'undefined' && document.activeElement?.closest('.highland-accessibility')) return;
+        if (l.exploring === 'creation' && l.hud.nameField?.isActive) return;
         if (ActionManager.IsActionDown('HELP'))
             l.hud.help.Toggle();
         if (l.hud.help.visible) return;

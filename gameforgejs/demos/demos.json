@@ -5,13 +5,13 @@
       "id": "highland-tactics-3d",
       "name": "Highland Tactics 3D",
       "dimension": "3d",
-      "description": "Explore three connected 21×17 zones, meet roaming patrol groups, visit four specialist shops, save progress, and develop four classes through tactical battles.",
+      "description": "Explore three canonical scene-authored 21×17 zones, meet roaming patrol groups, visit four specialist shops, save progress, and develop four classes through tactical battles.",
       "controls": "Walk with WASD/arrows or click any reachable tile; Escape cancels a route or closes a panel. F interacts with nearby vendors. I inventory, E equipment, C character and save, K skills, M map, P party. Enter/Space confirms battle actions; V toggles the tactical menu; use arrows or 1–5 to choose. Q/O orbit, T rain, R retry, H help. Tab opens semantic controls for supported menus; character creation, world and battle grid are not fully screen-reader accessible.",
       "playable": true,
       "screenshot": true,
       "screenshotExtension": "png",
       "statusLabel": "Playable",
-      "sourceRevision": "80f16187ad8cd94154a5e1f9ef39bae6d3389dd6",
+      "sourceRevision": "90ca559d7c2d60dcc3331d4003cfdf29162fab94",
       "runtimeRevision": "16f95fc35922fee19ee3849738bff6b858748ec4"
     },
     {

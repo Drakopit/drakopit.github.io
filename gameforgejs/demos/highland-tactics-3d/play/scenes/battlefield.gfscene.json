@@ -5,13 +5,26 @@
   "id": "battlefield",
   "name": "Highland battlefield",
   "settings": {
-    "backgroundColor": [0.09, 0.16, 0.2, 1],
+    "backgroundColor": [
+      0.09,
+      0.16,
+      0.2,
+      1
+    ],
     "camera": {
       "fov": 40,
       "near": 0.1,
       "far": 100,
-      "position": [16, 14, 16],
-      "target": [0, 0.7, 0]
+      "position": [
+        16,
+        14,
+        16
+      ],
+      "target": [
+        0,
+        0.7,
+        0
+      ]
     },
     "grid": {
       "cols": 9,
@@ -22,7 +35,11 @@
     },
     "note": "Tiles: column/row come from the X/Z position, height h from scale Y = base + h × elevation. Units: tile from position, facing from rotation Y (−facing × 90°), colour from Material. The game reads the camera position/target and creates its lights from this scene.",
     "fog": {
-      "color": [0.13, 0.23, 0.26],
+      "color": [
+        0.13,
+        0.23,
+        0.26
+      ],
       "near": 25,
       "far": 65
     }
@@ -67,8 +84,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0, 0.37, 0],
-                "scale": [0.35, 0.44, 0.27]
+                "position": [
+                  0,
+                  0.37,
+                  0
+                ],
+                "scale": [
+                  0.35,
+                  0.44,
+                  0.27
+                ]
               }
             },
             {
@@ -77,8 +102,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0, 0.74, 0],
-                "scale": [0.3, 0.3, 0.3]
+                "position": [
+                  0,
+                  0.74,
+                  0
+                ],
+                "scale": [
+                  0.3,
+                  0.3,
+                  0.3
+                ]
               },
               "material": {
                 "type": "toon",
@@ -91,8 +124,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0, 0.91, 0.02],
-                "scale": [0.4, 0.12, 0.34]
+                "position": [
+                  0,
+                  0.91,
+                  0.02
+                ],
+                "scale": [
+                  0.4,
+                  0.12,
+                  0.34
+                ]
               }
             },
             {
@@ -101,8 +142,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [-0.12, 0.08, 0],
-                "scale": [0.12, 0.18, 0.17]
+                "position": [
+                  -0.12,
+                  0.08,
+                  0
+                ],
+                "scale": [
+                  0.12,
+                  0.18,
+                  0.17
+                ]
               },
               "material": {
                 "type": "toon",
@@ -115,8 +164,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0.12, 0.08, 0],
-                "scale": [0.12, 0.18, 0.17]
+                "position": [
+                  0.12,
+                  0.08,
+                  0
+                ],
+                "scale": [
+                  0.12,
+                  0.18,
+                  0.17
+                ]
               },
               "material": {
                 "type": "toon",
@@ -129,8 +186,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0, 0.38, 0.17],
-                "scale": [0.43, 0.5, 0.06]
+                "position": [
+                  0,
+                  0.38,
+                  0.17
+                ],
+                "scale": [
+                  0.43,
+                  0.5,
+                  0.06
+                ]
               }
             },
             {
@@ -139,8 +204,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [-0.26, 0.4, -0.06],
-                "scale": [0.08, 0.3, 0.27]
+                "position": [
+                  -0.26,
+                  0.4,
+                  -0.06
+                ],
+                "scale": [
+                  0.08,
+                  0.3,
+                  0.27
+                ]
               },
               "material": {
                 "type": "toon",
@@ -153,8 +226,16 @@
                 "size": 1
               },
               "transform": {
-                "position": [0.25, 0.4, -0.27],
-                "scale": [0.055, 0.055, 0.55]
+                "position": [
+                  0.25,
+                  0.4,
+                  -0.27
+                ],
+                "scale": [
+                  0.055,
+                  0.055,
+                  0.55
+                ]
               },
               "material": {
                 "type": "toon",
@@ -173,7 +254,11 @@
       "type": "Light3D",
       "layer": "lights",
       "transform": {
-        "position": [0, 0, 0]
+        "position": [
+          0,
+          0,
+          0
+        ]
       },
       "components": {
         "Light": {
@@ -188,13 +273,25 @@
       "type": "Light3D",
       "layer": "lights",
       "transform": {
-        "position": [0, 0, 0]
+        "position": [
+          0,
+          0,
+          0
+        ]
       },
       "components": {
         "Light": {
           "type": "hemisphere",
-          "skyColor": [0.8, 0.9, 1],
-          "groundColor": [0.3, 0.23, 0.15],
+          "skyColor": [
+            0.8,
+            0.9,
+            1
+          ],
+          "groundColor": [
+            0.3,
+            0.23,
+            0.15
+          ],
           "intensity": 0.28
         }
       }
@@ -205,13 +302,25 @@
       "type": "Light3D",
       "layer": "lights",
       "transform": {
-        "position": [0, 0, 0]
+        "position": [
+          0,
+          0,
+          0
+        ]
       },
       "components": {
         "Light": {
           "type": "directional",
-          "direction": [-0.5, -1, -0.3],
-          "color": [1, 0.9, 0.72],
+          "direction": [
+            -0.5,
+            -1,
+            -0.3
+          ],
+          "color": [
+            1,
+            0.9,
+            0.72
+          ],
           "intensity": 0.65,
           "castShadow": true,
           "shadowMapSize": 1024,
@@ -222,837 +331,4029 @@
     {
       "id": "tile_0_0",
       "name": "Tile 0,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.5, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -4.6,
+          0.5,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_0",
       "name": "Tile 1,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.5, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -3.45,
+          0.5,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_0",
       "name": "Tile 2,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.5, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -2.3,
+          0.5,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_0",
       "name": "Tile 3,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.5, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -1.15,
+          0.5,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_0",
       "name": "Tile 4,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.775, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          0,
+          0.775,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_0",
       "name": "Tile 5,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.775, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          1.15,
+          0.775,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_0",
       "name": "Tile 6,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.775, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          2.3,
+          0.775,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_0",
       "name": "Tile 7,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.775, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          3.45,
+          0.775,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_0",
       "name": "Tile 8,0",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.775, -4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          4.6,
+          0.775,
+          -4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_1",
       "name": "Tile 0,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.5, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -4.6,
+          0.5,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_1",
       "name": "Tile 1,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.5, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -3.45,
+          0.5,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_1",
       "name": "Tile 2,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.5, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -2.3,
+          0.5,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_1",
       "name": "Tile 3,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.5, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -1.15,
+          0.5,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_1",
       "name": "Tile 4,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.5, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          0,
+          0.5,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_1",
       "name": "Tile 5,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.775, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          1.15,
+          0.775,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_1",
       "name": "Tile 6,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.775, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          2.3,
+          0.775,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_1",
       "name": "Tile 7,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.775, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          3.45,
+          0.775,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_1",
       "name": "Tile 8,1",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.775, -3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          4.6,
+          0.775,
+          -3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_2",
       "name": "Tile 0,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_2",
       "name": "Tile 1,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_2",
       "name": "Tile 2,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.5, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -2.3,
+          0.5,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_2",
       "name": "Tile 3,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.5, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -1.15,
+          0.5,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_2",
       "name": "Tile 4,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.5, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          0,
+          0.5,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_2",
       "name": "Tile 5,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.5, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          1.15,
+          0.5,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_2",
       "name": "Tile 6,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.775, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          2.3,
+          0.775,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_2",
       "name": "Tile 7,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.775, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          3.45,
+          0.775,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_2",
       "name": "Tile 8,2",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.775, -2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          4.6,
+          0.775,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_3",
       "name": "Tile 0,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_3",
       "name": "Tile 1,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_3",
       "name": "Tile 2,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.225, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -2.3,
+          0.225,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_3",
       "name": "Tile 3,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.5, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          -1.15,
+          0.5,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_3",
       "name": "Tile 4,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.5, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          0,
+          0.5,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_3",
       "name": "Tile 5,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.5, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          1.15,
+          0.5,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_3",
       "name": "Tile 6,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.5, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          2.3,
+          0.5,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_3",
       "name": "Tile 7,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.775, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          3.45,
+          0.775,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_3",
       "name": "Tile 8,3",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.775, -1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1.55, 1.127]
+        "position": [
+          4.6,
+          0.775,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1.55,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.012903225806451623,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9741935483870967,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_4",
       "name": "Tile 0,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_4",
       "name": "Tile 1,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_4",
       "name": "Tile 2,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.225, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -2.3,
+          0.225,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_4",
       "name": "Tile 3,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.225, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -1.15,
+          0.225,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_4",
       "name": "Tile 4,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.5, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_4",
       "name": "Tile 5,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.5, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          1.15,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_4",
       "name": "Tile 6,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.5, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          2.3,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_4",
       "name": "Tile 7,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.5, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          3.45,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_4",
       "name": "Tile 8,4",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.5, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          4.6,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_5",
       "name": "Tile 0,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_5",
       "name": "Tile 1,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_5",
       "name": "Tile 3,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.225, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -1.15,
+          0.225,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_5",
       "name": "Tile 4,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.225, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          0,
+          0.225,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_5",
       "name": "Tile 5,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.5, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          1.15,
+          0.5,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_5",
       "name": "Tile 6,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.5, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          2.3,
+          0.5,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_5",
       "name": "Tile 7,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.5, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          3.45,
+          0.5,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_5",
       "name": "Tile 8,5",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.5, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          4.6,
+          0.5,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_6",
       "name": "Tile 0,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_6",
       "name": "Tile 1,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_6",
       "name": "Tile 4,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.225, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          0,
+          0.225,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_6",
       "name": "Tile 5,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.225, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          1.15,
+          0.225,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_6",
       "name": "Tile 6,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.5, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          2.3,
+          0.5,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_6",
       "name": "Tile 7,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.5, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          3.45,
+          0.5,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_6",
       "name": "Tile 8,6",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.5, 2.3],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          4.6,
+          0.5,
+          2.3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_7",
       "name": "Tile 0,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_7",
       "name": "Tile 1,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_7",
       "name": "Tile 4,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.225, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          0,
+          0.225,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_7",
       "name": "Tile 5,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.225, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          1.15,
+          0.225,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_7",
       "name": "Tile 6,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.225, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          2.3,
+          0.225,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_7",
       "name": "Tile 7,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.5, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          3.45,
+          0.5,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_7",
       "name": "Tile 8,7",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.5, 3.45],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          4.6,
+          0.5,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_0_8",
       "name": "Tile 0,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-4.6, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -4.6,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_1_8",
       "name": "Tile 1,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-3.45, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -3.45,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_2_8",
       "name": "Tile 2,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-2.3, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -2.3,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_3_8",
       "name": "Tile 3,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [-1.15, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          -1.15,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_4_8",
       "name": "Tile 4,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [0, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          0,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_5_8",
       "name": "Tile 5,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [1.15, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          1.15,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_6_8",
       "name": "Tile 6,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [2.3, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          2.3,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_7_8",
       "name": "Tile 7,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [3.45, 0.225, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 0.45, 1.127]
+        "position": [
+          3.45,
+          0.225,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          0.45,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.04444444444444442,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.9111111111111112,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "id": "tile_8_8",
       "name": "Tile 8,8",
-      "type": "Node3D",
+      "type": "MeshInstance3D",
       "layer": "tiles",
       "transform": {
-        "position": [4.6, 0.5, 4.6],
-        "rotation": [0, 0, 0],
-        "scale": [1.127, 1, 1.127]
+        "position": [
+          4.6,
+          0.5,
+          4.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.127,
+          1,
+          1.127
+        ]
+      },
+      "prefab": "highland_tile_base",
+      "components": {
+        "Data": {
+          "tileBase": true,
+          "parts": [
+            {
+              "primitive": {
+                "type": "cube",
+                "size": 1
+              },
+              "transform": {
+                "position": [
+                  0,
+                  -0.020000000000000018,
+                  0
+                ],
+                "scale": [
+                  0.9982253771073647,
+                  0.96,
+                  0.9982253771073647
+                ]
+              },
+              "material": {
+                "type": "shader",
+                "shader": "mossy_stone"
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -1066,9 +4367,21 @@
         "src/components/UnitVisual.js"
       ],
       "transform": {
-        "position": [-3.45, 0.45, 1.15],
-        "rotation": [0, 0, 0],
-        "scale": [1, 1, 1]
+        "position": [
+          -3.45,
+          0.45,
+          1.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
       },
       "components": {
         "Material": {
@@ -1094,9 +4407,21 @@
         "src/components/UnitVisual.js"
       ],
       "transform": {
-        "position": [-2.3, 0.45, -1.15],
-        "rotation": [0, -1.570796, 0],
-        "scale": [1, 1, 1]
+        "position": [
+          -2.3,
+          0.45,
+          -1.15
+        ],
+        "rotation": [
+          0,
+          -1.570796,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
       },
       "components": {
         "Material": {
@@ -1122,9 +4447,21 @@
         "src/components/UnitVisual.js"
       ],
       "transform": {
-        "position": [2.3, 1.55, -2.3],
-        "rotation": [0, -3.141593, 0],
-        "scale": [1, 1, 1]
+        "position": [
+          2.3,
+          1.55,
+          -2.3
+        ],
+        "rotation": [
+          0,
+          -3.141593,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
       },
       "components": {
         "Material": {
@@ -1150,9 +4487,21 @@
         "src/components/UnitVisual.js"
       ],
       "transform": {
-        "position": [3.45, 1, 0],
-        "rotation": [0, -4.712389, 0],
-        "scale": [1, 1, 1]
+        "position": [
+          3.45,
+          1,
+          0
+        ],
+        "rotation": [
+          0,
+          -4.712389,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
       },
       "components": {
         "Material": {
@@ -1168,35 +4517,22 @@
       }
     },
     {
-      "id": "tile_0_0_base",
-      "name": "Stone base",
-      "parent": "tile_0_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
-        }
-      }
-    },
-    {
       "id": "tile_0_0_cap",
       "name": "Grass cap",
       "parent": "tile_0_0",
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1206,27 +4542,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_1_0_base",
-      "name": "Stone base",
-      "parent": "tile_1_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1237,8 +4552,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1248,27 +4571,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_2_0_base",
-      "name": "Stone base",
-      "parent": "tile_2_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1279,8 +4581,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1290,27 +4600,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_3_0_base",
-      "name": "Stone base",
-      "parent": "tile_3_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1321,8 +4610,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1332,27 +4629,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_4_0_base",
-      "name": "Stone base",
-      "parent": "tile_4_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1363,8 +4639,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1374,27 +4658,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_5_0_base",
-      "name": "Stone base",
-      "parent": "tile_5_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1405,8 +4668,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1416,27 +4687,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_6_0_base",
-      "name": "Stone base",
-      "parent": "tile_6_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1447,8 +4697,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1458,27 +4716,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_7_0_base",
-      "name": "Stone base",
-      "parent": "tile_7_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1489,8 +4726,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1500,27 +4745,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_8_0_base",
-      "name": "Stone base",
-      "parent": "tile_8_0",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1531,8 +4755,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1542,27 +4774,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_0_1_base",
-      "name": "Stone base",
-      "parent": "tile_0_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1573,8 +4784,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1584,27 +4803,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_1_1_base",
-      "name": "Stone base",
-      "parent": "tile_1_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1615,8 +4813,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1626,27 +4832,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_2_1_base",
-      "name": "Stone base",
-      "parent": "tile_2_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1657,8 +4842,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1668,27 +4861,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_3_1_base",
-      "name": "Stone base",
-      "parent": "tile_3_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1699,8 +4871,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1710,27 +4890,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_4_1_base",
-      "name": "Stone base",
-      "parent": "tile_4_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1741,8 +4900,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1752,27 +4919,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_5_1_base",
-      "name": "Stone base",
-      "parent": "tile_5_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1783,8 +4929,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1794,27 +4948,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_6_1_base",
-      "name": "Stone base",
-      "parent": "tile_6_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1825,8 +4958,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1836,27 +4977,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_7_1_base",
-      "name": "Stone base",
-      "parent": "tile_7_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1867,8 +4987,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1878,27 +5006,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_8_1_base",
-      "name": "Stone base",
-      "parent": "tile_8_1",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1909,8 +5016,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1920,27 +5035,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_0_2_base",
-      "name": "Stone base",
-      "parent": "tile_0_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1951,8 +5045,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -1962,27 +5064,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_2_base",
-      "name": "Stone base",
-      "parent": "tile_1_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -1993,8 +5074,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2004,27 +5093,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_2_2_base",
-      "name": "Stone base",
-      "parent": "tile_2_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2035,8 +5103,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2046,27 +5122,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_3_2_base",
-      "name": "Stone base",
-      "parent": "tile_3_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2077,8 +5132,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2088,27 +5151,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_4_2_base",
-      "name": "Stone base",
-      "parent": "tile_4_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2119,8 +5161,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2130,27 +5180,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_5_2_base",
-      "name": "Stone base",
-      "parent": "tile_5_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2161,8 +5190,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2172,27 +5209,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_6_2_base",
-      "name": "Stone base",
-      "parent": "tile_6_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2203,8 +5219,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2214,27 +5238,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_7_2_base",
-      "name": "Stone base",
-      "parent": "tile_7_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2245,8 +5248,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2256,27 +5267,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_8_2_base",
-      "name": "Stone base",
-      "parent": "tile_8_2",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2287,8 +5277,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2298,27 +5296,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_0_3_base",
-      "name": "Stone base",
-      "parent": "tile_0_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2329,8 +5306,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2340,27 +5325,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_3_base",
-      "name": "Stone base",
-      "parent": "tile_1_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2371,8 +5335,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2382,27 +5354,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_2_3_base",
-      "name": "Stone base",
-      "parent": "tile_2_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2413,8 +5364,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2424,27 +5383,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_3_3_base",
-      "name": "Stone base",
-      "parent": "tile_3_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2455,8 +5393,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2466,27 +5412,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_4_3_base",
-      "name": "Stone base",
-      "parent": "tile_4_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2497,8 +5422,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2508,27 +5441,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_5_3_base",
-      "name": "Stone base",
-      "parent": "tile_5_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2539,8 +5451,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2550,27 +5470,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_6_3_base",
-      "name": "Stone base",
-      "parent": "tile_6_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2581,8 +5480,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2592,27 +5499,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_7_3_base",
-      "name": "Stone base",
-      "parent": "tile_7_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2623,8 +5509,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2634,27 +5528,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#b7c79b"
-        }
-      }
-    },
-    {
-      "id": "tile_8_3_base",
-      "name": "Stone base",
-      "parent": "tile_8_3",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.012903225806451623, 0],
-        "scale": [0.9982253771073647, 0.9741935483870967, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2665,8 +5538,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48709677419354835, 0],
-        "scale": [0.9804791481810116, 0.025806451612903226, 0.9804791481810116]
+        "position": [
+          0,
+          0.48709677419354835,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.025806451612903226,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2680,35 +5561,22 @@
       }
     },
     {
-      "id": "tile_0_4_base",
-      "name": "Stone base",
-      "parent": "tile_0_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
-        }
-      }
-    },
-    {
       "id": "tile_0_4_cap",
       "name": "Grass cap",
       "parent": "tile_0_4",
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2718,27 +5586,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_4_base",
-      "name": "Stone base",
-      "parent": "tile_1_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2749,8 +5596,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2760,27 +5615,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_2_4_base",
-      "name": "Stone base",
-      "parent": "tile_2_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2791,8 +5625,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2802,27 +5644,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_3_4_base",
-      "name": "Stone base",
-      "parent": "tile_3_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2833,8 +5654,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2844,27 +5673,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_4_4_base",
-      "name": "Stone base",
-      "parent": "tile_4_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2875,8 +5683,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2886,27 +5702,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_5_4_base",
-      "name": "Stone base",
-      "parent": "tile_5_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2917,8 +5712,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2928,27 +5731,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_6_4_base",
-      "name": "Stone base",
-      "parent": "tile_6_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -2959,8 +5741,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -2970,27 +5760,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_7_4_base",
-      "name": "Stone base",
-      "parent": "tile_7_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3001,8 +5770,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3012,27 +5789,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_8_4_base",
-      "name": "Stone base",
-      "parent": "tile_8_4",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3043,8 +5799,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3054,27 +5818,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_0_5_base",
-      "name": "Stone base",
-      "parent": "tile_0_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3085,8 +5828,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3096,27 +5847,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_5_base",
-      "name": "Stone base",
-      "parent": "tile_1_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3127,8 +5857,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3138,27 +5876,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_3_5_base",
-      "name": "Stone base",
-      "parent": "tile_3_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3169,8 +5886,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3180,27 +5905,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_4_5_base",
-      "name": "Stone base",
-      "parent": "tile_4_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3211,8 +5915,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3222,27 +5934,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_5_5_base",
-      "name": "Stone base",
-      "parent": "tile_5_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3253,8 +5944,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3264,27 +5963,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_6_5_base",
-      "name": "Stone base",
-      "parent": "tile_6_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3295,8 +5973,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3306,27 +5992,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_7_5_base",
-      "name": "Stone base",
-      "parent": "tile_7_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3337,8 +6002,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3348,27 +6021,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_8_5_base",
-      "name": "Stone base",
-      "parent": "tile_8_5",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3379,8 +6031,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3390,27 +6050,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_0_6_base",
-      "name": "Stone base",
-      "parent": "tile_0_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3421,8 +6060,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3432,27 +6079,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_6_base",
-      "name": "Stone base",
-      "parent": "tile_1_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3463,8 +6089,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3474,27 +6108,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_4_6_base",
-      "name": "Stone base",
-      "parent": "tile_4_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3505,8 +6118,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3516,27 +6137,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_5_6_base",
-      "name": "Stone base",
-      "parent": "tile_5_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3547,8 +6147,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3558,27 +6166,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_6_6_base",
-      "name": "Stone base",
-      "parent": "tile_6_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3589,8 +6176,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3600,27 +6195,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_7_6_base",
-      "name": "Stone base",
-      "parent": "tile_7_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3631,8 +6205,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3642,27 +6224,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_8_6_base",
-      "name": "Stone base",
-      "parent": "tile_8_6",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3673,8 +6234,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3684,27 +6253,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_0_7_base",
-      "name": "Stone base",
-      "parent": "tile_0_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3715,8 +6263,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3726,27 +6282,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_7_base",
-      "name": "Stone base",
-      "parent": "tile_1_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3757,8 +6292,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3768,27 +6311,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_4_7_base",
-      "name": "Stone base",
-      "parent": "tile_4_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3799,8 +6321,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3810,27 +6340,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_5_7_base",
-      "name": "Stone base",
-      "parent": "tile_5_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3841,8 +6350,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3852,27 +6369,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_6_7_base",
-      "name": "Stone base",
-      "parent": "tile_6_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3883,8 +6379,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3894,27 +6398,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_7_7_base",
-      "name": "Stone base",
-      "parent": "tile_7_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3925,8 +6408,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3936,27 +6427,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#9cbb91"
-        }
-      }
-    },
-    {
-      "id": "tile_8_7_base",
-      "name": "Stone base",
-      "parent": "tile_8_7",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -3967,8 +6437,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -3982,35 +6460,22 @@
       }
     },
     {
-      "id": "tile_0_8_base",
-      "name": "Stone base",
-      "parent": "tile_0_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
-        }
-      }
-    },
-    {
       "id": "tile_0_8_cap",
       "name": "Grass cap",
       "parent": "tile_0_8",
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4020,27 +6485,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_1_8_base",
-      "name": "Stone base",
-      "parent": "tile_1_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4051,8 +6495,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4062,27 +6514,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_2_8_base",
-      "name": "Stone base",
-      "parent": "tile_2_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4093,8 +6524,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4104,27 +6543,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_3_8_base",
-      "name": "Stone base",
-      "parent": "tile_3_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4135,8 +6553,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4146,27 +6572,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_4_8_base",
-      "name": "Stone base",
-      "parent": "tile_4_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4177,8 +6582,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4188,27 +6601,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_5_8_base",
-      "name": "Stone base",
-      "parent": "tile_5_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4219,8 +6611,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4230,27 +6630,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_6_8_base",
-      "name": "Stone base",
-      "parent": "tile_6_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4261,8 +6640,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4272,27 +6659,6 @@
         "Material": {
           "type": "toon",
           "albedoColor": "#84a990"
-        }
-      }
-    },
-    {
-      "id": "tile_7_8_base",
-      "name": "Stone base",
-      "parent": "tile_7_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.04444444444444442, 0],
-        "scale": [0.9982253771073647, 0.9111111111111112, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
         }
       }
     },
@@ -4303,8 +6669,16 @@
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.4555555555555555, 0],
-        "scale": [0.9804791481810116, 0.08888888888888889, 0.9804791481810116]
+        "position": [
+          0,
+          0.4555555555555555,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.08888888888888889,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {
@@ -4318,35 +6692,22 @@
       }
     },
     {
-      "id": "tile_8_8_base",
-      "name": "Stone base",
-      "parent": "tile_8_8",
-      "type": "MeshInstance3D",
-      "layer": "terrain-detail",
-      "transform": {
-        "position": [0, -0.020000000000000018, 0],
-        "scale": [0.9982253771073647, 0.96, 0.9982253771073647]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "shader",
-          "shader": "mossy_stone"
-        }
-      }
-    },
-    {
       "id": "tile_8_8_cap",
       "name": "Grass cap",
       "parent": "tile_8_8",
       "type": "MeshInstance3D",
       "layer": "terrain-detail",
       "transform": {
-        "position": [0, 0.48, 0],
-        "scale": [0.9804791481810116, 0.04, 0.9804791481810116]
+        "position": [
+          0,
+          0.48,
+          0
+        ],
+        "scale": [
+          0.9804791481810116,
+          0.04,
+          0.9804791481810116
+        ]
       },
       "components": {
         "Mesh": {

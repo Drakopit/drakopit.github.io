@@ -1,6 +1,6 @@
-import { ActionManager, MathExt, SoundEffects, SceneDocument, GameViewport } from 'gameforgejs/core';
+import { MathExt, SoundEffects, SceneDocument, GameViewport } from 'gameforgejs/core';
 import { GameObject } from 'gameforgejs/2d';
-import { Level3D, OrthographicCamera, HeightGrid, SceneManifest3D } from 'gameforgejs/3d';
+import { Level3D, OrthographicCamera, HeightGrid, SceneManifest3D, SurfaceMaterial } from 'gameforgejs/3d';
 import { BattleFromScene } from '../data/BattleScene.js';
 import { HighlandCampaign, EquipmentSlot } from '../data/HighlandCampaign.js';
 import { FindExplorePath as FindPath } from '../data/ExplorePathfinding.js';
@@ -14,51 +14,89 @@ import { TacticalHUD } from '../ui/TacticalHUD.js';
 
 /** Scene composition and campaign transitions; combat rules remain in ECS components. */
 export class HighlandLevel extends Level3D {
-    constructor() {
+    constructor(sceneId = 'hearthvale') {
         super({ width: 1100, height: 760, usePhysics: false, clearColor: [0.09, 0.16, 0.2, 1] });
+        this.id = sceneId;
+        this.sceneId = sceneId;
         this.caption = 'Highland Tactics 3D';
     }
 
     BuildScene() {
-        const document = this.context.assets.jsons.battlefield;
-        const sceneDocument = new SceneDocument(document);
-        this.battleData = BattleFromScene(document);
+        const document = this.context.assets.jsons[this.sceneId];
+        if (!document) throw new Error(`Highland scene "${this.sceneId}" is missing from resources.json.`);
+        const prefabs = SceneDocument.LoadedPrefabs(this.context.assets);
+        const sceneDocument = new SceneDocument(document, { prefabs });
+        this.sceneDocument = sceneDocument;
+        this.isBattleScene = this.sceneId === 'battlefield';
+        this.battleData = BattleFromScene(this.context.assets.jsons.battlefield);
         this.battleGrid = new HeightGrid(this.battleData.heights);
-        this.battleDocument = sceneDocument;
-        this.scene.fog = sceneDocument.settings.fog ?? null;
-        if (sceneDocument.settings.backgroundColor) this.scene.backgroundColor = [...sceneDocument.settings.backgroundColor];
-        const { position, target } = sceneDocument.settings.camera;
-        this.camera = new OrthographicCamera({ position, target, viewHeight: 13, far: 100 });
-        this.scene.Add(this.camera);
-        for (const light of sceneDocument.Lights()) this.scene.Add(SceneManifest3D.CreateLight(light));
+        const zoneId = this.isBattleScene ? this.sceneParams.zoneId : this.sceneId;
+        if (!zoneId) throw new Error('The battlefield scene needs a zoneId and campaign in sceneParams.');
+        const zoneDocument = this.context.assets.jsons[zoneId];
+        this.zone = GetZone(zoneId, zoneDocument);
+        this.campaign = this.sceneParams.campaign
+            ? HighlandCampaign.FromSave(this.sceneParams.campaign)
+            : new HighlandCampaign();
+        if (!this.sceneParams.campaign) this.campaign.CreateCharacter('vanguard');
+        this.campaign.zoneId = zoneId;
+        const entry = this.isBattleScene ? null : this.sceneParams.entry ?? this.zone.spawn;
+        if (entry) {
+            this.campaign.hero.col = entry.col;
+            this.campaign.hero.row = entry.row;
+        }
+        this.grid = this.isBattleScene ? this.battleGrid : new HeightGrid(this.zone.heights);
+        this.exploring = this.isBattleScene ? 'battle' : this.sceneParams.campaign ? 'explore' : 'creation';
+        this.returnPosition = this.sceneParams.returnPosition ?? null;
 
-        this.campaign = new HighlandCampaign();
-        this.campaign.CreateCharacter('vanguard');
-        this.zone = GetZone('hearthvale');
-        this.grid = new HeightGrid(this.zone.heights);
-        this.exploring = 'creation';
-        this.turn = new TurnSystem(this.battleGrid, [], null);
+        const renderData = this.isBattleScene
+            ? { ...document, nodes: document.nodes.filter(node => node.layer !== 'units') }
+            : document;
+        const renderDocument = new SceneDocument(renderData, { prefabs });
+        this.sceneContent = SceneManifest3D.Create(renderDocument.ToManifest3D(), {
+            aspect: this.width / this.height,
+            assets: this.context.assets,
+        });
+        this.scene = this.sceneContent.scene;
+        this.camera = new OrthographicCamera({
+            position: sceneDocument.settings.camera.position,
+            target: sceneDocument.settings.camera.target,
+            viewHeight: this.isBattleScene ? 16 : 13,
+            far: 100,
+        });
+        this.scene.Remove(this.sceneContent.camera);
+        this.scene.Add(this.camera);
+        const surfaces = [...new Set([...this.sceneContent.nodes.values()]
+            .flatMap(node => node.materials ?? [])
+            .filter(material => material instanceof SurfaceMaterial))];
+        const waterNode = sceneDocument.Nodes().find(node => sceneDocument.Component(node, 'Data')?.kind === 'water');
+        const water = waterNode ? this.sceneContent.nodes.get(waterNode.id)?.materials?.[0] ?? null : null;
+
+        this.turn = new TurnSystem(this.grid, [], null);
         this.turn.enabled = false;
-        this.turn.phase = 'explore';
-        this.turn.message = 'Choose a calling to begin your journey.';
+        this.turn.phase = this.isBattleScene ? 'command' : 'explore';
+        this.turn.message = this.isBattleScene ? '' : this.exploring === 'creation'
+            ? 'Choose a calling to begin your journey.'
+            : `${this.zone.name} · ${this.zone.subtitle}`;
         const director = new GameObject();
         this.sound = director.AddComponent(new SoundEffects(this.context.services.get('audio')));
         this.turn.sound = this.sound;
         director.AddComponent(this.turn);
         this.AddEntity(director);
 
-        this.terrain = this.AddEntity(new TerrainView(this.scene, this.grid, null, {
-            palette: this.zone.palette,
-            markers: this.ZoneMarkers(this.zone),
-            structures: this.zone.structures,
-        }));
-        this.environment = this.AddEntity(new HighlandEnvironment(this.scene, this.grid, this.terrain.stone));
-        this.player = this.AddEntity(new TacticalPawn(this.grid, this.scene, this.HeroDefinition()));
-        this.pawns = [this.player];
-        this.vendors = this.CreateVendors();
-        this.shopkeeper = this.vendors[0] ?? null;
-        this.groupLeaders = this.CreateGroupLeaders();
-        this.groupLeader = this.groupLeaders[0] ?? null;
+        this.terrain = this.AddEntity(new TerrainView(this.scene, this.grid));
+        this.environment = this.AddEntity(new HighlandEnvironment(this.scene, this.grid, surfaces, water));
+        this.pawns = [];
+        if (this.isBattleScene) {
+            this.InitializeBattle(this.sceneParams.encounterId);
+        }
+        else {
+            this.player = this.AddEntity(new TacticalPawn(this.grid, this.scene, this.HeroDefinition()));
+            this.pawns = [this.player];
+            this.vendors = this.CreateVendors();
+            this.shopkeeper = this.vendors[0] ?? null;
+            this.groupLeaders = this.CreateGroupLeaders();
+            this.groupLeader = this.groupLeaders[0] ?? null;
+        }
         this.hoveredEncounter = null;
         this.exploreRoute = null;
 
@@ -80,16 +118,6 @@ export class HighlandLevel extends Level3D {
             team: 'ally',
             unlockedSkills: [...this.campaign.unlockedSkills],
         };
-    }
-
-    ZoneMarkers(zone) {
-        const markers = [];
-        if (zone.portal) markers.push({ ...zone.portal, color: [1, 0.77, 0.25, 1] });
-        if (zone.returnPortal) markers.push({ ...zone.returnPortal, color: [0.42, 0.82, 1, 1] });
-        for (const encounter of zone.encounters ?? [])
-            if (!this.campaign.clearedZones.has(encounter.id))
-                markers.push({ ...encounter, label: `Lv ${encounter.level} ${encounter.name}`, color: [1, 0.35, 0.24, 1] });
-        return markers;
     }
 
     CreateShopkeeper(vendor = this.zone.vendors?.[0]) {
@@ -118,7 +146,7 @@ export class HighlandLevel extends Level3D {
         return (this.zone.vendors ?? []).map(vendor => this.CreateShopkeeper(vendor));
     }
 
-    CreateGroupLeader(encounter = this.zone.encounter) {
+    CreateGroupLeader(encounter = this.zone.encounters?.[0]) {
         if (!encounter || this.campaign.clearedZones.has(encounter.id)) return null;
         let spawn = encounter;
         if (this.player.stats.col === encounter.col && this.player.stats.row === encounter.row) {
@@ -306,7 +334,7 @@ export class HighlandLevel extends Level3D {
             return false;
         }
         this.campaign = campaign;
-        this.LoadZone(campaign.zoneId, { col: campaign.hero.col, row: campaign.hero.row }, true);
+        this.LoadZone(campaign.zoneId, { col: campaign.hero.col, row: campaign.hero.row });
         this.hud.panel = null;
         this.hud.nameField.SetActive(false);
         this.controls?.SuppressNextWorldClick();
@@ -315,51 +343,21 @@ export class HighlandLevel extends Level3D {
         return true;
     }
 
-    LoadZone(zoneId, entry, restoring = false) {
-        if (this.terrain) this.RemoveEntity(this.terrain);
-        if (this.environment) this.RemoveEntity(this.environment);
-        for (const pawn of this.pawns ?? []) this.RemoveEntity(pawn);
-        for (const vendor of this.vendors ?? []) this.RemoveEntity(vendor);
-        if (this.shopkeeper && !this.vendors?.includes(this.shopkeeper)) this.RemoveEntity(this.shopkeeper);
-        for (const group of this.GroupLeaders()) this.RemoveEntity(group);
-        this.groupLeaders = [];
-        this.groupLeader = null;
-        this.vendors = [];
-        this.shopkeeper = null;
-
-        const previousZoneId = this.zone?.id;
-        this.zone = GetZone(zoneId);
-        if (!restoring && previousZoneId && previousZoneId !== zoneId)
-            for (const encounter of this.zone.otherEncounters ?? [])
+    LoadZone(zoneId, entry) {
+        const zone = GetZone(zoneId, this.context.assets.jsons[zoneId]);
+        const position = entry ?? zone.spawn;
+        if (zone.heights[position.row]?.[position.col] === undefined)
+            throw new RangeError(`Entry tile is outside the authored ${zoneId} scene.`);
+        if (this.zone?.id && this.zone.id !== zoneId)
+            for (const encounter of zone.otherEncounters ?? [])
                 this.campaign.clearedZones.delete(encounter.id);
-        this.grid = new HeightGrid(this.zone.heights);
-        this.terrain = this.AddEntity(new TerrainView(this.scene, this.grid, null, {
-            palette: this.zone.palette,
-            markers: this.ZoneMarkers(this.zone),
-            structures: this.zone.structures,
-        }));
-        this.environment = this.AddEntity(new HighlandEnvironment(this.scene, this.grid, this.terrain.stone));
-        const position = entry ?? this.zone.spawn;
+        if (this.player && ['explore', 'battle'].includes(this.exploring))
+            this.campaign.SyncHero(this.player.stats);
         this.campaign.zoneId = zoneId;
         this.campaign.hero.col = position.col;
         this.campaign.hero.row = position.row;
-        this.player = this.AddEntity(new TacticalPawn(this.grid, this.scene, this.HeroDefinition()));
-        this.pawns = [this.player];
-        this.vendors = this.CreateVendors();
-        this.shopkeeper = this.vendors[0] ?? null;
-        this.groupLeaders = this.CreateGroupLeaders();
-        this.groupLeader = this.groupLeaders[0] ?? null;
-        this.hoveredEncounter = null;
-        this.turn.grid = this.grid;
-        this.turn.pawns = this.pawns;
-        this.turn.enabled = false;
-        this.turn.phase = 'explore';
-        this.turn.active = null;
-        this.turn.result = null;
-        this.turn.cursor = { ...position };
-        this.exploring = 'explore';
-        this.cameraViewTarget = 13;
-        this.turn.message = `${this.zone.name} · ${this.zone.subtitle}`;
+        this.LoadScene(zoneId, { campaign: this.campaign.SaveData(), entry: position });
+        return true;
     }
 
     MoveExplore(tile) {
@@ -460,30 +458,27 @@ export class HighlandLevel extends Level3D {
     }
 
     StartBattle(encounterId) {
-        if (!['explore', 'battle'].includes(this.exploring)) return;
+        if (!['explore', 'battle'].includes(this.exploring)) return false;
         const encounter = this.zone.encounters.find(entry => entry.id === encounterId);
         if (!encounter) throw new RangeError(`Unknown encounter in ${this.zone.id}: ${encounterId}`);
         if (this.exploring === 'explore') {
             this.campaign.SyncHero(this.player.stats);
             this.returnPosition = { zoneId: this.zone.id, col: this.player.stats.col, row: this.player.stats.row };
         }
+        this.campaign.zoneId = this.zone.id;
+        this.LoadScene('battlefield', {
+            campaign: this.campaign.SaveData(),
+            zoneId: this.zone.id,
+            encounterId,
+            returnPosition: this.returnPosition,
+        });
+        return true;
+    }
+
+    InitializeBattle(encounterId) {
+        const encounter = this.zone.encounters.find(entry => entry.id === encounterId);
+        if (!encounter) throw new RangeError(`Unknown encounter in ${this.zone.id}: ${encounterId}`);
         this.encounterId = encounterId;
-        this.exploreRoute = null;
-
-        this.RemoveEntity(this.terrain);
-        this.RemoveEntity(this.environment);
-        for (const pawn of this.pawns) this.RemoveEntity(pawn);
-        for (const vendor of this.vendors ?? []) this.RemoveEntity(vendor);
-        if (this.shopkeeper && !this.vendors?.includes(this.shopkeeper)) this.RemoveEntity(this.shopkeeper);
-        for (const group of this.GroupLeaders()) this.RemoveEntity(group);
-        this.groupLeaders = [];
-        this.groupLeader = null;
-        this.vendors = [];
-        this.shopkeeper = null;
-        this.grid = this.battleGrid;
-        this.terrain = this.AddEntity(new TerrainView(this.scene, this.grid, this.battleDocument));
-        this.environment = this.AddEntity(new HighlandEnvironment(this.scene, this.grid, this.terrain.stone));
-
         const allyUnits = this.battleData.units.filter(unit => unit.team === 'ally');
         const enemies = this.battleData.units.filter(unit => unit.team === 'enemy').map(unit => ({
             ...unit,
@@ -562,7 +557,7 @@ export class HighlandLevel extends Level3D {
             if (this.campaign.companionDeployed)
                 this.campaign.companion.hp = Math.max(1, Math.ceil(this.campaign.CompanionStats().maxHp * 0.4));
             this.campaign.zoneId = 'hearthvale';
-            this.LoadZone('hearthvale', GetZone('hearthvale').spawn);
+            this.LoadZone('hearthvale');
         }
         else
             this.LoadZone(this.returnPosition.zoneId, { col: this.returnPosition.col, row: this.returnPosition.row });

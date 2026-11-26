@@ -207,76 +207,13 @@ export class TacticalHUD {
             close: this.Button('×', () => { this.panel = null; }),
         };
         this.talk = this.Button('TALK TO VENDOR', () => level.InteractShopkeeper());
-        this.nameField = new TextBox(this.screen, { nativeInput: true });
+        this.nameField = new TextBox(this.screen);
         this.nameField.SetPlaceholder('Character name');
         this.nameField.SetMaxLength(20);
         this.nameField.SetText('Highland Recruit');
         this.nameField.onSubmit = () => this.nameField.SetActive(false);
-        this.CreateAccessibleMenu();
-    }
-
-    CreateAccessibleMenu() {
-        if (typeof document === 'undefined') return;
-        const nav = document.createElement('nav');
-        nav.className = 'highland-accessibility';
-        nav.setAttribute('aria-label', 'Highland menu controls');
-        for (const type of ['pointerdown', 'pointerup', 'click', 'keydown', 'keyup'])
-            nav.addEventListener(type, event => event.stopPropagation());
-        const status = document.createElement('p');
-        status.setAttribute('aria-live', 'polite');
-        nav.append(status);
-        const create = (label, action) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.textContent = label;
-            button.addEventListener('click', action);
-            nav.append(button);
-            return button;
-        };
-        const bar = this.barItems.map(item => create(`${item.label} (${item.shortcut})`, () => this.ActivateBar(item)));
-        const ring = this.ringItems.map((item, index) => create(item.label, () => this.ActivateRing(index)));
-        const close = create('Close panel', () => { this.panel = null; });
-        const previous = create('Previous item', () => this.panel === 'bag' ? this.MoveBagSelection('LEFT') : this.MoveShopSelection(-1));
-        const next = create('Next item', () => this.panel === 'bag' ? this.MoveBagSelection('RIGHT') : this.MoveShopSelection(1));
-        const activate = create('Use or trade selected item', () => this.panel === 'bag' ? this.ActivateBagItem() : this.ActivateShopOffer());
-        const buy = create('Buy tab', () => this.SelectShopTab('buy'));
-        const sell = create('Sell tab', () => this.SelectShopTab('sell'));
-        document.body.append(nav);
-        this.accessibleMenu = { nav, status, bar, ring, close, previous, next, activate, buy, sell };
-    }
-
-    UpdateAccessibleMenu() {
-        const menu = this.accessibleMenu;
-        if (!menu) return;
-        const l = this.level, explore = l.exploring === 'explore';
-        const battle = l.exploring === 'battle' && l.turn.phase === 'command';
-        menu.nav.hidden = !explore && !battle;
-        menu.bar.forEach((button, index) => {
-            const item = this.barItems[index];
-            button.hidden = !explore;
-            if (item.panel) button.setAttribute('aria-pressed', String(this.panel === item.panel));
-        });
-        menu.ring.forEach((button, index) => {
-            button.hidden = !battle;
-            button.disabled = !battle || !this.CommandAvailable(index);
-        });
-        menu.close.hidden = !explore || !this.panel;
-        const items = explore && (this.panel === 'bag' || this.panel === 'shop');
-        menu.previous.hidden = menu.next.hidden = menu.activate.hidden = !items;
-        menu.buy.hidden = menu.sell.hidden = !explore || this.panel !== 'shop';
-        let detail = '';
-        if (items) {
-            const item = this.panel === 'bag' ? this.SelectedBagItem() : this.ShopOffers()[this.shopSelection];
-            if (item) {
-                const info = ItemInfo[item.name];
-                detail = `${item.name}, ${info?.rarity ?? ''}, ${info?.description ?? ''}, ${this.ItemModifiers(item.name)}.`;
-                if (item.name !== 'Potion') detail += ` Compared with equipped: ${this.GearComparison(item.name)}.`;
-                if (this.panel === 'shop') detail += ` ${this.shopTab}, ${item.price} gold.`;
-                else detail += ` Owned ${item.count}.`;
-            }
-        }
-        const message = `${l.zone?.name ?? ''}. ${this.panel ?? l.exploring}. ${detail} ${l.turn.message ?? ''}`;
-        if (menu.status.textContent !== message) menu.status.textContent = message;
+        this.nameFieldInput = event => this.HandleNameInput(event);
+        if (typeof window !== 'undefined') window.addEventListener('keydown', this.nameFieldInput);
     }
 
     Button(label, run) {
@@ -285,6 +222,21 @@ export class TacticalHUD {
         const item = { label, button };
         this.buttons.push(item);
         return item;
+    }
+
+    HandleNameInput(event) {
+        if (!this.nameField.isActive) return false;
+        if (event.key === 'Enter') {
+            this.nameField.onSubmit?.();
+            event.preventDefault();
+            return true;
+        }
+        if (event.key === 'Backspace' || (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey)) {
+            this.nameField.HandleInput(event);
+            event.preventDefault();
+            return true;
+        }
+        return false;
     }
 
     TogglePanel(panel) {
@@ -304,7 +256,8 @@ export class TacticalHUD {
     }
 
     Update(dt) {
-        this.UpdateAccessibleMenu();
+        if (this.level.exploring === 'creation' && this.nameField?.Click?.())
+            this.level.controls?.SuppressNextWorldClick();
         const command = this.level.exploring === 'battle' && this.level.turn.phase === 'command';
         if (!command) {
             this.ringOpen = false;
@@ -1370,7 +1323,7 @@ export class TacticalHUD {
     }
 
     Dispose() {
-        this.accessibleMenu?.nav.remove();
+        if (typeof window !== 'undefined') window.removeEventListener('keydown', this.nameFieldInput);
         for (const item of this.buttons) item.button.Dispose();
         this.nameField.Dispose();
         this.help.Dispose();

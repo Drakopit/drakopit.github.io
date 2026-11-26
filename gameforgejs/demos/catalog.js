@@ -14,7 +14,8 @@ function addDemo(demo) {
   card.className = "demo-catalog-card";
   if (demo.screenshot) {
     const image = document.createElement("img");
-    image.src = `/gameforgejs/assets/demos/${demo.id}.jpg`;
+    const extension = demo.screenshotExtension === "png" ? "png" : "jpg";
+    image.src = `/gameforgejs/assets/demos/${demo.id}.${extension}`;
     image.alt = `${demo.name} gameplay capture`;
     image.loading = "lazy";
     card.append(image);
@@ -48,7 +49,7 @@ fetch(catalogUrl)
       throw new Error("The current demo catalog does not contain exactly 20 entries.");
     }
     data.demos.forEach(addDemo);
-    status.textContent = `${data.demos.length} official demo IDs · ${data.demos.filter(demo => demo.playable).length} verified static builds · 1 backend-required route · 1 build withheld pending Demos PR confirmation.`;
+    status.textContent = `${data.demos.length} official demo IDs · ${data.demos.filter(demo => demo.playable).length} playable routes · 1 backend-required route.`;
   })
   .catch(error => {
     status.textContent = `Unable to load demos: ${error.message}`;

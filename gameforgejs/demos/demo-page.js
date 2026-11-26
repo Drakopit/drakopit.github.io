@@ -19,7 +19,8 @@ fetch("/gameforgejs/demos/demos.json")
     state.classList.add(demo.playable ? "playable" : "unavailable");
     if (demo.screenshot) {
       const image = document.querySelector("#demo-image");
-      image.src = `/gameforgejs/assets/demos/${demo.id}.jpg`;
+      const extension = demo.screenshotExtension === "png" ? "png" : "jpg";
+      image.src = `/gameforgejs/assets/demos/${demo.id}.${extension}`;
       image.alt = `${demo.name} gameplay capture`;
       document.querySelector("#demo-image-wrap").hidden = false;
     }

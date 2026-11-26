@@ -18,6 +18,7 @@ export class TacticalControls {
 
     Update(dt) {
         const l = this.level, t = l.turn;
+        if (typeof document !== 'undefined' && document.activeElement?.closest('.highland-accessibility')) return;
         if (ActionManager.IsActionDown('HELP'))
             l.hud.help.Toggle();
         if (l.hud.help.visible) return;
@@ -46,6 +47,10 @@ export class TacticalControls {
         if (l.exploring === 'explore' && ActionManager.IsActionDown('WORLD_MAP')) {
             l.hud.TogglePanel('map');
             return;
+        }
+        if (l.exploring === 'explore' && l.hud.panel === 'bag') {
+            if (ActionManager.IsActionDown('PANEL_PREV')) { l.hud.CycleBagCategory(-1); return; }
+            if (ActionManager.IsActionDown('PANEL_NEXT')) { l.hud.CycleBagCategory(1); return; }
         }
         if (l.exploring === 'battle' && t.phase === 'command' && l.hud.ringOpen) {
             for (let index = 0; index < l.hud.ringItems.length; index++) {
@@ -99,6 +104,14 @@ export class TacticalControls {
             const index = ['UP', 'RIGHT', 'DOWN', 'LEFT'].indexOf(direction);
             if (l.exploring === 'explore' && !l.hud.panel)
                 l.StepExplore(index);
+            else if (l.exploring === 'explore' && l.hud.panel === 'bag')
+                l.hud.MoveBagSelection(direction);
+            else if (l.exploring === 'explore' && l.hud.panel === 'shop') {
+                if (direction === 'UP' || direction === 'DOWN')
+                    l.hud.MoveShopSelection(direction === 'UP' ? -1 : 1);
+                else
+                    l.hud.SelectShopTab(direction === 'LEFT' ? 'buy' : 'sell');
+            }
             else if (t.phase === 'command')
                 t.command = (t.command + (index === 0 || index === 3 ? -1 : 1) + Commands.length) % Commands.length;
             else if (t.phase === 'face')
@@ -125,6 +138,14 @@ export class TacticalControls {
             }
             if (l.hud.panel === 'party' && ActionManager.IsActionDown('CONFIRM')) {
                 l.ToggleCompanion();
+                return;
+            }
+            if (l.hud.panel === 'bag' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateBagItem();
+                return;
+            }
+            if (l.hud.panel === 'shop' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateShopOffer();
                 return;
             }
             if (!l.hud.panel && (ActionManager.IsActionDown('INTERACT') || ActionManager.IsActionDown('CONFIRM'))) {

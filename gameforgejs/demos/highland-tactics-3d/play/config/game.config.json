@@ -28,6 +28,8 @@
       "EQUIPMENT": [{"device":"keyboard","input":"KeyE"}],
       "CHARACTER": [{"device":"keyboard","input":"KeyC"}],
       "PARTY": [{"device":"keyboard","input":"KeyP"}],
+      "PANEL_PREV": [{"device":"keyboard","input":"BracketLeft"},{"device":"gamepad","input":"button_4"}],
+      "PANEL_NEXT": [{"device":"keyboard","input":"BracketRight"},{"device":"gamepad","input":"button_5"}],
       "RADIAL_1": [{"device":"keyboard","input":"Digit1"}],
       "RADIAL_2": [{"device":"keyboard","input":"Digit2"}],
       "RADIAL_3": [{"device":"keyboard","input":"Digit3"}],

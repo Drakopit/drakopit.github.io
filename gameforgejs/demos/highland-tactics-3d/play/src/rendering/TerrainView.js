@@ -89,12 +89,29 @@ export class TerrainView extends GameObject {
                     scene.Add(mesh);
                     this.meshes.push(mesh);
                 }
+                if (structure.specialty) {
+                    const signColor = { weapon: '#e5aa73', armor: '#a9c8e0', consumable: '#a9dfad', rest: '#d2b2e3' }[structure.specialty];
+                    const sign = new Mesh({
+                        name: `${structure.name} sign`,
+                        geometry: PrimitiveMesh.Cube(1),
+                        material: new UnlitMaterial({ color: signColor }),
+                        castShadow: false,
+                    });
+                    sign.transform.SetPosition(p.x, p.y + 0.93, p.z + 0.48);
+                    sign.transform.SetScale(0.5, 0.27, 0.06);
+                    scene.Add(sign);
+                    this.meshes.push(sign);
+                }
             }
         }
     }
     World(tile) { return new Vector3D((tile.col - (this.grid.cols - 1) / 2) * MapScale.tile, MapScale.base + tile.h * MapScale.elevation, (tile.row - (this.grid.rows - 1) / 2) * MapScale.tile); }
     Highlights(turn, exploreRoute = null) {
         const active = turn.active?.stats;
+        const profile = turn.phase === 'target' && active ? GetAbilityProfile(active, turn.ability) : null;
+        const targetTile = profile?.splash && turn.cursor ? this.grid.Get(turn.cursor.col, turn.cursor.row) : null;
+        const occupant = targetTile && turn.Alive().find(p => p.stats.col === targetTile.col && p.stats.row === targetTile.row)?.stats;
+        const validTarget = targetTile && BattleRules.CanAttack(this.grid, active, occupant ?? { ...targetTile, hp: 1, team: 'target' }, turn.ability);
         const routeKeys = new Set(exploreRoute?.path.map(point => this.grid.Key(point)) ?? []);
         const originKey = exploreRoute ? this.grid.Key(exploreRoute.origin) : null;
         const destinationKey = exploreRoute ? this.grid.Key(exploreRoute.destination) : null;
@@ -105,13 +122,19 @@ export class TerrainView extends GameObject {
                 overlay.visible = true;
                 overlay.material.albedoColor = [0.1, 0.65, 1, 0.45];
             }
-            const healing = turn.phase === 'target' && GetAbilityProfile(active, turn.ability).heal;
+            const healing = profile && (profile.heal || profile.shield || profile.haste);
             const target = healing && turn.Alive().find(p => p.stats.col === tile.col && p.stats.row === tile.row)?.stats;
             if (turn.phase === 'target' && BattleRules.CanAttack(this.grid, active, healing ? target ?? { ...tile, hp: 0 } : { ...tile, hp: 1, team: 'target' }, turn.ability)) {
                 overlay.visible = true;
                 overlay.material.albedoColor = healing ? [0.2, 0.9, 0.65, 0.65] : [1, 0.35, 0.12, 0.4];
                 if (turn.Alive().some(p => p.stats.team !== active.team && p.stats.col === tile.col && p.stats.row === tile.row))
                     overlay.material.albedoColor = [1, 0.75, 0.2, 0.65];
+            }
+            if (validTarget && !(tile.col === targetTile.col && tile.row === targetTile.row)
+                && !turn.Alive().some(p => p.stats.team === active.team && p.stats.col === tile.col && p.stats.row === tile.row)
+                && BattleRules.InSplash(this.grid, active, targetTile, tile, profile)) {
+                overlay.visible = true;
+                overlay.material.albedoColor = [1, 0.48, 0.13, 0.6];
             }
             if (turn.cursor?.col === tile.col && turn.cursor?.row === tile.row) {
                 overlay.visible = true;

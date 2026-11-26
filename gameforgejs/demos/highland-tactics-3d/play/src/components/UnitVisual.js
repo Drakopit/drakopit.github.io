@@ -47,6 +47,25 @@ export class UnitVisual extends Component {
             { p: [-0.26, 0.4, -0.06], s: [0.08, 0.3, 0.27], m: steel },
             { p: [0.25, 0.4, -0.27], s: [0.055, 0.055, 0.55], m: steel },
         ];
+        if (['weapon', 'armor', 'consumable', 'rest'].includes(visualStyle)) {
+            parts.splice(-2);
+            if (visualStyle === 'weapon') parts.push(
+                { p: [0.27, 0.42, -0.18], s: [0.06, 0.54, 0.06], m: steel },
+                { p: [0.27, 0.7, -0.18], s: [0.32, 0.16, 0.16], m: steel },
+            );
+            else if (visualStyle === 'armor') parts.push(
+                { p: [-0.28, 0.43, -0.08], s: [0.12, 0.48, 0.34], m: steel },
+                { p: [0, 0.96, 0], s: [0.34, 0.15, 0.32], m: steel },
+            );
+            else if (visualStyle === 'consumable') parts.push(
+                { p: [0.28, 0.42, -0.14], s: [0.2, 0.25, 0.2], m: new ToonMaterial({ albedoColor: '#bd5d80' }) },
+                { p: [0.28, 0.58, -0.14], s: [0.08, 0.09, 0.08], m: steel },
+            );
+            else parts.push(
+                { p: [0.28, 0.5, -0.13], s: [0.07, 0.95, 0.07], m: steel },
+                { p: [0.28, 1.03, -0.13], s: [0.18, 0.18, 0.18], m: cloth },
+            );
+        }
         for (const part of parts) {
             const mesh = new Mesh({ geometry: PrimitiveMesh.Cube(1), material: part.m, transform: new Transform3D({ parent: this.root, position: part.p, scale: part.s }) });
             this.meshes.push(mesh);

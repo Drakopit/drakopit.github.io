@@ -5,13 +5,13 @@
       "id": "highland-tactics-3d",
       "name": "Highland Tactics 3D",
       "dimension": "3d",
-      "description": "Intermediate JRPG snapshot from open Demos PR #9: explore three connected 21×17 zones, meet roaming patrol groups, visit four specialist shops, and develop four classes through tactical battles.",
-      "controls": "Walk with WASD/arrows or click any reachable tile; Escape cancels a route. F interacts with nearby vendors. I inventory, E equipment, C character, K skills, M map, P party. Enter/Space confirms battle actions; V toggles the tactical menu; use arrows or 1–5 to choose. Q/O orbit, T rain, R retry, H help.",
+      "description": "Intermediate JRPG snapshot from open Demos PR #9: explore three connected 21×17 zones, meet roaming patrol groups, visit four specialist shops, save progress, and develop four classes through tactical battles.",
+      "controls": "Walk with WASD/arrows or click any reachable tile; Escape cancels a route or closes a panel. F interacts with nearby vendors. I inventory, E equipment, C character and save, K skills, M map, P party. Enter/Space confirms battle actions; V toggles the tactical menu; use arrows or 1–5 to choose. Q/O orbit, T rain, R retry, H help. Tab opens semantic controls for supported menus; character creation, world and battle grid are not fully screen-reader accessible.",
       "playable": true,
       "screenshot": true,
       "screenshotExtension": "png",
       "statusLabel": "Snapshot · PR #9 ongoing",
-      "sourceRevision": "d75aacb6c06eaf00640180d2fb93f78d20259e41",
+      "sourceRevision": "c8263d9ad04d3f22fa07d2791c3ab4456d046692",
       "runtimeRevision": "16f95fc35922fee19ee3849738bff6b858748ec4"
     },
     {

@@ -20,7 +20,9 @@ export class BattleRules {
     static Preview(grid, attacker, defender, ability = attacker.basicAbility ?? 'strike') {
         const profile = GetAbilityProfile(attacker, ability);
         if (profile.heal)
-            return { chance: 100, heal: Math.min(profile.heal, defender.maxHp - defender.hp) };
+            return { chance: 100, heal: Math.min(BattleRules.HealAmount(attacker, profile), defender.maxHp - defender.hp) };
+        if (profile.shield) return { chance: 100, shield: profile.shield };
+        if (profile.haste) return { chance: 100, haste: profile.haste };
         const source = grid.Get(attacker.col, attacker.row), target = grid.Get(defender.col, defender.row);
         const direction = Facings[defender.facing];
         const dx = attacker.col - defender.col, dz = attacker.row - defender.row;
@@ -30,18 +32,42 @@ export class BattleRules {
         const elevation = Math.max(-2, Math.min(2, source.h - target.h));
         const chance = Math.max(50, Math.min(100, (side === 'BACK' ? 100 : side === 'SIDE' ? 95 : 85) + elevation * 3));
         const armor = defender.exposed ? 0 : Math.round((defender.defense ?? 3) * (1 - (profile.pierce ?? 0)));
-        const damage = Math.max(1, Math.round((attacker.attack * profile.power - armor + elevation * 2) * (side === 'BACK' ? 1.35 + (profile.backBonus ?? 0) : side === 'SIDE' ? 1.15 : 1)));
-        return { chance, damage, side, elevation };
+        const power = profile.magic ? (attacker.magic ?? attacker.attack) : attacker.attack;
+        const damage = Math.max(1, Math.round((power * profile.power - armor + elevation * 2)
+            * (side === 'BACK' ? 1.35 + (profile.backBonus ?? 0) : side === 'SIDE' ? 1.15 : 1)
+            * (defender.guarded ? 0.5 : 1)));
+        const blocked = Math.min(damage, defender.shield ?? 0);
+        return { chance, damage: damage - blocked, blocked, rawDamage: damage, side, elevation };
+    }
+    static HealAmount(attacker, profile) {
+        return profile.heal + Math.floor((attacker.magic ?? 0) / 3);
+    }
+    static InSplash(grid, attacker, target, other, profile) {
+        const dc = other.col - target.col, dr = other.row - target.row;
+        if (profile.shape === 'line') {
+            const dx = Math.sign(target.col - attacker.col), dy = Math.sign(target.row - attacker.row);
+            const distance = Math.abs(other.col - attacker.col) + Math.abs(other.row - attacker.row);
+            return (dx ? dr === 0 && dc * dx > 0 : dc === 0 && dr * dy > 0)
+                && distance <= profile.range && Math.abs(grid.Get(attacker.col, attacker.row).h - grid.Get(other.col, other.row).h) <= profile.height
+                && grid.CanSee(attacker, other);
+        }
+        if (profile.shape === 'cone') {
+            const dx = target.col - attacker.col, dy = target.row - attacker.row;
+            return dx ? dc === 0 && Math.abs(dr) === 1 : dr === 0 && Math.abs(dc) === 1;
+        }
+        return Math.abs(dc) + Math.abs(dr) === 1;
     }
     static CanAttack(grid, attacker, defender, ability = attacker.basicAbility ?? 'strike') {
         if (attacker.hp <= 0 || defender.hp <= 0)
             return false;
         const profile = GetAbilityProfile(attacker, ability);
-        if (profile.heal ? attacker.team !== defender.team || defender.hp >= defender.maxHp : attacker.team === defender.team)
+        const support = profile.heal || profile.shield || profile.haste;
+        if (support ? attacker.team !== defender.team || (profile.heal && defender.hp >= defender.maxHp) : attacker.team === defender.team)
             return false;
         const distance = Math.abs(attacker.col - defender.col) + Math.abs(attacker.row - defender.row);
         const source = grid.Get(attacker.col, attacker.row), target = grid.Get(defender.col, defender.row);
-        if ((!profile.heal && distance === 0) || !source || !target) return false;
+        if ((!support && distance === 0) || !source || !target) return false;
+        if (profile.shape === 'line' && attacker.col !== defender.col && attacker.row !== defender.row) return false;
         const height = Math.abs(source.h - target.h);
         return distance <= profile.range && height <= profile.height
             && (attacker.energy ?? 0) >= profile.energy && (distance === 0 || grid.CanSee(attacker, defender));

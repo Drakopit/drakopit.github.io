@@ -109,7 +109,8 @@ export class HighlandLevel extends Level3D {
             speed: 1,
             attack: 0,
             defense: 0,
-            color: '#d3a64a',
+            color: { weapon: '#b95b45', armor: '#718a9f', consumable: '#6aa46f', rest: '#9a72aa' }[vendor.specialty],
+            visualStyle: vendor.specialty,
         }));
     }
 
@@ -119,13 +120,21 @@ export class HighlandLevel extends Level3D {
 
     CreateGroupLeader(encounter = this.zone.encounter) {
         if (!encounter || this.campaign.clearedZones.has(encounter.id)) return null;
+        let spawn = encounter;
+        if (this.player.stats.col === encounter.col && this.player.stats.row === encounter.row) {
+            const directions = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+            spawn = directions.map(([dx, dy]) => this.grid.Get(encounter.col + dx, encounter.row + dy))
+                .find(tile => tile && Math.abs(tile.h - this.grid.Get(encounter.col, encounter.row).h) <= 1
+                    && !(this.zone.encounters ?? []).some(other => other !== encounter && other.col === tile.col && other.row === tile.row)
+                    && !(this.zone.structures ?? []).some(item => item.col === tile.col && item.row === tile.row)) ?? encounter;
+        }
         const leader = this.AddEntity(new TacticalPawn(this.grid, this.scene, {
             id: `group-${encounter.id}`,
             name: encounter.name,
             encounterId: encounter.id,
             team: 'neutral',
-            col: encounter.col,
-            row: encounter.row,
+            col: spawn.col,
+            row: spawn.row,
             facing: 2,
             hp: 1,
             maxHp: 1,
@@ -226,6 +235,8 @@ export class HighlandLevel extends Level3D {
         this.activeVendor = vendor;
         this.hud.shopTab = 'buy';
         this.hud.shopPage = 0;
+        this.hud.shopSelection = 0;
+        this.hud.panelPointer = null;
         this.hud.panel = this.hud.panel === 'shop' ? null : 'shop';
         this.turn.message = this.hud.panel ? `${vendor.stats.name}: ${vendor.stats.greeting}` : 'You leave the vendor.';
         this.sound.Play('select');
@@ -268,7 +279,43 @@ export class HighlandLevel extends Level3D {
         this.sound.Play('success');
     }
 
-    LoadZone(zoneId, entry) {
+    SaveGame() {
+        if (this.exploring !== 'explore') return false;
+        this.campaign.SyncHero(this.player.stats);
+        try {
+            globalThis.localStorage.setItem('highland-tactics-save-v1', JSON.stringify(this.campaign.SaveData()));
+            this.turn.message = 'Adventure saved on this browser.';
+            return true;
+        }
+        catch (error) {
+            this.turn.message = `Save failed: ${error.message}`;
+            return false;
+        }
+    }
+
+    ContinueGame() {
+        if (this.exploring !== 'creation') return false;
+        let campaign;
+        try {
+            const saved = globalThis.localStorage.getItem('highland-tactics-save-v1');
+            if (!saved) throw new Error('No saved adventure found.');
+            campaign = HighlandCampaign.FromSave(JSON.parse(saved));
+        }
+        catch (error) {
+            this.turn.message = `Continue failed: ${error.message}`;
+            return false;
+        }
+        this.campaign = campaign;
+        this.LoadZone(campaign.zoneId, { col: campaign.hero.col, row: campaign.hero.row }, true);
+        this.hud.panel = null;
+        this.hud.nameField.SetActive(false);
+        this.controls?.SuppressNextWorldClick();
+        this.sound.Play('success');
+        this.turn.message = 'Saved adventure restored.';
+        return true;
+    }
+
+    LoadZone(zoneId, entry, restoring = false) {
         if (this.terrain) this.RemoveEntity(this.terrain);
         if (this.environment) this.RemoveEntity(this.environment);
         for (const pawn of this.pawns ?? []) this.RemoveEntity(pawn);
@@ -282,7 +329,7 @@ export class HighlandLevel extends Level3D {
 
         const previousZoneId = this.zone?.id;
         this.zone = GetZone(zoneId);
-        if (previousZoneId && previousZoneId !== zoneId)
+        if (!restoring && previousZoneId && previousZoneId !== zoneId)
             for (const encounter of this.zone.otherEncounters ?? [])
                 this.campaign.clearedZones.delete(encounter.id);
         this.grid = new HeightGrid(this.zone.heights);
@@ -445,10 +492,10 @@ export class HighlandLevel extends Level3D {
         }));
         const party = allyUnits.filter((unit, index) => index === 0 || this.campaign.companionDeployed).map((unit, index) => index === 0
             ? { ...this.HeroDefinition(), col: unit.col, row: unit.row }
-            : { ...unit, defense: 4, level: this.campaign.hero.level });
+            : { ...unit, ...this.campaign.CompanionStats() });
         const extraEnemies = [
             { id: 'hound', name: 'Ash Hound', team: 'enemy', role: 'flanker', basicAbility: 'hound-bite', visualStyle: 'wolf', col: 7, row: 7, facing: 0, hp: 28, speed: 26, attack: 12, defense: 2, color: '#b98b59' },
-            { id: 'adept', name: 'Ash Adept', team: 'enemy', role: 'caster', basicAbility: 'ember-flare', visualStyle: 'wisp', col: 4, row: 7, facing: 0, hp: 26, speed: 21, attack: 14, defense: 1, color: '#9676b8' },
+            { id: 'adept', name: 'Ash Adept', team: 'enemy', role: 'caster', basicAbility: 'ember-flare', visualStyle: 'wisp', col: 4, row: 7, facing: 0, hp: 26, speed: 21, attack: 8, magic: 14, defense: 1, color: '#9676b8' },
         ];
         const templates = [...enemies, ...extraEnemies];
         const spawnPoints = [...enemies, ...extraEnemies].map(({ col, row }) => ({ col, row }));
@@ -464,6 +511,7 @@ export class HighlandLevel extends Level3D {
             ...roster.map((unit, index) => ({
                 ...unit, ...spawnPoints[index], id: `${unit.id}-${index}`, level: encounter.level,
                 hp: Math.round(unit.hp * difficulty), attack: Math.round(unit.attack * difficulty),
+                magic: Math.round((unit.magic ?? unit.attack) * difficulty),
                 defense: unit.defense ?? 2,
             })),
         ];
@@ -484,13 +532,20 @@ export class HighlandLevel extends Level3D {
         if (this.exploring !== 'battle' || this.resultHandled || !this.turn.result) return;
         this.resultHandled = true;
         this.campaign.SyncHero(this.player.stats);
+        const companion = this.pawns.find(pawn => pawn.stats.id === 'orin');
+        if (companion) this.campaign.SyncCompanion(companion.stats);
         this.exploring = 'result';
         this.turn.enabled = false;
         if (this.turn.result === 'VICTORY') {
             this.campaign.clearedZones.add(this.encounterId);
             this.campaign.hero.hp = Math.max(1, this.campaign.hero.hp);
             this.campaign.gold += this.encounterId === 'ashen-ridge' ? 45 : 30;
-            const levels = this.campaign.AwardExperience(this.encounterId === 'ashen-ridge' ? 90 : 60);
+            const experience = this.encounterId === 'ashen-ridge' ? 90 : 60;
+            const levels = this.campaign.AwardExperience(experience);
+            if (companion) {
+                this.campaign.AwardCompanionExperience(experience);
+                this.campaign.companion.hp = Math.max(1, this.campaign.companion.hp);
+            }
             this.turn.message = levels
                 ? `VICTORY · Level ${this.campaign.hero.level}! Return to ${this.zone.name}.`
                 : `VICTORY · +${this.encounterId === 'ashen-ridge' ? 90 : 60} XP · Return to ${this.zone.name}.`;
@@ -504,6 +559,8 @@ export class HighlandLevel extends Level3D {
         if (this.exploring !== 'result') return;
         if (this.turn.result === 'DEFEAT') {
             this.campaign.hero.hp = Math.max(1, Math.ceil(this.campaign.hero.maxHp * 0.4));
+            if (this.campaign.companionDeployed)
+                this.campaign.companion.hp = Math.max(1, Math.ceil(this.campaign.CompanionStats().maxHp * 0.4));
             this.campaign.zoneId = 'hearthvale';
             this.LoadZone('hearthvale', GetZone('hearthvale').spawn);
         }
@@ -540,6 +597,7 @@ export class HighlandLevel extends Level3D {
     Rest() {
         if (this.zone.id !== 'hearthvale' || this.activeVendor?.stats.specialty !== 'rest' || !this.CanInteractShopkeeper(this.activeVendor)) return;
         this.campaign.hero.hp = this.campaign.hero.maxHp;
+        this.campaign.companion.hp = this.campaign.CompanionStats().maxHp;
         if (this.player) this.player.stats.hp = this.campaign.hero.hp;
         this.turn.message = 'Rested at Hearthvale — your party is ready.';
         this.sound.Play('success');
@@ -587,7 +645,7 @@ export class HighlandLevel extends Level3D {
 
     SyncEquipmentToPlayer() {
         if (!this.player || !this.campaign.hero) return;
-        for (const stat of ['attack', 'defense', 'speed', 'maxHp', 'hp', 'energyMax'])
+        for (const stat of ['attack', 'magic', 'defense', 'speed', 'maxHp', 'hp', 'energyMax'])
             this.player.stats[stat] = this.campaign.hero[stat];
         this.player.stats.energy = Math.min(this.player.stats.energy, this.player.stats.energyMax);
     }

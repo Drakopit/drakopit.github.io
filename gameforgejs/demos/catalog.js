@@ -49,7 +49,7 @@ fetch(catalogUrl)
       throw new Error("The current demo catalog does not contain exactly 20 entries.");
     }
     data.demos.forEach(addDemo);
-    status.textContent = `${data.demos.length} official demo IDs · ${data.demos.filter(demo => demo.playable).length} playable routes · 1 intermediate snapshot from open Demos PR #9 · 1 backend-required route.`;
+    status.textContent = `${data.demos.length} official demo IDs · ${data.demos.filter(demo => demo.playable).length} playable routes · 1 backend-required route.`;
   })
   .catch(error => {
     status.textContent = `Unable to load demos: ${error.message}`;

@@ -170,7 +170,7 @@ h1 span { color: var(--accent); }
 .demo-catalog-copy { display: flex; flex: 1; flex-direction: column; gap: .6rem; padding: 1.1rem; }
 .demo-catalog-copy h3 { margin-top: .15rem; }
 .demo-catalog-copy .text-link { margin-top: auto; padding-top: .3rem; }
-.demo-state { width: fit-content; padding: .2rem .55rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 700 .72rem/1.5 ui-monospace, Consolas, monospace; text-transform: uppercase; }
+.demo-state { width: fit-content; max-width: 100%; padding: .2rem .55rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 700 .72rem/1.5 ui-monospace, Consolas, monospace; }
 .demo-state.playable { border-color: #3b5d57; color: var(--accent); }
 .demo-state.unavailable { border-color: #74613b; color: #f0d48b; }
 .demo-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .8fr); gap: 1.5rem; align-items: start; }

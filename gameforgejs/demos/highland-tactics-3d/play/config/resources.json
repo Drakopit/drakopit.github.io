@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "jsons": [
+    {
+      "name": "battlefield",
+      "path": "../scenes/battlefield.gfscene.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    }
+  ],
+  "shaders": [
+    {
+      "name": "mossy_stone",
+      "path": "../shader/mossy_stone.gfshader"
+    }
+  ]
+}

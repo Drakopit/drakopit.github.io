@@ -1,0 +1,354 @@
+{
+  "format": "gameforge.shader",
+  "version": 1,
+  "name": "Mossy stone",
+  "domain": "surface",
+  "description": "Stone with moss on its upward faces, for the highland terrain.",
+  "properties": [
+    {
+      "name": "uRockColor",
+      "type": "color",
+      "default": [
+        0.53,
+        0.47,
+        0.37,
+        1
+      ],
+      "label": "Rock"
+    },
+    {
+      "name": "uMossColor",
+      "type": "color",
+      "default": [
+        0.29,
+        0.43,
+        0.2,
+        1
+      ],
+      "label": "Moss"
+    },
+    {
+      "name": "uMossAmount",
+      "type": "float",
+      "default": 0.45,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "uDisplacement",
+      "type": "float",
+      "default": 0,
+      "min": 0,
+      "max": 0.3
+    }
+  ],
+  "render": {
+    "transparent": false,
+    "cull": "back",
+    "subdivision": 0
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "uv",
+        "type": "uv",
+        "x": 40,
+        "y": 60,
+        "params": {}
+      },
+      {
+        "id": "height",
+        "type": "subgraph",
+        "x": 240,
+        "y": 60,
+        "params": {
+          "subgraph": "heightLayer"
+        }
+      },
+      {
+        "id": "rock",
+        "type": "property",
+        "x": 40,
+        "y": 220,
+        "params": {
+          "name": "uRockColor"
+        }
+      },
+      {
+        "id": "moss",
+        "type": "property",
+        "x": 40,
+        "y": 320,
+        "params": {
+          "name": "uMossColor"
+        }
+      },
+      {
+        "id": "up",
+        "type": "normal",
+        "x": 40,
+        "y": 430,
+        "params": {}
+      },
+      {
+        "id": "splitUp",
+        "type": "split",
+        "x": 240,
+        "y": 420,
+        "params": {}
+      },
+      {
+        "id": "amount",
+        "type": "property",
+        "x": 240,
+        "y": 540,
+        "params": {
+          "name": "uMossAmount"
+        }
+      },
+      {
+        "id": "mossMask",
+        "type": "smoothstep",
+        "x": 460,
+        "y": 420,
+        "params": {}
+      },
+      {
+        "id": "mix",
+        "type": "mix",
+        "x": 680,
+        "y": 220,
+        "params": {}
+      },
+      {
+        "id": "disp",
+        "type": "property",
+        "x": 460,
+        "y": 60,
+        "params": {
+          "name": "uDisplacement"
+        }
+      },
+      {
+        "id": "dispMul",
+        "type": "multiply",
+        "x": 680,
+        "y": 60,
+        "params": {}
+      },
+      {
+        "id": "out",
+        "type": "output",
+        "x": 920,
+        "y": 160,
+        "params": {}
+      }
+    ],
+    "links": [
+      {
+        "from": {
+          "node": "uv",
+          "port": "uv"
+        },
+        "to": {
+          "node": "height",
+          "port": "uv"
+        }
+      },
+      {
+        "from": {
+          "node": "height",
+          "port": "height"
+        },
+        "to": {
+          "node": "dispMul",
+          "port": "a"
+        }
+      },
+      {
+        "from": {
+          "node": "disp",
+          "port": "value"
+        },
+        "to": {
+          "node": "dispMul",
+          "port": "b"
+        }
+      },
+      {
+        "from": {
+          "node": "dispMul",
+          "port": "result"
+        },
+        "to": {
+          "node": "out",
+          "port": "displacement"
+        }
+      },
+      {
+        "from": {
+          "node": "rock",
+          "port": "color"
+        },
+        "to": {
+          "node": "mix",
+          "port": "a"
+        }
+      },
+      {
+        "from": {
+          "node": "moss",
+          "port": "color"
+        },
+        "to": {
+          "node": "mix",
+          "port": "b"
+        }
+      },
+      {
+        "from": {
+          "node": "up",
+          "port": "normal"
+        },
+        "to": {
+          "node": "splitUp",
+          "port": "vector"
+        }
+      },
+      {
+        "from": {
+          "node": "amount",
+          "port": "value"
+        },
+        "to": {
+          "node": "mossMask",
+          "port": "edge1"
+        }
+      },
+      {
+        "from": {
+          "node": "splitUp",
+          "port": "y"
+        },
+        "to": {
+          "node": "mossMask",
+          "port": "value"
+        }
+      },
+      {
+        "from": {
+          "node": "mossMask",
+          "port": "result"
+        },
+        "to": {
+          "node": "mix",
+          "port": "t"
+        }
+      },
+      {
+        "from": {
+          "node": "mix",
+          "port": "result"
+        },
+        "to": {
+          "node": "out",
+          "port": "albedo"
+        }
+      }
+    ],
+    "subgraphs": {
+      "heightLayer": {
+        "name": "Height layer",
+        "inputs": [
+          {
+            "name": "uv",
+            "type": "vec2",
+            "default": [
+              0,
+              0
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "height",
+            "type": "float"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "in",
+            "type": "subgraphInput",
+            "x": 40,
+            "y": 80,
+            "params": {}
+          },
+          {
+            "id": "fbm",
+            "type": "fbm",
+            "x": 240,
+            "y": 60,
+            "params": {
+              "scale": 5,
+              "octaves": 5,
+              "seed": 0
+            }
+          },
+          {
+            "id": "remap",
+            "type": "remap",
+            "x": 460,
+            "y": 60,
+            "params": {}
+          },
+          {
+            "id": "out",
+            "type": "subgraphOutput",
+            "x": 700,
+            "y": 80,
+            "params": {}
+          }
+        ],
+        "links": [
+          {
+            "from": {
+              "node": "in",
+              "port": "uv"
+            },
+            "to": {
+              "node": "fbm",
+              "port": "uv"
+            }
+          },
+          {
+            "from": {
+              "node": "fbm",
+              "port": "value"
+            },
+            "to": {
+              "node": "remap",
+              "port": "value"
+            }
+          },
+          {
+            "from": {
+              "node": "remap",
+              "port": "result"
+            },
+            "to": {
+              "node": "out",
+              "port": "height"
+            }
+          }
+        ]
+      }
+    },
+    "preview": {
+      "mesh": "sphere"
+    }
+  },
+  "glsl": {
+    "vertex": "#version 300 es\nprecision highp float;\n\n// Generated by the GameForgeJS Editor shader graph (vertex stage, domain: surface).\n#include <gf_vertex>\n\nuniform vec3 uCameraPosition;\nuniform float uTime;\nuniform vec4 uRockColor;\nuniform vec4 uMossColor;\nuniform float uMossAmount;\nuniform float uDisplacement;\n\nfloat gfgHash(vec2 p) {\n    vec3 q = fract(vec3(p.xyx) * 0.1031);\n    q += dot(q, q.yzx + 33.33);\n    return fract((q.x + q.y) * q.z);\n}\n\nfloat gfgNoise(vec2 p) {\n    vec2 i = floor(p), f = fract(p);\n    f = f * f * (3.0 - 2.0 * f);\n    return mix(mix(gfgHash(i), gfgHash(i + vec2(1.0, 0.0)), f.x),\n               mix(gfgHash(i + vec2(0.0, 1.0)), gfgHash(i + vec2(1.0, 1.0)), f.x), f.y);\n}\n\nfloat gfgFbm(vec2 p, float octaves) {\n    float value = 0.0, amplitude = 0.5;\n    for (int i = 0; i < 8; i++) {\n        if (float(i) >= octaves) break;\n        value += amplitude * gfgNoise(p);\n        p = p * 2.03 + vec2(17.1, 9.2);\n        amplitude *= 0.5;\n    }\n    return value;\n}\n\nvoid main() {\n    vec3 gfWorldPosition = (uModel * vec4(aPosition, 1.0)).xyz;\n    vec3 gfWorldNormal = normalize(mat3(uNormalMatrix) * aNormal);\n    vec2 n0_uv = aUv;\n    float n11_value = gfgFbm(n0_uv * 5.0 + 0.0, 5.0);\n    float n12_result = (0.0 + (n11_value - 0.0) * ((1.0 - 0.0) / max(1.0 - 0.0, 1e-5)));\n    float n8_value = uDisplacement;\n    float n9_result = (n12_result * n8_value);\n    gfEmitVertex(aPosition + normalize(aNormal) * n9_result, aNormal, aTangent, aUv);\n}\n",
+    "fragment": "#version 300 es\nprecision highp float;\n\n// Generated by the GameForgeJS Editor shader graph (domain: surface).\n#include <gf_surface>\n\nuniform vec4 uRockColor;\nuniform vec4 uMossColor;\nuniform float uMossAmount;\nuniform float uDisplacement;\n\nvoid main() {\n    gfClipReflection();\n    vec3 n1_color = uRockColor.rgb;\n    float n1_alpha = uRockColor.a;\n    vec4 n1_rgba = uRockColor;\n    vec3 n2_color = uMossColor.rgb;\n    float n2_alpha = uMossColor.a;\n    vec4 n2_rgba = uMossColor;\n    float n5_value = uMossAmount;\n    vec3 n3_normal = normalize(vNormal);\n    float n4_x = n3_normal.x;\n    float n4_y = n3_normal.y;\n    float n4_z = n3_normal.z;\n    float n6_result = smoothstep(0.0, n5_value, n4_y);\n    vec3 n7_result = mix(n1_color, n2_color, n6_result);\n    GFSurface s = gfDefaultSurface();\n    s.albedo = n7_result;\n    gfWriteSurface(s);\n}\n"
+  }
+}

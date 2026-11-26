@@ -5,12 +5,14 @@
       "id": "highland-tactics-3d",
       "name": "Highland Tactics 3D",
       "dimension": "3d",
-      "description": "",
-      "controls": "",
-      "playable": false,
-      "screenshot": false,
-      "statusLabel": "Build withheld",
-      "unavailableMessage": "The revised Highland Tactics build and genuine screenshot are withheld until its updated Demos PR branch is confirmed and verified. No playable build, screenshot, or source link is published here yet."
+      "description": "Intermediate JRPG snapshot from open Demos PR #9: explore three connected 21×17 zones, meet roaming patrol groups, visit four specialist shops, and develop four classes through tactical battles.",
+      "controls": "Walk with WASD/arrows or click any reachable tile; Escape cancels a route. F interacts with nearby vendors. I inventory, E equipment, C character, K skills, M map, P party. Enter/Space confirms battle actions; V toggles the tactical menu; use arrows or 1–5 to choose. Q/O orbit, T rain, R retry, H help.",
+      "playable": true,
+      "screenshot": true,
+      "screenshotExtension": "png",
+      "statusLabel": "Snapshot · PR #9 ongoing",
+      "sourceRevision": "d75aacb6c06eaf00640180d2fb93f78d20259e41",
+      "runtimeRevision": "16f95fc35922fee19ee3849738bff6b858748ec4"
     },
     {
       "id": "aether-observatory-3d",

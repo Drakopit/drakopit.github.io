@@ -10,7 +10,7 @@
       "playable": false,
       "screenshot": false,
       "statusLabel": "Build withheld",
-      "unavailableMessage": "The revised Highland Tactics build and genuine screenshot are being withheld until the current Demos revision is verified. No playable build, screenshot, or source link is published here yet."
+      "unavailableMessage": "The revised Highland Tactics build and genuine screenshot are withheld until its updated Demos PR branch is confirmed and verified. No playable build, screenshot, or source link is published here yet."
     },
     {
       "id": "aether-observatory-3d",

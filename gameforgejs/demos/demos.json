@@ -180,8 +180,8 @@
       "controls": "Move with A/D or arrows; gamepad left stick/D-pad; touch left virtual stick. Variable-height jump: Space/W/Up, gamepad A, or hold JUMP. Mine with Q/left click, gamepad X, or MINE. Place a block with F/right click, gamepad B, or BUILD.",
       "playable": false,
       "screenshot": true,
-      "statusLabel": "Backend required",
-      "unavailableMessage": "Online Sandbox requires a separately running backend. No public backend URL has been verified, so this page does not load or claim a playable network build."
+      "statusLabel": "Multiplayer / Requires Backend Server",
+      "unavailableMessage": "Multiplayer / Requires Backend Server. Online Sandbox needs a separately running backend. No public backend URL has been verified, so this page does not load or claim a playable network build."
     },
     {
       "id": "addons-2d",

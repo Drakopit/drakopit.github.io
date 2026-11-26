@@ -1,0 +1,35 @@
+{
+  "images": [
+    {
+      "name": "earth_diffuse",
+      "path": ".././assets/Textures/EarthDiffuse.jpg"
+    },
+    {
+      "name": "earth_normal",
+      "path": ".././assets/Textures/EarthNormal.jpg"
+    },
+    {
+      "name": "moon_diffuse",
+      "path": ".././assets/Textures/MoonDiffuse.jpg"
+    }
+  ],
+  "audios": [],
+  "shaders": [
+    {
+      "name": "moon",
+      "path": "../shader/moon.gfshader"
+    }
+  ],
+  "models": [],
+  "schemaVersion": 1,
+  "jsons": [
+    {
+      "name": "solar_scene",
+      "path": "../scenes/solar-system.gfscene.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An overview of the GameForgeJS core, 2D, 3D, and verified Network runtime modules.">
+  <meta property="og:title" content="GameForgeJS Engine · Patrick Camello">
+  <meta property="og:description" content="Explore the current GameForgeJS runtime modules and public documentation.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://drakopit.github.io/gameforgejs/engine/">
+  <link rel="stylesheet" href="../../portfolio.css">
+  <title>GameForgeJS Engine · Patrick Camello</title>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header"><div class="shell header-inner"><a class="wordmark" href="/gameforgejs/"><span class="monogram" aria-hidden="true">GF</span> GameForgeJS</a><nav aria-label="Primary"><a href="/">Portfolio</a><a href="/gameforgejs/engine/" aria-current="page">Engine</a><a href="/gameforgejs/editor/">Editor</a><a href="/gameforgejs/demos/">Demos</a><a href="/gameforgejs/showcase/">Showcase</a></nav></div></header>
+  <main id="main">
+    <section class="shell page-hero" aria-labelledby="page-title">
+      <div><p class="eyebrow">The runtime</p><h1 id="page-title">Build the game, one system at a time.</h1><p class="intro-copy">GameForgeJS is a JavaScript browser-game engine with core, 2D, and 3D entry points. Its class-based components and systems organize reusable behavior around game scenes.</p><div class="actions"><a class="button primary" href="https://drakopit.github.io/GameForgeJS/">Read the docs</a><a class="button" href="https://github.com/Drakopit/GameForgeJS">Browse current source</a></div></div>
+      <div class="page-hero-visual"><div class="engine-map" role="img" aria-label="Illustrative entity-component-system diagram"><div class="engine-layer"><span class="layer-icon">E</span><span><strong>Entities</strong><span>Objects in a scene</span></span></div><span class="engine-arrow" aria-hidden="true">↓</span><div class="engine-layer"><span class="layer-icon">C</span><span><strong>Components</strong><span>Reusable state and behavior</span></span></div><span class="engine-arrow" aria-hidden="true">↓</span><div class="engine-layer"><span class="layer-icon">S</span><span><strong>Systems</strong><span>Rules applied across objects</span></span></div></div><p class="preview-caption">A simplified illustration of the ECS pattern.</p></div>
+    </section>
+    <section class="shell section" aria-labelledby="modules-title"><p class="eyebrow">Current runtime modules</p><h2 class="section-title" id="modules-title">A modular foundation</h2><p class="section-lede">The current package exposes separate core, 2D, and 3D entry points. Type declarations and source are maintained in the public engine repository.</p><div class="module-grid"><article><code>gameforgejs/core</code><p>Game lifecycle, scenes, input, audio, assets, and shared utilities.</p></article><article><code>gameforgejs/2d</code><p>2D rendering and physics modules.</p></article><article><code>gameforgejs/3d</code><p>3D rendering and physics modules.</p></article></div></section>
+    <section class="shell section" aria-labelledby="network-title"><p class="eyebrow">Verified current API</p><h2 class="section-title" id="network-title">Network module</h2><p class="section-lede">The current engine package exports a separate <code>gameforgejs/network</code> entry point. Its public exports include client and message primitives, local and WebSocket adapters, state synchronization, and online chat/entity/player helpers.</p><div class="content-grid"><article class="content-card"><p class="card-kicker">Connections</p><h3>NetworkClient</h3><p>Exports <code>GameNetwork</code>, <code>NetworkClient</code>, and local or WebSocket client adapters.</p></article><article class="content-card"><p class="card-kicker">State</p><h3>Synchronization</h3><p>The API exports <code>NetworkMessage</code>, <code>NetworkStateSync</code>, and <code>OnlineEntitySync</code>.</p></article><article class="content-card"><p class="card-kicker">Online helpers</p><h3>Chat and players</h3><p><code>ChatManager</code> and <code>OnlinePlayerManager</code> are part of the current module exports. This does not imply a public hosted backend.</p></article></div><p class="source-note"><a class="text-link" href="https://github.com/Drakopit/GameForgeJS/tree/d18bd822e6b31a06b0d7dde3e7cb31f2df96319a/src/network">Review the source at the verified current master commit</a></p></section>
+    <section class="shell section"><div class="callout"><p class="eyebrow">Explore</p><h2 class="section-title">From the runtime to a game</h2><p>Try the current static example builds or read the documentation for setup and API details.</p><div class="actions"><a class="button primary" href="/gameforgejs/demos/">Browse and play demos</a><a class="button" href="/gameforgejs/editor/">GameForgeJS Editor</a></div></div></section>
+  </main>
+  <footer class="shell site-footer"><span>© Patrick Faustino Camello</span><div class="footer-links"><a href="/gameforgejs/">Overview</a><a href="/gameforgejs/editor/">Editor</a><a href="/gameforgejs/demos/">Demos</a><a href="/gameforgejs/showcase/">Showcase</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "format": "gameforgejs.scene",
+  "version": 1,
+  "dimension": "2d",
+  "id": "foundry",
+  "name": "Storm Foundry",
+  "settings": {
+    "world": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "layers": [
+    {
+      "id": "layout",
+      "name": "FX anchors",
+      "type": "Node2D"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "water",
+      "name": "Waterline",
+      "type": "Node2D",
+      "layer": "layout",
+      "transform": {
+        "position": [
+          0,
+          576
+        ]
+      },
+      "size": [
+        1280,
+        224
+      ]
+    },
+    {
+      "id": "emitter",
+      "name": "Reactor emitter",
+      "type": "Node2D",
+      "layer": "layout",
+      "transform": {
+        "position": [
+          742.4,
+          376
+        ]
+      },
+      "size": [
+        24,
+        24
+      ]
+    }
+  ]
+}

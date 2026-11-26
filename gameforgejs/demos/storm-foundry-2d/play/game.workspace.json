@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "kind": "GameForgeJS.Workspace",
+  "id": "storm-foundry-2d",
+  "name": "Storm Foundry FX Lab 2D",
+  "resources": "config/resources.json",
+  "sceneFormat": "gameforgejs.scene",
+  "play": "index.html",
+  "editing": "code",
+  "scripts": [
+    "main.js",
+    "src"
+  ],
+  "scenes": [
+    {
+      "dimension": "2d",
+      "id": "foundry",
+      "label": "Storm Foundry",
+      "format": "gameforgejs.scene",
+      "source": "scenes/foundry.gfscene.json"
+    }
+  ],
+  "shaders": "shader"
+}

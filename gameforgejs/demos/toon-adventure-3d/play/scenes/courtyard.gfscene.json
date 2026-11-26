@@ -1,0 +1,2154 @@
+{
+  "dimension": "3d",
+  "format": "gameforgejs.scene",
+  "id": "courtyard",
+  "layers": [
+    {
+      "id": "lights",
+      "name": "Lights",
+      "type": "Light3D"
+    },
+    {
+      "id": "solids",
+      "name": "Solids",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "paths",
+      "name": "Paths",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "actors",
+      "name": "Player",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "enemies",
+      "name": "Sentries",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "scenery",
+      "name": "Forest props",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "warps",
+      "name": "Warp points",
+      "type": "MeshInstance3D"
+    }
+  ],
+  "name": "Courtyard",
+  "nodes": [
+    {
+      "components": {
+        "Light": {
+          "intensity": 0.3,
+          "type": "ambient"
+        }
+      },
+      "id": "ambient",
+      "layer": "lights",
+      "name": "Ambient Light",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ]
+      },
+      "type": "Light3D"
+    },
+    {
+      "components": {
+        "Light": {
+          "castShadow": true,
+          "direction": [
+            -0.7,
+            -1,
+            -0.4
+          ],
+          "intensity": 0.9,
+          "type": "directional"
+        }
+      },
+      "id": "sun",
+      "layer": "lights",
+      "name": "Sun",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ]
+      },
+      "type": "Light3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#799a74",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_1",
+      "layer": "solids",
+      "name": "Solid 1",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          0,
+          -0.3,
+          -19
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          48,
+          0.6,
+          50
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#8babb1",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_2",
+      "layer": "solids",
+      "name": "Solid 2",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          -24,
+          0.5,
+          -19
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.5,
+          1,
+          50
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#8babb1",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_3",
+      "layer": "solids",
+      "name": "Solid 3",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          24,
+          0.5,
+          -19
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.5,
+          1,
+          50
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#8babb1",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_4",
+      "layer": "solids",
+      "name": "Solid 4",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          0,
+          0.5,
+          -44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          48,
+          1,
+          0.5
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#ae9bb1",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_5",
+      "layer": "solids",
+      "name": "Solid 5",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          -2.5,
+          0.7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          1.4,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true
+        },
+        "Material": {
+          "albedoColor": "#ae9bb1",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "id": "solid_6",
+      "layer": "solids",
+      "name": "Solid 6",
+      "scripts": [
+        "src/entities/CourtyardRoom.js"
+      ],
+      "transform": {
+        "position": [
+          2.5,
+          0.7,
+          -1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          1.4,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_1",
+      "layer": "paths",
+      "name": "Path 1",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          -4,
+          0.015,
+          2.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          7,
+          0.02,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_2",
+      "layer": "paths",
+      "name": "Path 2",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          -4,
+          0.015,
+          -12
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          7,
+          0.02,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_3",
+      "layer": "paths",
+      "name": "Path 3",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          4,
+          0.015,
+          -31
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          7,
+          0.02,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_4",
+      "layer": "paths",
+      "name": "Path 4",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          0,
+          0.015,
+          -34
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          4,
+          0.02,
+          20
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_5",
+      "layer": "paths",
+      "name": "Path 5",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          0,
+          0.015,
+          -2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          3,
+          0.02,
+          14
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_6",
+      "layer": "paths",
+      "name": "Path 6",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          0,
+          0.015,
+          -14
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          5,
+          0.02,
+          10
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "path_7",
+      "layer": "paths",
+      "name": "Path 7",
+      "prefab": "path",
+      "transform": {
+        "position": [
+          0,
+          0.015,
+          -22
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          8,
+          0.02,
+          7
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Data": {
+          "castShadow": true,
+          "model": "knight"
+        },
+        "Material": {
+          "type": "toon"
+        },
+        "Mesh": {
+          "heightSegments": 8,
+          "radius": 0.5,
+          "type": "sphere",
+          "widthSegments": 16
+        }
+      },
+      "id": "player",
+      "layer": "actors",
+      "name": "Player spawn",
+      "scripts": [
+        "src/entities/Explorer.js",
+        "src/rendering/CharacterVisual.js"
+      ],
+      "transform": {
+        "position": [
+          0,
+          0,
+          3.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.85,
+          0.85,
+          0.85
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Enemy": {
+          "area": "Courtyard"
+        }
+      },
+      "id": "courtyard_sentry_1",
+      "layer": "enemies",
+      "name": "Courtyard sentry 1",
+      "prefab": "sentry",
+      "scripts": [
+        "src/entities/Sentry.js"
+      ],
+      "transform": {
+        "position": [
+          0,
+          0.55,
+          -1.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Enemy": {
+          "area": "Forest trail"
+        }
+      },
+      "id": "forest_trail_sentry_1",
+      "layer": "enemies",
+      "name": "Forest trail sentry 1",
+      "prefab": "sentry",
+      "scripts": [
+        "src/entities/Sentry.js"
+      ],
+      "transform": {
+        "position": [
+          -1.5,
+          0.55,
+          -9
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Enemy": {
+          "area": "Forest trail"
+        }
+      },
+      "id": "forest_trail_sentry_2",
+      "layer": "enemies",
+      "name": "Forest trail sentry 2",
+      "prefab": "sentry",
+      "scripts": [
+        "src/entities/Sentry.js"
+      ],
+      "transform": {
+        "position": [
+          2,
+          0.55,
+          -13
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Enemy": {
+          "area": "Old grove"
+        }
+      },
+      "id": "old_grove_sentry_1",
+      "layer": "enemies",
+      "name": "Old grove sentry 1",
+      "prefab": "sentry",
+      "scripts": [
+        "src/entities/Sentry.js"
+      ],
+      "transform": {
+        "position": [
+          -2,
+          0.55,
+          -21
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Enemy": {
+          "area": "Old grove"
+        }
+      },
+      "id": "old_grove_sentry_2",
+      "layer": "enemies",
+      "name": "Old grove sentry 2",
+      "prefab": "sentry",
+      "scripts": [
+        "src/entities/Sentry.js"
+      ],
+      "transform": {
+        "position": [
+          2,
+          0.55,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "courtyard_shallows",
+      "layer": "water",
+      "name": "Courtyard shallows",
+      "prefab": "pond",
+      "scripts": [
+        "src/entities/ToonPond.js",
+        "src/rendering/WaterSurface.js"
+      ],
+      "transform": {
+        "position": [
+          4.5,
+          0.18,
+          2.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "albedoColor": "#319cbb",
+          "type": "toon"
+        },
+        "Mesh": {
+          "depth": 18,
+          "subdivisions": 28,
+          "type": "plane",
+          "width": 14
+        },
+        "Water": {
+          "amplitude": 0.055,
+          "areaMargin": 2.5,
+          "openBanks": true,
+          "waveFrequencyX": 0.8,
+          "waveFrequencyZ": 0.65
+        }
+      },
+      "id": "azure_lake",
+      "layer": "water",
+      "name": "Azure Lake",
+      "prefab": "pond",
+      "scripts": [
+        "src/entities/ToonPond.js",
+        "src/rendering/WaterSurface.js"
+      ],
+      "transform": {
+        "position": [
+          -15,
+          0.18,
+          -12
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "albedoColor": "#548fd0",
+          "type": "toon"
+        },
+        "Mesh": {
+          "depth": 18,
+          "subdivisions": 28,
+          "type": "plane",
+          "width": 14
+        },
+        "Water": {
+          "amplitude": 0.045,
+          "areaMargin": 2.5,
+          "openBanks": true,
+          "waveFrequencyX": 0.8,
+          "waveFrequencyZ": 0.65
+        }
+      },
+      "id": "moonwater_lake",
+      "layer": "water",
+      "name": "Moonwater Lake",
+      "prefab": "pond",
+      "scripts": [
+        "src/entities/ToonPond.js",
+        "src/rendering/WaterSurface.js"
+      ],
+      "transform": {
+        "position": [
+          15,
+          0.18,
+          -31
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_1",
+      "layer": "scenery",
+      "name": "Tree 1",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -22,
+          0.2,
+          -2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_2",
+      "layer": "scenery",
+      "name": "Tree 2",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -22,
+          0.2,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_3",
+      "layer": "scenery",
+      "name": "Tree 3",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -22,
+          0.2,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_4",
+      "layer": "scenery",
+      "name": "Tree 4",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -8,
+          0.2,
+          -2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_5",
+      "layer": "scenery",
+      "name": "Tree 5",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -8,
+          0.2,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_6",
+      "layer": "scenery",
+      "name": "Tree 6",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -8,
+          0.2,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_7",
+      "layer": "scenery",
+      "name": "Tree 7",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          8,
+          0.2,
+          -2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_8",
+      "layer": "scenery",
+      "name": "Tree 8",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          8,
+          0.2,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_9",
+      "layer": "scenery",
+      "name": "Tree 9",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          8,
+          0.2,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_10",
+      "layer": "scenery",
+      "name": "Tree 10",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          22,
+          0.2,
+          -2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_11",
+      "layer": "scenery",
+      "name": "Tree 11",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          22,
+          0.2,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_12",
+      "layer": "scenery",
+      "name": "Tree 12",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          22,
+          0.2,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.25,
+          1.25,
+          1.25
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "rock_1",
+      "layer": "scenery",
+      "name": "Rock 1",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -20,
+          0,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          2,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "rock_2",
+      "layer": "scenery",
+      "name": "Rock 2",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -10,
+          0,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          2,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "rock_3",
+      "layer": "scenery",
+      "name": "Rock 3",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          10,
+          0,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          2,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "rock_4",
+      "layer": "scenery",
+      "name": "Rock 4",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          20,
+          0,
+          -42
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2,
+          2,
+          2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.7,
+            3,
+            0.7
+          ]
+        }
+      },
+      "id": "tree_13",
+      "layer": "scenery",
+      "name": "Tree 13",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -5,
+          0.2,
+          -3
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.7,
+            3,
+            0.7
+          ]
+        }
+      },
+      "id": "tree_14",
+      "layer": "scenery",
+      "name": "Tree 14",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          5,
+          0.2,
+          -4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.1,
+          1.1,
+          1.1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_15",
+      "layer": "scenery",
+      "name": "Tree 15",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -4.5,
+          0.2,
+          -9
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.2,
+          1.2,
+          1.2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.7,
+            3,
+            0.7
+          ]
+        }
+      },
+      "id": "tree_16",
+      "layer": "scenery",
+      "name": "Tree 16",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          5,
+          0.2,
+          -12
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.7,
+            3,
+            0.7
+          ]
+        }
+      },
+      "id": "tree_17",
+      "layer": "scenery",
+      "name": "Tree 17",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -5,
+          0.2,
+          -17
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.1,
+          1.1,
+          1.1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.8,
+            3,
+            0.8
+          ]
+        }
+      },
+      "id": "tree_18",
+      "layer": "scenery",
+      "name": "Tree 18",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          5,
+          0.2,
+          -20
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.2,
+          1.2,
+          1.2
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            0.7,
+            3,
+            0.7
+          ]
+        }
+      },
+      "id": "tree_19",
+      "layer": "scenery",
+      "name": "Tree 19",
+      "prefab": "tree",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -4.5,
+          0.2,
+          -25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.1,
+          1.1,
+          1.1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            1.5,
+            2,
+            1.5
+          ]
+        }
+      },
+      "id": "rock_5",
+      "layer": "scenery",
+      "name": "Rock 5",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          3.8,
+          0,
+          -7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          3,
+          3,
+          3
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            1.5,
+            2,
+            1.5
+          ]
+        }
+      },
+      "id": "rock_6",
+      "layer": "scenery",
+      "name": "Rock 6",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -3.8,
+          0,
+          -14
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          3,
+          3,
+          3
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Collider": {
+          "size": [
+            1.2,
+            2,
+            1.2
+          ]
+        }
+      },
+      "id": "rock_7",
+      "layer": "scenery",
+      "name": "Rock 7",
+      "prefab": "rock",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          3.8,
+          0,
+          -25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          2.5,
+          2.5,
+          2.5
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "bush_1",
+      "layer": "scenery",
+      "name": "Bush 1",
+      "prefab": "bush",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          3.5,
+          0,
+          -5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          4,
+          4,
+          4
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "bush_2",
+      "layer": "scenery",
+      "name": "Bush 2",
+      "prefab": "bush",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -3,
+          0,
+          -6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          3,
+          3,
+          3
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "bush_3",
+      "layer": "scenery",
+      "name": "Bush 3",
+      "prefab": "bush",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          4,
+          0,
+          -16
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          4,
+          4,
+          4
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "bush_4",
+      "layer": "scenery",
+      "name": "Bush 4",
+      "prefab": "bush",
+      "scripts": [
+        "src/entities/SceneryProp.js"
+      ],
+      "transform": {
+        "position": [
+          -4,
+          0,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          4,
+          4,
+          4
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "color": "#63f5e6",
+          "type": "unlit"
+        },
+        "Mesh": {
+          "innerRadius": 1.03,
+          "outerRadius": 1.27,
+          "segments": 48,
+          "type": "ring"
+        },
+        "Warp": {
+          "color": "#63f5e6",
+          "destination": "azure",
+          "id": "courtyard"
+        }
+      },
+      "id": "warp_courtyard",
+      "layer": "warps",
+      "name": "Courtyard gate",
+      "scripts": [
+        "src/entities/WarpPoint.js"
+      ],
+      "transform": {
+        "position": [
+          -4.5,
+          0,
+          3.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "color": "#63f5e6",
+          "type": "unlit"
+        },
+        "Mesh": {
+          "innerRadius": 1.03,
+          "outerRadius": 1.27,
+          "segments": 48,
+          "type": "ring"
+        },
+        "Warp": {
+          "color": "#63f5e6",
+          "destination": "courtyard",
+          "id": "azure"
+        }
+      },
+      "id": "warp_azure",
+      "layer": "warps",
+      "name": "Azure Lake",
+      "scripts": [
+        "src/entities/WarpPoint.js"
+      ],
+      "transform": {
+        "position": [
+          -6,
+          0,
+          -12
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "color": "#c7a1ff",
+          "type": "unlit"
+        },
+        "Mesh": {
+          "innerRadius": 1.03,
+          "outerRadius": 1.27,
+          "segments": 48,
+          "type": "ring"
+        },
+        "Warp": {
+          "color": "#c7a1ff",
+          "destination": "moonwater",
+          "id": "forest"
+        }
+      },
+      "id": "warp_forest",
+      "layer": "warps",
+      "name": "Forest gate",
+      "scripts": [
+        "src/entities/WarpPoint.js"
+      ],
+      "transform": {
+        "position": [
+          4,
+          0,
+          -10
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    },
+    {
+      "components": {
+        "Material": {
+          "color": "#c7a1ff",
+          "type": "unlit"
+        },
+        "Mesh": {
+          "innerRadius": 1.03,
+          "outerRadius": 1.27,
+          "segments": 48,
+          "type": "ring"
+        },
+        "Warp": {
+          "color": "#c7a1ff",
+          "destination": "forest",
+          "id": "moonwater"
+        }
+      },
+      "id": "warp_moonwater",
+      "layer": "warps",
+      "name": "Moonwater Lake",
+      "scripts": [
+        "src/entities/WarpPoint.js"
+      ],
+      "transform": {
+        "position": [
+          6,
+          0,
+          -31
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "type": "MeshInstance3D"
+    }
+  ],
+  "prefabs": {
+    "bush": {
+      "components": {
+        "Data": {
+          "castShadow": true,
+          "model": "forest-bush"
+        },
+        "Material": {
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "note": "Model from config/resources.json; SceneryProp gives it toon materials.",
+      "type": "MeshInstance3D"
+    },
+    "path": {
+      "components": {
+        "Data": {
+          "castShadow": false
+        },
+        "Material": {
+          "albedoColor": "#b4aa80",
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "type": "MeshInstance3D"
+    },
+    "pond": {
+      "components": {
+        "Data": {
+          "castShadow": false
+        },
+        "Material": {
+          "albedoColor": "#35b9cf",
+          "type": "toon"
+        },
+        "Mesh": {
+          "depth": 3,
+          "subdivisions": 20,
+          "type": "plane",
+          "width": 3
+        },
+        "Water": {
+          "amplitude": 0.035,
+          "bankColor": "#92a69a",
+          "bankHeight": 0.24,
+          "bankWidth": 0.25,
+          "contactTolerance": 0.08,
+          "floorY": 0,
+          "foamColor": "#c4f5ed",
+          "movementMultiplier": 0.55,
+          "speed": 1.1
+        }
+      },
+      "note": "Water: ToonPond draws an animated surface, ripples and banks from these values.",
+      "type": "MeshInstance3D"
+    },
+    "rock": {
+      "components": {
+        "Data": {
+          "castShadow": true,
+          "model": "forest-rock"
+        },
+        "Material": {
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "note": "Model from config/resources.json; SceneryProp gives it toon materials.",
+      "type": "MeshInstance3D"
+    },
+    "sentry": {
+      "components": {
+        "Data": {
+          "castShadow": true,
+          "model": "skeleton"
+        },
+        "Material": {
+          "type": "toon"
+        },
+        "Mesh": {
+          "heightSegments": 8,
+          "radius": 0.5,
+          "type": "sphere",
+          "widthSegments": 16
+        }
+      },
+      "type": "MeshInstance3D"
+    },
+    "tree": {
+      "components": {
+        "Data": {
+          "castShadow": true,
+          "model": "forest-tree"
+        },
+        "Material": {
+          "type": "toon"
+        },
+        "Mesh": {
+          "size": 1,
+          "type": "cube"
+        }
+      },
+      "note": "Model from config/resources.json; SceneryProp gives it toon materials.",
+      "type": "MeshInstance3D"
+    }
+  },
+  "settings": {
+    "areas": [
+      {
+        "minZ": -5,
+        "name": "Courtyard"
+      },
+      {
+        "minZ": -16,
+        "name": "Forest trail"
+      },
+      {
+        "minZ": -44,
+        "name": "Old grove"
+      }
+    ],
+    "bounds": {
+      "maxX": 24,
+      "maxZ": 6,
+      "minX": -24,
+      "minZ": -44
+    },
+    "camera": {
+      "fov": 48,
+      "position": [
+        0,
+        13,
+        14
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "note": "Solids are boxes with colliders (scale = size); paths are walkable strips. Water nodes are lakes (plane size = surface, Water = waves and banks). Forest props use model prefabs; Collider.size adds a physics box. The player node's model and scale are the character's; sentries use the sentry prefab's model and belong to the area named in Enemy.area. Warp points pair through Warp.destination."
+  },
+  "version": 1
+}

@@ -1,0 +1,1876 @@
+{
+  "format": "gameforgejs.scene",
+  "version": 1,
+  "dimension": "3d",
+  "id": "gallery",
+  "name": "Surface Gallery",
+  "settings": {
+    "backgroundColor": [0.17, 0.23, 0.29, 1],
+    "fog": {
+      "near": 12,
+      "far": 36
+    },
+    "planarReflection": {
+      "height": 0
+    },
+    "camera": {
+      "fov": 43,
+      "near": 0.15,
+      "far": 80,
+      "position": [5, 4.2, 10],
+      "target": [0, 0.6, -0.6]
+    },
+    "note": "The level reads its camera, fog, reflection plane and lights from this scene, and builds the gallery and the four surface samples (Samples layer, in order) from its nodes. Rain, ripples and wet surfaces are added by SurfaceGallery; the HUD orbits the camera and turns the light named key."
+  },
+  "layers": [
+    {
+      "id": "lights",
+      "name": "Lights",
+      "type": "Light3D"
+    },
+    {
+      "id": "gallery",
+      "name": "Gallery",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "samples",
+      "name": "Samples",
+      "type": "MeshInstance3D"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "sky",
+      "name": "Sky Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "hemisphere",
+          "skyColor": [0.56, 0.73, 0.96],
+          "groundColor": [0.24, 0.18, 0.15],
+          "intensity": 0.72
+        }
+      }
+    },
+    {
+      "id": "key",
+      "name": "Key Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "scripts": [
+        "src/levels/TechDemo3DLevel.js"
+      ],
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "directional",
+          "color": [0.77, 0.87, 1],
+          "intensity": 1.65,
+          "castShadow": true,
+          "shadowDistance": 14
+        }
+      }
+    },
+    {
+      "id": "lamp_left",
+      "name": "Lamp Left",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [-4.8, 2.95, -4.3]
+      },
+      "components": {
+        "Light": {
+          "type": "point",
+          "color": [1, 0.58, 0.26],
+          "intensity": 4,
+          "range": 9
+        }
+      }
+    },
+    {
+      "id": "lamp_right",
+      "name": "Lamp Right",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [4.8, 2.95, -4.3]
+      },
+      "components": {
+        "Light": {
+          "type": "point",
+          "color": [1, 0.58, 0.26],
+          "intensity": 4,
+          "range": 9
+        }
+      }
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 0, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "plane",
+          "width": 11,
+          "depth": 8
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "water",
+          "albedoColor": "#184650",
+          "metallic": 0,
+          "reflection": 1,
+          "planarReflection": true,
+          "waterDepth": 0.55
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "basin_bed",
+      "name": "Basin bed",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, -0.62, 0],
+        "rotation": [0, 0, 0],
+        "scale": [14, 0.6, 11]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sea_wall",
+      "name": "Sea wall",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-5.95, 0.05, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.95, 0.72, 9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sea_wall_2",
+      "name": "Sea wall",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [5.95, 0.05, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.95, 0.72, 9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "quay",
+      "name": "Quay",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 0.15, -4.68],
+        "rotation": [0, 0, 0],
+        "scale": [13, 0.9, 1.4]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "quay_lip",
+      "name": "Quay lip",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 0.18, 4.35],
+        "rotation": [0, 0, 0],
+        "scale": [12, 0.45, 0.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "breakwater",
+      "name": "Breakwater",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, -0.2, -9],
+        "rotation": [0, 0, 0],
+        "scale": [29, 1.8, 3.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "breakwater_coping",
+      "name": "Breakwater coping",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 0.78, -7.4],
+        "rotation": [0, 0, 0],
+        "scale": [29, 0.21, 0.65]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "guardrail",
+      "name": "Guardrail",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 1.86, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [28, 0.08, 0.09]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-13.2, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_2",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-11.55, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_3",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-9.9, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_4",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-8.25, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_5",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-6.6, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_6",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.95, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_7",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-3.3, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_8",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-1.65, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_9",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_10",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [1.65, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_11",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [3.3, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_12",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.95, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_13",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [6.6, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_14",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [8.25, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_15",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [9.9, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_16",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [11.55, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "rail_post_17",
+      "name": "Rail post",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [13.2, 1.34, -7.45],
+        "rotation": [0, 0, 0],
+        "scale": [0.085, 1.05, 0.085]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "breakwater_pier",
+      "name": "Breakwater pier",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-11, 1.1, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [0.9, 3.6, 0.9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "pier_cap",
+      "name": "Pier cap",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-11, 2.93, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [1.2, 0.24, 1.2]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "breakwater_pier_2",
+      "name": "Breakwater pier",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-7.5, 1.1, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [0.9, 3.6, 0.9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "pier_cap_2",
+      "name": "Pier cap",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-7.5, 2.93, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [1.2, 0.24, 1.2]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "breakwater_pier_3",
+      "name": "Breakwater pier",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [7.5, 1.1, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [0.9, 3.6, 0.9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "pier_cap_3",
+      "name": "Pier cap",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [7.5, 2.93, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [1.2, 0.24, 1.2]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "breakwater_pier_4",
+      "name": "Breakwater pier",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [11, 1.1, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [0.9, 3.6, 0.9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "pier_cap_4",
+      "name": "Pier cap",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [11, 2.93, -9.2],
+        "rotation": [0, 0, 0],
+        "scale": [1.2, 0.24, 1.2]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-5.4, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_2",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.8, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_3",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.2, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_4",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-3.6, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_5",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-3, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_6",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-2.4, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_7",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-1.8, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_8",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-1.2, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_9",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-0.6, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_10",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_11",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [0.6, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_12",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [1.2, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_13",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [1.8, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_14",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [2.4, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_15",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [3, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_16",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [3.6, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_17",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.2, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_18",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.8, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "deck_plank_19",
+      "name": "Deck plank",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [5.4, 0.66, -4.66],
+        "rotation": [0, 0, 0],
+        "scale": [0.58, 0.15, 1.15]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "light_stanchion",
+      "name": "Light stanchion",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.8, 1.8, -4.65],
+        "rotation": [0, 0, 0],
+        "scale": [0.17, 2.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "beacon",
+      "name": "Beacon",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.8, 3.08, -4.65],
+        "rotation": [0, 0, 0],
+        "scale": [0.47, 0.2, 0.36]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#ffc582"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "light_stanchion_2",
+      "name": "Light stanchion",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.8, 1.8, -4.65],
+        "rotation": [0, 0, 0],
+        "scale": [0.17, 2.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "beacon_2",
+      "name": "Beacon",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.8, 3.08, -4.65],
+        "rotation": [0, 0, 0],
+        "scale": [0.47, 0.2, 0.36]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#ffc582"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "plinth",
+      "name": "Plinth",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.125, 0.25, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 1.05, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sample_mount",
+      "name": "Sample mount",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-4.125, 0.8, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.48, 0.16, 1.48]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "sample_metal",
+      "name": "Metal",
+      "type": "MeshInstance3D",
+      "layer": "samples",
+      "transform": {
+        "position": [-4.125, 1.63, -1.38],
+        "rotation": [0, 0.3, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.75,
+          "widthSegments": 48,
+          "heightSegments": 24
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#bcc9d2",
+          "roughness": 0.14
+        }
+      }
+    },
+    {
+      "id": "plinth_2",
+      "name": "Plinth",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-1.375, 0.25, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 1.05, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sample_mount_2",
+      "name": "Sample mount",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [-1.375, 0.8, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.48, 0.16, 1.48]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "sample_stone",
+      "name": "Stone",
+      "type": "MeshInstance3D",
+      "layer": "samples",
+      "transform": {
+        "position": [-1.375, 1.46, -1.38],
+        "rotation": [0, 0.3, 0],
+        "scale": [1.16, 1.16, 1.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "plinth_3",
+      "name": "Plinth",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [1.375, 0.25, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 1.05, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sample_mount_3",
+      "name": "Sample mount",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [1.375, 0.8, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.48, 0.16, 1.48]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "sample_wood",
+      "name": "Wood",
+      "type": "MeshInstance3D",
+      "layer": "samples",
+      "transform": {
+        "position": [1.375, 1.63, -1.38],
+        "rotation": [0, 0.3, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.75,
+          "widthSegments": 48,
+          "heightSegments": 24
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "wood",
+          "albedoColor": "#a36739",
+          "scale": 2,
+          "wetness": 0.25
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "plinth_4",
+      "name": "Plinth",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.125, 0.25, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 1.05, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "stone",
+          "albedoColor": "#606c70",
+          "scale": 3,
+          "wetness": 0.45
+        },
+        "Data": {
+          "wet": true
+        }
+      }
+    },
+    {
+      "id": "sample_mount_4",
+      "name": "Sample mount",
+      "type": "MeshInstance3D",
+      "layer": "gallery",
+      "transform": {
+        "position": [4.125, 0.8, -1.38],
+        "rotation": [0, 0, 0],
+        "scale": [1.48, 0.16, 1.48]
+      },
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.045
+        },
+        "Material": {
+          "type": "surface",
+          "preset": "metal",
+          "albedoColor": "#ac7350",
+          "roughness": 0.29
+        }
+      }
+    },
+    {
+      "id": "sample_clearcoat",
+      "name": "Clearcoat",
+      "type": "MeshInstance3D",
+      "layer": "samples",
+      "transform": {
+        "position": [4.125, 1.63, -1.38],
+        "rotation": [0, 0.3, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.75,
+          "widthSegments": 48,
+          "heightSegments": 24
+        },
+        "Material": {
+          "type": "shader",
+          "shader": "clearcoat"
+        }
+      }
+    }
+  ]
+}

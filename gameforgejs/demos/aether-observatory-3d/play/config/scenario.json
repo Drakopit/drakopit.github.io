@@ -1,0 +1,19 @@
+{
+  "movement": {
+    "speed": 7,
+    "response": 10,
+    "jump": 7,
+    "fallLimit": -18
+  },
+  "camera": {
+    "yaw": 0.55,
+    "pitch": 0.4,
+    "distance": 21,
+    "turnSpeed": 1.5,
+    "dragSensitivity": 0.006,
+    "tourSeconds": 16
+  },
+  "environment": {
+    "motes": 72
+  }
+}

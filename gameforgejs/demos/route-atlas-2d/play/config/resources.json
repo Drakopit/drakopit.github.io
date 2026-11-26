@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "jsons": [
+    {
+      "name": "scenario",
+      "path": "./scenario.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    },
+    {
+      "name": "atlas",
+      "path": "../scenes/atlas.gfscene.json"
+    }
+  ],
+  "shaders": []
+}

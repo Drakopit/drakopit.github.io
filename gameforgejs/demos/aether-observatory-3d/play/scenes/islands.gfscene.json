@@ -1,0 +1,4503 @@
+{
+  "format": "gameforgejs.scene",
+  "version": 1,
+  "dimension": "3d",
+  "id": "islands",
+  "name": "Aether Observatory",
+  "settings": {
+    "backgroundColor": [0.17, 0.28, 0.38, 1],
+    "camera": {
+      "fov": 55,
+      "near": 0.1,
+      "far": 260,
+      "position": [26, 22, 34],
+      "target": [0, 0, 0]
+    },
+    "note": "Island roots supply their footprint and position to the scenario. Each solid platform and its decorative parts are local child nodes. The player spawn and lights are authored separately.",
+    "fog": {
+      "color": [0.17, 0.28, 0.38],
+      "near": 45,
+      "far": 150
+    }
+  },
+  "layers": [
+    {
+      "id": "lights",
+      "name": "Lights",
+      "type": "Light3D"
+    },
+    {
+      "id": "islands",
+      "name": "Islands",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "markers",
+      "name": "Markers",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "island-parts",
+      "name": "Island parts",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "structures",
+      "name": "Structures",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "rings",
+      "name": "Rings",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "horizon",
+      "name": "Horizon",
+      "type": "MeshInstance3D"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "light_ambient",
+      "name": "Ambient Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "ambient",
+          "intensity": 0.22
+        }
+      }
+    },
+    {
+      "id": "light_sky",
+      "name": "Hemisphere Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "hemisphere",
+          "skyColor": [0.6, 0.85, 1],
+          "groundColor": [0.3, 0.25, 0.35],
+          "intensity": 0.5
+        }
+      }
+    },
+    {
+      "id": "light_sun",
+      "name": "Sun",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "directional",
+          "direction": [-0.7, -1, -0.3],
+          "color": [1, 0.83, 0.6],
+          "intensity": 1.7,
+          "castShadow": true,
+          "shadowDistance": 45,
+          "shadowMapSize": 1024
+        }
+      }
+    },
+    {
+      "id": "island_1",
+      "name": "Island 1",
+      "type": "Node3D",
+      "layer": "islands",
+      "transform": {
+        "position": [0, -0.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [24, 1.2, 22]
+      },
+      "scripts": [
+        "src/entities/ObservatoryWorld.js"
+      ]
+    },
+    {
+      "id": "island_2",
+      "name": "Island 2",
+      "type": "Node3D",
+      "layer": "islands",
+      "transform": {
+        "position": [30, -0.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [20, 1.2, 20]
+      },
+      "scripts": [
+        "src/entities/ObservatoryWorld.js"
+      ]
+    },
+    {
+      "id": "island_3",
+      "name": "Island 3",
+      "type": "Node3D",
+      "layer": "islands",
+      "transform": {
+        "position": [-30, -0.6, -16],
+        "rotation": [0, 0, 0],
+        "scale": [20, 1.2, 20]
+      },
+      "scripts": [
+        "src/entities/ObservatoryWorld.js"
+      ]
+    },
+    {
+      "id": "player_spawn",
+      "name": "Player spawn",
+      "type": "MeshInstance3D",
+      "layer": "markers",
+      "scripts": [
+        "src/entities/MeshActor.js",
+        "src/components/ExplorerMotion.js"
+      ],
+      "transform": {
+        "position": [0, 2, 7],
+        "rotation": [0, 0, 0],
+        "scale": [0.8, 0.8, 0.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.5,
+          "widthSegments": 20,
+          "heightSegments": 10
+        },
+        "Material": {
+          "albedoColor": [0.95, 0.75, 0.3, 1],
+          "roughness": 0.35,
+          "metallic": 0.2
+        },
+        "Data": {
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "island_1_platform",
+      "name": "Grass platform",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        },
+        "Data": {
+          "islandCollider": true
+        }
+      }
+    },
+    {
+      "id": "island_1_core",
+      "name": "Rock core",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, -2.8333333333333335, 0],
+        "scale": [0.52, 4.166666666666667, 0.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_ridge_0",
+      "name": "Rock ridge 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.20833333333333334, -5.333333333333334, 0],
+        "scale": [0.1875, 5, 0.20454545454545456]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_ridge_1",
+      "name": "Rock ridge 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.06437854049478071, -7.000000000000001, 0.21614920824889852],
+        "scale": [0.1875, 5.833333333333334, 0.20454545454545456]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_ridge_2",
+      "name": "Rock ridge 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.16854520716144736, -5.333333333333334, 0.13358755733919847],
+        "scale": [0.1875, 6.666666666666667, 0.20454545454545456]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_ridge_3",
+      "name": "Rock ridge 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.16854520716144739, -7.000000000000001, -0.13358755733919842],
+        "scale": [0.1875, 5, 0.20454545454545456]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_ridge_4",
+      "name": "Rock ridge 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.06437854049478067, -5.333333333333334, -0.21614920824889855],
+        "scale": [0.1875, 5.833333333333334, 0.20454545454545456]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_0",
+      "name": "Tree trunk 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.38000000000000006, 1.7500000000000002, 0],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_0",
+      "name": "Tree canopy 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.38000000000000006, 3.833333333333333, 0],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_1",
+      "name": "Tree trunk 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.23692612470631877, 1.7500000000000002, 0.2970959633378513],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_1",
+      "name": "Tree canopy 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.23692612470631877, 3.833333333333333, 0.2970959633378513],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_2",
+      "name": "Tree trunk 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.08455795490339946, 1.7500000000000002, 0.3704726066290929],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_2",
+      "name": "Tree canopy 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.08455795490339946, 3.833333333333333, 0.3704726066290929],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_3",
+      "name": "Tree trunk 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467212],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_3",
+      "name": "Tree canopy 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467212],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_4",
+      "name": "Tree trunk 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_4",
+      "name": "Tree canopy 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_5",
+      "name": "Tree trunk 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.08455795490339955, 1.7500000000000002, -0.3704726066290929],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_5",
+      "name": "Tree canopy 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [-0.08455795490339955, 3.833333333333333, -0.3704726066290929],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_trunk_6",
+      "name": "Tree trunk 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.23692612470631869, 1.7500000000000002, -0.2970959633378513],
+        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_1_canopy_6",
+      "name": "Tree canopy 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.23692612470631869, 3.833333333333333, -0.2970959633378513],
+        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_1_water",
+      "name": "Waterfall",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0.3499999999999999, -4.500000000000001, -0.09090909090909091],
+        "scale": [0.049999999999999996, 10, 0.009090909090909092]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "shader",
+          "shader": "pool_water"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_0",
+      "name": "Path tile 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.3181818181818182],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_1",
+      "name": "Path tile 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.22727272727272727],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_2",
+      "name": "Path tile 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.13636363636363635],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_3",
+      "name": "Path tile 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.045454545454545456],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_4",
+      "name": "Path tile 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.045454545454545456],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_5",
+      "name": "Path tile 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.13636363636363635],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_6",
+      "name": "Path tile 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.22727272727272727],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_1_tile_7",
+      "name": "Path tile 8",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_1",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.3181818181818182],
+        "scale": [0.10416666666666667, 0.06666666666666667, 0.05454545454545454]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_platform",
+      "name": "Grass platform",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        },
+        "Data": {
+          "islandCollider": true
+        }
+      }
+    },
+    {
+      "id": "island_2_core",
+      "name": "Rock core",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, -2.8333333333333335, 0],
+        "scale": [0.52, 4.166666666666667, 0.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_ridge_0",
+      "name": "Rock ridge 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.25, -5.333333333333334, 0],
+        "scale": [0.225, 5, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_ridge_1",
+      "name": "Rock ridge 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.07725424859373686, -7.000000000000001, 0.23776412907378836],
+        "scale": [0.225, 5.833333333333334, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_ridge_2",
+      "name": "Rock ridge 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.2022542485937368, -5.333333333333334, 0.1469463130731183],
+        "scale": [0.225, 6.666666666666667, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_ridge_3",
+      "name": "Rock ridge 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.20225424859373686, -7.000000000000001, -0.14694631307311826],
+        "scale": [0.225, 5, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_ridge_4",
+      "name": "Rock ridge 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.07725424859373681, -5.333333333333334, -0.2377641290737884],
+        "scale": [0.225, 5.833333333333334, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_0",
+      "name": "Tree trunk 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.38, 1.7500000000000002, 0],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_0",
+      "name": "Tree canopy 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.38, 3.833333333333333, 0],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_1",
+      "name": "Tree trunk 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.23692612470631874, 1.7500000000000002, 0.2970959633378513],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_1",
+      "name": "Tree canopy 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.23692612470631874, 3.833333333333333, 0.2970959633378513],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_2",
+      "name": "Tree trunk 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.08455795490339944, 1.7500000000000002, 0.370472606629093],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_2",
+      "name": "Tree canopy 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.08455795490339944, 3.833333333333333, 0.370472606629093],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_3",
+      "name": "Tree trunk 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467215],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_3",
+      "name": "Tree canopy 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467215],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_4",
+      "name": "Tree trunk 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_4",
+      "name": "Tree canopy 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_5",
+      "name": "Tree trunk 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.08455795490339954, 1.7500000000000002, -0.370472606629093],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_5",
+      "name": "Tree canopy 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [-0.08455795490339954, 3.833333333333333, -0.370472606629093],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_trunk_6",
+      "name": "Tree trunk 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.23692612470631866, 1.7500000000000002, -0.2970959633378514],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_2_canopy_6",
+      "name": "Tree canopy 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.23692612470631866, 3.833333333333333, -0.2970959633378514],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_2_water",
+      "name": "Waterfall",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0.35, -4.500000000000001, -0.1],
+        "scale": [0.06, 10, 0.01]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "shader",
+          "shader": "pool_water"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_0",
+      "name": "Path tile 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.35],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_1",
+      "name": "Path tile 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.25],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_2",
+      "name": "Path tile 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.15],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_3",
+      "name": "Path tile 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.05],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_4",
+      "name": "Path tile 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.05],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_5",
+      "name": "Path tile 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.15],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_6",
+      "name": "Path tile 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.25],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_2_tile_7",
+      "name": "Path tile 8",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_2",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.35],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_platform",
+      "name": "Grass platform",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        },
+        "Data": {
+          "islandCollider": true
+        }
+      }
+    },
+    {
+      "id": "island_3_core",
+      "name": "Rock core",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, -2.8333333333333335, 0],
+        "scale": [0.52, 4.166666666666667, 0.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_ridge_0",
+      "name": "Rock ridge 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.25, -5.333333333333334, 0],
+        "scale": [0.225, 5, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_ridge_1",
+      "name": "Rock ridge 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.07725424859373686, -7.000000000000001, 0.23776412907378836],
+        "scale": [0.225, 5.833333333333334, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_ridge_2",
+      "name": "Rock ridge 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.2022542485937368, -5.333333333333334, 0.1469463130731183],
+        "scale": [0.225, 6.666666666666667, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_ridge_3",
+      "name": "Rock ridge 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.20225424859373686, -7.000000000000001, -0.14694631307311826],
+        "scale": [0.225, 5, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_ridge_4",
+      "name": "Rock ridge 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.07725424859373681, -5.333333333333334, -0.2377641290737884],
+        "scale": [0.225, 5.833333333333334, 0.225]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_0",
+      "name": "Tree trunk 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.38, 1.7500000000000002, 0],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_0",
+      "name": "Tree canopy 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.38, 3.833333333333333, 0],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_1",
+      "name": "Tree trunk 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.23692612470631874, 1.7500000000000002, 0.2970959633378513],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_1",
+      "name": "Tree canopy 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.23692612470631874, 3.833333333333333, 0.2970959633378513],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_2",
+      "name": "Tree trunk 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.08455795490339944, 1.7500000000000002, 0.370472606629093],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_2",
+      "name": "Tree canopy 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.08455795490339944, 3.833333333333333, 0.370472606629093],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_3",
+      "name": "Tree trunk 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467215],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_3",
+      "name": "Tree canopy 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467215],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_4",
+      "name": "Tree trunk 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_4",
+      "name": "Tree canopy 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_5",
+      "name": "Tree trunk 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.08455795490339954, 1.7500000000000002, -0.370472606629093],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_5",
+      "name": "Tree canopy 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [-0.08455795490339954, 3.833333333333333, -0.370472606629093],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_trunk_6",
+      "name": "Tree trunk 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.23692612470631866, 1.7500000000000002, -0.2970959633378514],
+        "scale": [0.02, 2.5, 0.02]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "island_3_canopy_6",
+      "name": "Tree canopy 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.23692612470631866, 3.833333333333333, -0.2970959633378514],
+        "scale": [0.08, 1.6666666666666667, 0.08]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#437b74",
+          "roughness": 1
+        }
+      }
+    },
+    {
+      "id": "island_3_water",
+      "name": "Waterfall",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0.35, -4.500000000000001, -0.1],
+        "scale": [0.06, 10, 0.01]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "shader",
+          "shader": "pool_water"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_0",
+      "name": "Path tile 1",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.35],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_1",
+      "name": "Path tile 2",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.25],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_2",
+      "name": "Path tile 3",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.15],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_3",
+      "name": "Path tile 4",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, -0.05],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_4",
+      "name": "Path tile 5",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.05],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_5",
+      "name": "Path tile 6",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.15],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_6",
+      "name": "Path tile 7",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.25],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "island_3_tile_7",
+      "name": "Path tile 8",
+      "type": "MeshInstance3D",
+      "layer": "island-parts",
+      "parent": "island_3",
+      "transform": {
+        "position": [0, 0.5333333333333333, 0.35],
+        "scale": [0.125, 0.06666666666666667, 0.06]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "bridge_east",
+      "name": "Bridge east",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [16, -0.3, 0],
+        "rotation": [0, 0, 0],
+        "scale": [12, 0.6, 4]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "bridge_west",
+      "name": "Bridge west",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-16, -0.3, 0],
+        "rotation": [0, 0, 0],
+        "scale": [12, 0.6, 4]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "bridge_north_west",
+      "name": "Bridge north-west",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-30, -0.3, -7],
+        "rotation": [0, 0, 0],
+        "scale": [4, 0.6, 18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "post_w19_n",
+      "name": "Post -19, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-19, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w19_n",
+      "name": "Lamp -19, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-19, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_w19_s",
+      "name": "Post -19, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-19, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w19_s",
+      "name": "Lamp -19, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-19, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_w16_n",
+      "name": "Post -16, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-16, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w16_n",
+      "name": "Lamp -16, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-16, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_w16_s",
+      "name": "Post -16, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-16, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w16_s",
+      "name": "Lamp -16, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-16, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_w13_n",
+      "name": "Post -13, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-13, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w13_n",
+      "name": "Lamp -13, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-13, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_w13_s",
+      "name": "Post -13, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-13, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_w13_s",
+      "name": "Lamp -13, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-13, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e13_n",
+      "name": "Post 13, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [13, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e13_n",
+      "name": "Lamp 13, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [13, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e13_s",
+      "name": "Post 13, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [13, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e13_s",
+      "name": "Lamp 13, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [13, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e16_n",
+      "name": "Post 16, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [16, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e16_n",
+      "name": "Lamp 16, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [16, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e16_s",
+      "name": "Post 16, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [16, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e16_s",
+      "name": "Lamp 16, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [16, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e19_n",
+      "name": "Post 19, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [19, 0.7, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e19_n",
+      "name": "Lamp 19, -2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [19, 1.5, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "post_e19_s",
+      "name": "Post 19, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [19, 0.7, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.18, 1.4, 0.18]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lamp_e19_s",
+      "name": "Lamp 19, 2",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [19, 1.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.16, 0.16, 0.16]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "pillar_w_n",
+      "name": "Pillar -6, -5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-6, 5, -5],
+        "rotation": [0, 0, 0],
+        "scale": [1.1, 10, 1.1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "pillar_cap_w_n",
+      "name": "Pillar cap -6, -5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-6, 10, -5],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 0.6, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "pillar_w_s",
+      "name": "Pillar -6, 5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-6, 5, 5],
+        "rotation": [0, 0, 0],
+        "scale": [1.1, 10, 1.1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "pillar_cap_w_s",
+      "name": "Pillar cap -6, 5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-6, 10, 5],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 0.6, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "pillar_e_n",
+      "name": "Pillar 6, -5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [6, 5, -5],
+        "rotation": [0, 0, 0],
+        "scale": [1.1, 10, 1.1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "pillar_cap_e_n",
+      "name": "Pillar cap 6, -5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [6, 10, -5],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 0.6, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "pillar_e_s",
+      "name": "Pillar 6, 5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [6, 5, 5],
+        "rotation": [0, 0, 0],
+        "scale": [1.1, 10, 1.1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "pillar_cap_e_s",
+      "name": "Pillar cap 6, 5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [6, 10, 5],
+        "rotation": [0, 0, 0],
+        "scale": [1.8, 0.6, 1.8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        }
+      }
+    },
+    {
+      "id": "lintel_n",
+      "name": "Lintel -5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [0, 10.7, -5],
+        "rotation": [0, 0, 0],
+        "scale": [14, 1, 1.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "lintel_s",
+      "name": "Lintel 5",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [0, 10.7, 5],
+        "rotation": [0, 0, 0],
+        "scale": [14, 1, 1.5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        }
+      }
+    },
+    {
+      "id": "observatory_floor",
+      "name": "Observatory floor",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [0, 0.3, -4],
+        "rotation": [0, 0, 0],
+        "scale": [8, 0.6, 5]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#e4d9b5",
+          "roughness": 0.55
+        },
+        "Data": {
+          "solid": true
+        }
+      }
+    },
+    {
+      "id": "ring_0",
+      "name": "Ring 1",
+      "type": "MeshInstance3D",
+      "layer": "rings",
+      "transform": {
+        "position": [0, 6, 0],
+        "rotation": [0.628319, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "innerRadius": 4,
+          "outerRadius": 4.2,
+          "segments": 48
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        },
+        "Data": {
+          "orbitSpeed": 0.15
+        }
+      }
+    },
+    {
+      "id": "ring_1",
+      "name": "Ring 2",
+      "type": "MeshInstance3D",
+      "layer": "rings",
+      "transform": {
+        "position": [0, 6, 0],
+        "rotation": [1.413717, 0, 0],
+        "scale": [1.24, 1, 1.24]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "innerRadius": 4,
+          "outerRadius": 4.2,
+          "segments": 48
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "orbitSpeed": 0.27,
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "ring_2",
+      "name": "Ring 3",
+      "type": "MeshInstance3D",
+      "layer": "rings",
+      "transform": {
+        "position": [0, 6, 0],
+        "rotation": [2.199115, 0, 0],
+        "scale": [1.48, 1, 1.48]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "innerRadius": 4,
+          "outerRadius": 4.2,
+          "segments": 48
+        },
+        "Material": {
+          "albedoColor": "#c89350",
+          "metallic": 0.65,
+          "roughness": 0.35
+        },
+        "Data": {
+          "orbitSpeed": 0.39
+        }
+      }
+    },
+    {
+      "id": "observatory_core",
+      "name": "Observatory core",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [0, 6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1.2, 1.2, 1.2]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#81f0df"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "moon",
+      "name": "Moon",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [-50, 45, -90],
+        "rotation": [0, 0, 0],
+        "scale": [9, 9, 9]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": "#f1dcbb"
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_0_rock",
+      "name": "Horizon 1 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [60, -8, 0],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_0_grass",
+      "name": "Horizon 1 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [60, -1, 0],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_0_cloud",
+      "name": "Horizon 1 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [60, -15, 0],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_1_rock",
+      "name": "Horizon 2 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-45.676509, -0.426761, 41.924415],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_1_grass",
+      "name": "Horizon 2 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-45.676509, 6.573239, 41.924415],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_1_cloud",
+      "name": "Horizon 2 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-45.676509, -15, 41.924415],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_2_rock",
+      "name": "Horizon 3 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [5.472415, 0.183677, -63.765607],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_2_grass",
+      "name": "Horizon 3 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [5.472415, 7.183677, -63.765607],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_2_cloud",
+      "name": "Horizon 3 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [5.472415, -15, -63.765607],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_3_rock",
+      "name": "Horizon 4 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [40.308152, -6.72992, 52.26139],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_3_grass",
+      "name": "Horizon 4 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [40.308152, 0.27008, 52.26139],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_3_cloud",
+      "name": "Horizon 4 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [40.308152, -15, 52.26139],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_4_rock",
+      "name": "Horizon 5 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-67.005655, -14.811222, -11.586292],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_4_grass",
+      "name": "Horizon 5 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-67.005655, -7.811222, -11.586292],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_4_cloud",
+      "name": "Horizon 5 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-67.005655, -15, -11.586292],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_5_rock",
+      "name": "Horizon 6 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [58.881239, -16.630318, -37.854982],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_5_grass",
+      "name": "Horizon 6 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [58.881239, -9.630318, -37.854982],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_5_cloud",
+      "name": "Horizon 6 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [58.881239, -15, -37.854982],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_6_rock",
+      "name": "Horizon 7 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-18.289351, -10.514739, 69.638349],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_6_grass",
+      "name": "Horizon 7 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-18.289351, -3.514739, 69.638349],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_6_cloud",
+      "name": "Horizon 7 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-18.289351, -15, 69.638349],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_7_rock",
+      "name": "Horizon 8 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-34.549136, -2.087121, -65.439722],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_7_grass",
+      "name": "Horizon 8 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-34.549136, 4.912879, -65.439722],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_7_cloud",
+      "name": "Horizon 8 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-34.549136, -15, -65.439722],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_8_rock",
+      "name": "Horizon 9 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.587195, 0.904224, 25.52006],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_8_grass",
+      "name": "Horizon 9 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.587195, 7.904224, 25.52006],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_8_cloud",
+      "name": "Horizon 9 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.587195, -15, 25.52006],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_9_rock",
+      "name": "Horizon 10 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-71.838244, -4.290934, 30.385304],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_9_grass",
+      "name": "Horizon 10 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-71.838244, 2.709066, 30.385304],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_9_cloud",
+      "name": "Horizon 10 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-71.838244, -15, 30.385304],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_10_rock",
+      "name": "Horizon 11 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [33.208173, -12.89619, -72.781984],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_10_grass",
+      "name": "Horizon 11 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [33.208173, -5.89619, -72.781984],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_10_cloud",
+      "name": "Horizon 11 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [33.208173, -15, -72.781984],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_11_rock",
+      "name": "Horizon 12 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [25.368893, -16.999912, 77.977043],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_11_grass",
+      "name": "Horizon 12 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [25.368893, -9.999912, 77.977043],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_11_cloud",
+      "name": "Horizon 12 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [25.368893, -15, 77.977043],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_12_rock",
+      "name": "Horizon 13 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-73.15971, -12.829156, -41.275378],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_12_grass",
+      "name": "Horizon 13 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-73.15971, -5.829156, -41.275378],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_12_cloud",
+      "name": "Horizon 13 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-73.15971, -15, -41.275378],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_13_rock",
+      "name": "Horizon 14 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [83.756308, -4.218497, -19.516169],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_13_grass",
+      "name": "Horizon 14 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [83.756308, 2.781503, -19.516169],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_13_cloud",
+      "name": "Horizon 14 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [83.756308, -15, -19.516169],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_14_rock",
+      "name": "Horizon 15 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-49.636024, 0.915466, 72.665433],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_14_grass",
+      "name": "Horizon 15 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-49.636024, 7.915466, 72.665433],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_14_cloud",
+      "name": "Horizon 15 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-49.636024, -15, 72.665433],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_15_rock",
+      "name": "Horizon 16 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-12.854288, -2.147409, -89.077311],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_15_grass",
+      "name": "Horizon 16 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-12.854288, 4.852591, -89.077311],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_15_cloud",
+      "name": "Horizon 16 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-12.854288, -15, -89.077311],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_16_rock",
+      "name": "Horizon 17 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.253062, -10.59113, 58.197948],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_16_grass",
+      "name": "Horizon 17 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.253062, -3.59113, 58.197948],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_16_cloud",
+      "name": "Horizon 17 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [71.253062, -15, 58.197948],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "horizon_17_rock",
+      "name": "Horizon 18 rock",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-93.843542, -16.652577, 5.421213],
+        "rotation": [0, 0, 0],
+        "scale": [8, 9, 8]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": "#344b63",
+          "roughness": 0.8
+        }
+      }
+    },
+    {
+      "id": "horizon_17_grass",
+      "name": "Horizon 18 grass",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-93.843542, -9.652577, 5.421213],
+        "rotation": [0, 0, 0],
+        "scale": [12, 1, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": "#4a8e83",
+          "roughness": 0.94
+        }
+      }
+    },
+    {
+      "id": "horizon_17_cloud",
+      "name": "Horizon 18 cloud",
+      "type": "MeshInstance3D",
+      "layer": "horizon",
+      "transform": {
+        "position": [-93.843542, -15, 5.421213],
+        "rotation": [0, 0, 0],
+        "scale": [22, 2, 12]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.57, 0.72, 0.78, 0.14],
+          "transparent": true
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    }
+  ]
+}

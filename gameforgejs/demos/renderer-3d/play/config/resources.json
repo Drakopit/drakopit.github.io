@@ -1,0 +1,33 @@
+{
+  "images": [
+    {
+      "name": "textura_player",
+      "path": "../assets/TemplateGrid_albedo.png"
+    },
+    {
+      "name": "grid_albedo",
+      "path": "../assets/TemplateGrid_albedo.png"
+    },
+    {
+      "name": "grid_normal",
+      "path": "../assets/shared/TemplateGrid_normal.png"
+    }
+  ],
+  "jsons": [
+    {
+      "name": "gallery_scene",
+      "path": "../scenes/gallery.gfscene.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    }
+  ],
+  "schemaVersion": 1,
+  "shaders": [
+    {
+      "name": "clearcoat",
+      "path": "../shader/clearcoat.gfshader"
+    }
+  ]
+}

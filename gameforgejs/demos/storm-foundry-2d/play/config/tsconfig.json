@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true, "checkJs": false, "strict": true, "noEmit": true,
+    "target": "ES2022", "module": "ESNext", "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM"], "skipLibCheck": true,
+    "paths": {
+      "gameforgejs/core": ["../../../../GameForgeJS/src/core/index.js"],
+      "gameforgejs/2d": ["../../../../GameForgeJS/src/2d/index.js"]
+    }
+  },
+  "include": ["../main.js", "../src/**/*.js", "../../../../GameForgeJS/src/2d/Particle/*.js", "../../../../GameForgeJS/src/2d/Graphics/CanvasRenderTarget.js"]
+}

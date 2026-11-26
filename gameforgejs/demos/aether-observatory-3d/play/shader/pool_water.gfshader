@@ -1,0 +1,271 @@
+{
+  "format": "gameforge.shader",
+  "version": 1,
+  "name": "Reflecting pool",
+  "domain": "surface",
+  "description": "Animated waves and a deep tint for the observatory's pools.",
+  "properties": [
+    {
+      "name": "uDeepColor",
+      "type": "color",
+      "default": [
+        0.05,
+        0.36,
+        0.42,
+        1
+      ],
+      "label": "Deep color"
+    },
+    {
+      "name": "uWaveHeight",
+      "type": "float",
+      "default": 0.03,
+      "min": 0,
+      "max": 0.3
+    }
+  ],
+  "render": {
+    "transparent": false,
+    "cull": "back",
+    "subdivision": 1
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "waves",
+        "type": "waterNormal",
+        "x": 40,
+        "y": 60,
+        "params": {
+          "scale": 1.6,
+          "strength": 1.4
+        }
+      },
+      {
+        "id": "deep",
+        "type": "property",
+        "x": 40,
+        "y": 200,
+        "params": {
+          "name": "uDeepColor"
+        }
+      },
+      {
+        "id": "pos",
+        "type": "worldPosition",
+        "x": 40,
+        "y": 330,
+        "params": {}
+      },
+      {
+        "id": "split",
+        "type": "split",
+        "x": 240,
+        "y": 330,
+        "params": {}
+      },
+      {
+        "id": "time",
+        "type": "time",
+        "x": 40,
+        "y": 450,
+        "params": {
+          "speed": 1.2
+        }
+      },
+      {
+        "id": "phase",
+        "type": "add",
+        "x": 440,
+        "y": 380,
+        "params": {}
+      },
+      {
+        "id": "wave",
+        "type": "sine",
+        "x": 640,
+        "y": 380,
+        "params": {}
+      },
+      {
+        "id": "height",
+        "type": "property",
+        "x": 640,
+        "y": 500,
+        "params": {
+          "name": "uWaveHeight"
+        }
+      },
+      {
+        "id": "dispMul",
+        "type": "multiply",
+        "x": 840,
+        "y": 420,
+        "params": {}
+      },
+      {
+        "id": "rough",
+        "type": "float",
+        "x": 440,
+        "y": 200,
+        "params": {
+          "value": 0.08
+        }
+      },
+      {
+        "id": "coat",
+        "type": "float",
+        "x": 440,
+        "y": 260,
+        "params": {
+          "value": 0.6
+        }
+      },
+      {
+        "id": "rim",
+        "type": "float",
+        "x": 640,
+        "y": 260,
+        "params": {
+          "value": 0.35
+        }
+      },
+      {
+        "id": "out",
+        "type": "output",
+        "x": 1060,
+        "y": 120,
+        "params": {}
+      }
+    ],
+    "links": [
+      {
+        "from": {
+          "node": "waves",
+          "port": "normal"
+        },
+        "to": {
+          "node": "out",
+          "port": "normal"
+        }
+      },
+      {
+        "from": {
+          "node": "deep",
+          "port": "color"
+        },
+        "to": {
+          "node": "out",
+          "port": "albedo"
+        }
+      },
+      {
+        "from": {
+          "node": "rough",
+          "port": "value"
+        },
+        "to": {
+          "node": "out",
+          "port": "roughness"
+        }
+      },
+      {
+        "from": {
+          "node": "coat",
+          "port": "value"
+        },
+        "to": {
+          "node": "out",
+          "port": "clearcoat"
+        }
+      },
+      {
+        "from": {
+          "node": "rim",
+          "port": "value"
+        },
+        "to": {
+          "node": "out",
+          "port": "rim"
+        }
+      },
+      {
+        "from": {
+          "node": "pos",
+          "port": "position"
+        },
+        "to": {
+          "node": "split",
+          "port": "vector"
+        }
+      },
+      {
+        "from": {
+          "node": "split",
+          "port": "x"
+        },
+        "to": {
+          "node": "phase",
+          "port": "a"
+        }
+      },
+      {
+        "from": {
+          "node": "time",
+          "port": "time"
+        },
+        "to": {
+          "node": "phase",
+          "port": "b"
+        }
+      },
+      {
+        "from": {
+          "node": "phase",
+          "port": "result"
+        },
+        "to": {
+          "node": "wave",
+          "port": "value"
+        }
+      },
+      {
+        "from": {
+          "node": "wave",
+          "port": "result"
+        },
+        "to": {
+          "node": "dispMul",
+          "port": "a"
+        }
+      },
+      {
+        "from": {
+          "node": "height",
+          "port": "value"
+        },
+        "to": {
+          "node": "dispMul",
+          "port": "b"
+        }
+      },
+      {
+        "from": {
+          "node": "dispMul",
+          "port": "result"
+        },
+        "to": {
+          "node": "out",
+          "port": "displacement"
+        }
+      }
+    ],
+    "preview": {
+      "mesh": "plane"
+    }
+  },
+  "glsl": {
+    "vertex": "#version 300 es\nprecision highp float;\n\n// Generated by the GameForgeJS Editor shader graph (vertex stage, domain: surface).\n#include <gf_vertex>\n\nuniform vec3 uCameraPosition;\nuniform float uTime;\nuniform vec4 uDeepColor;\nuniform float uWaveHeight;\n\nvoid main() {\n    vec3 gfWorldPosition = (uModel * vec4(aPosition, 1.0)).xyz;\n    vec3 gfWorldNormal = normalize(mat3(uNormalMatrix) * aNormal);\n    vec3 n2_position = gfWorldPosition;\n    float n3_x = n2_position.x;\n    float n3_y = n2_position.y;\n    float n3_z = n2_position.z;\n    float n4_time = (uTime * 1.2);\n    float n5_result = (n3_x + n4_time);\n    float n6_result = sin(n5_result);\n    float n7_value = uWaveHeight;\n    float n8_result = (n6_result * n7_value);\n    gfEmitVertex(aPosition + normalize(aNormal) * n8_result, aNormal, aTangent, aUv);\n}\n",
+    "fragment": "#version 300 es\nprecision highp float;\n\n// Generated by the GameForgeJS Editor shader graph (domain: surface).\n#include <gf_surface>\n\nuniform vec4 uDeepColor;\nuniform float uWaveHeight;\n\nvec3 gfgWaterNormal(vec3 normal, vec2 p, float t, float strength) {\n    vec2 slope = vec2(0.8, 0.6) * cos(dot(p, vec2(1.7, 1.3)) - t * 1.5) * 0.055;\n    slope += vec2(-0.4, 0.9) * cos(dot(p, vec2(-1.3, 3.2)) - t * 2.2) * 0.04;\n    slope += vec2(0.97, -0.24) * cos(dot(p, vec2(8.7, -2.15)) - t * 3.3) * 0.018;\n    return normalize(normal + vec3(slope.x, 0.0, slope.y) * strength);\n}\n\nvoid main() {\n    gfClipReflection();\n    vec3 n1_color = uDeepColor.rgb;\n    float n1_alpha = uDeepColor.a;\n    vec4 n1_rgba = uDeepColor;\n    vec3 n0_normal = normalize(transpose(vTbn) * gfgWaterNormal(normalize(vNormal), vWorldPosition.xz * 1.6, uTime, 1.4));\n    float n9_value = 0.08;\n    float n10_value = 0.6;\n    float n11_value = 0.35;\n    GFSurface s = gfDefaultSurface();\n    s.albedo = n1_color;\n    s.normal = normalize(vTbn * n0_normal);\n    s.roughness = n9_value;\n    s.clearcoat = n10_value;\n    s.rim = n11_value;\n    gfWriteSurface(s);\n}\n"
+  }
+}

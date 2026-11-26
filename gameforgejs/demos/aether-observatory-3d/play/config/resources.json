@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "jsons": [
+    {
+      "name": "scenario",
+      "path": "./scenario.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    },
+    {
+      "name": "islands",
+      "path": "../scenes/islands.gfscene.json"
+    }
+  ],
+  "shaders": [
+    {
+      "name": "pool_water",
+      "path": "../shader/pool_water.gfshader"
+    }
+  ]
+}

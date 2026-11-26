@@ -1,0 +1,207 @@
+{
+  "runtime": "https://github.com/Drakopit/GameForgeJS/tree/d18bd822e6b31a06b0d7dde3e7cb31f2df96319a",
+  "demos": [
+    {
+      "id": "highland-tactics-3d",
+      "name": "Highland Tactics 3D",
+      "dimension": "3d",
+      "description": "",
+      "controls": "",
+      "playable": false,
+      "screenshot": false,
+      "statusLabel": "Build withheld",
+      "unavailableMessage": "The revised Highland Tactics build and genuine screenshot are being withheld until the current Demos revision is verified. No playable build, screenshot, or source link is published here yet."
+    },
+    {
+      "id": "aether-observatory-3d",
+      "name": "Aether Observatory 3D",
+      "dimension": "3d",
+      "description": "Native WebGL floating islands, shaded architecture, fog, physics traversal, orbit/chase cameras and a skippable cinematic.",
+      "controls": "Move with WASD/arrows or the left stick. Jump with Space/Enter or A. Look with right-mouse drag, Q/E, or the right stick. Change camera mode with C or Y. Touch uses the left virtual stick, JUMP, a right-side swipe, and CAMERA.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "cinematic-crossing-2d",
+      "name": "Cinematic Crossing 2D",
+      "dimension": "2d",
+      "description": "Parallel camera, zoom and fade tracks, waypoint movement, dialogue cues and clean skip/replay control states.",
+      "controls": "Replay with Space/Enter or A; skip with Escape or B. Walk after the scene with A/D, arrows, or the left stick. H, R3, or HELP opens the guide; touch provides PLAY, SKIP, a virtual stick, and HELP.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "route-atlas-2d",
+      "name": "Route Atlas 2D",
+      "dimension": "2d",
+      "description": "A branching overworld graph, smooth node travel, playable shard trials and event-driven stage unlocks.",
+      "controls": "Navigate with WASD/arrows or the left stick/D-pad; touch uses a virtual stick or taps an adjacent node. Enter a stage with Space/Enter or A; Escape or B returns to the map. R resets and H opens help; touch provides ENTER, BACK, RESET, and HELP.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "boss-patterns-2d",
+      "name": "Boss Patterns 2D",
+      "dimension": "2d",
+      "description": "A three-phase boss with aimed fans, rings, marked charges, delayed hazards, pooled projectiles and dash invulnerability.",
+      "controls": "Move with WASD/arrows or the left stick. Hold Space/Enter or A to fire at the boss. Dash with C or Y. R retries and H opens help; touch provides FIRE, DASH, RETRY, and HELP.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "storm-foundry-2d",
+      "name": "Storm Foundry FX Lab 2D",
+      "dimension": "2d",
+      "description": "Layered rain, reactive water reflections, dynamic props, bounded particle pools and an in-engine live FX playground.",
+      "controls": "Drag and release in the world to throw a prop; Space or DROP drops one. B/BURST triggers particles, G/GUST adds wind, L/OPEN FX LAB toggles the lab, and [ / ] change presets. Use arrows or drag sliders to tune controls; Q/E changes tabs, I toggles debug, T telemetry, R resets, and H opens help. Gamepad and mobile buttons are documented in the in-game controls.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "toon-adventure-3d",
+      "name": "Toon Adventure 3D",
+      "dimension": "3d",
+      "description": "A Toon ABS sandbox with two large lakes, linked warp gates, five sentries and shallow-water interaction.",
+      "controls": "Move with WASD/arrows or the left stick. Space or the left face button attacks. H/Start opens help; R/the top face button resets; B/Select changes lighting.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "platformer-2d",
+      "name": "Platformer Building Blocks 2D",
+      "dimension": "2d",
+      "description": "Two compact stages demonstrating tile collision, jump buffering, coyote time, collection and level transitions.",
+      "controls": "Move with A/D, arrows, the left stick, or D-pad. Jump with Space or A. R/Y resets; Enter/Start advances after all coins are collected. H/Select opens the in-engine field guide. Mobile uses the virtual stick and jump/help buttons.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "movement-collision-2d",
+      "name": "Movement & Collision 2D",
+      "dimension": "2d",
+      "description": "A compact 2D example for movement, collision, and collection.",
+      "controls": "Move and collect with keyboard WASD/arrows or a gamepad left stick/D-pad.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "component-adventure-2d",
+      "name": "Component Adventure 2D",
+      "dimension": "2d",
+      "description": "Top-down movement, reusable entity components, and room camera transitions.",
+      "controls": "Keyboard and gamepad movement/action mappings are defined in the current config/game.config.json. Explore rooms and attack slimes.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "platform-adventure-2d",
+      "name": "Platform Adventure 2D",
+      "dimension": "2d",
+      "description": "Platform combat, patrol and pursuit AI, line of sight, inventory, skills and manifest-authored stages.",
+      "controls": "Keyboard/gamepad controls cover menus, movement, jumping, and combat. See the current config/game.config.json; the in-game HUD shows action and status feedback.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "tactical-rpg-2d",
+      "name": "Tactical RPG 2D",
+      "dimension": "2d",
+      "description": "A turn-based grid game with pathfinding, movement range, and combat.",
+      "controls": "Keyboard/gamepad controls navigate menus and the grid and confirm or cancel actions. Mouse interaction is handled by the framework where available.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "fighting-2d",
+      "name": "Fighting Arena 2D",
+      "dimension": "2d",
+      "description": "Energy spheres, meter-powered supers, buffered melee chains, reactive CPU, local versus and four character profiles.",
+      "controls": "Player 1: A/D to move, W to jump, S to guard; J/Z light, K/X heavy, L/C energy sphere, U/Q super, H help, Escape menu. Player 2: Left/Right, Up, Down; 1/Numpad1 light, 2/Numpad2 heavy, 3/Numpad3 sphere, 0/Numpad0 super, H help, Escape menu. Standard gamepad uses the left stick/D-pad, A to jump, LB/D-pad down to guard, X/Y/RB/RT for attacks, Start help, and Select/Back for the menu.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "puzzle-battle-2d",
+      "name": "Puzzle Battle 2D",
+      "dimension": "2d",
+      "description": "An arcade puzzle game with combos and competitive block exchanges.",
+      "controls": "A/D moves, W rotates, S drops, R retries, and P pauses. Gamepad uses the D-pad, A to rotate, Y to retry, and Start to pause. The right board is CPU-controlled. Native touch buttons expose movement, rotate/drop, pause, retry, and help.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "renderer-3d",
+      "name": "Renderer Showcase 3D",
+      "dimension": "3d",
+      "description": "A rain-soaked basin with planar reflections, wet surfaces, and interactive lighting.",
+      "controls": "Open Render controls from the canvas, press H, or use gamepad Start. Drag the camera, light, and rain sliders. Keyboard/gamepad arrows select and adjust; Enter or the south face button toggles. T or the left shoulder toggles rain. Use the panel to switch Basin, inspect materials, lighting, reflections, and telemetry.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "solar-system-3d",
+      "name": "Solar System 3D",
+      "dimension": "3d",
+      "description": "Procedural celestial materials, sunlight, and animated planetary orbits.",
+      "controls": "Camera actions are defined in config/game.config.json; orbit animation runs automatically. H or gamepad Start opens the in-engine controls and scene guide.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "sky-trail-3d",
+      "name": "Sky Trail 3D",
+      "dimension": "3d",
+      "description": "Four expeditions, a gamepad-ready 3D menu, moving platforms, checkpoints and collectibles.",
+      "controls": "Move with WASD/arrows or the left stick. Space/A jumps, Shift/RT runs, Q/E or the right stick moves the camera, H/Y opens help, and R/L3 resets. The menu supports D-pad and stick navigation.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "online-sandbox-2d",
+      "name": "Online Sandbox 2D",
+      "dimension": "2d",
+      "description": "Cooperative mining/building, dedicated server rooms, predicted movement and mobile controls; backend required.",
+      "controls": "Move with A/D or arrows; gamepad left stick/D-pad; touch left virtual stick. Variable-height jump: Space/W/Up, gamepad A, or hold JUMP. Mine with Q/left click, gamepad X, or MINE. Place a block with F/right click, gamepad B, or BUILD.",
+      "playable": false,
+      "screenshot": true,
+      "statusLabel": "Backend required",
+      "unavailableMessage": "Online Sandbox requires a separately running backend. No public backend URL has been verified, so this page does not load or claim a playable network build."
+    },
+    {
+      "id": "addons-2d",
+      "name": "Addon Building Blocks 2D",
+      "dimension": "2d",
+      "description": "Shared parallax layers and a patrol/rest state machine using the standard framework lifecycle.",
+      "controls": "This example runs automatically to demonstrate parallax and patrol/rest behavior; no gameplay input is required.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    },
+    {
+      "id": "touch-garden-2d",
+      "name": "Touch Garden 2D",
+      "dimension": "2d",
+      "description": "Mobile building blocks: identified multi-touch, a virtual stick, a simultaneous dash action, collision and collectible entities.",
+      "controls": "Drag the left thumb to steer and use the second thumb for DASH. Tap ? for help or R to reset. Keyboard uses WASD/arrows plus Space/H/R; gamepad uses stick/D-pad plus A/Start/Y.",
+      "playable": true,
+      "screenshot": true,
+      "statusLabel": "Playable"
+    }
+  ]
+}

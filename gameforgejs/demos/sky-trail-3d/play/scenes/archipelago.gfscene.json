@@ -1,0 +1,1563 @@
+{
+  "format": "gameforgejs.scene",
+  "version": 1,
+  "dimension": "3d",
+  "id": "archipelago",
+  "name": "Arquipélago Celeste",
+  "settings": {
+    "backgroundColor": [0.32, 0.62, 0.9, 1],
+    "camera": {
+      "fov": 56,
+      "near": 0.1,
+      "far": 140,
+      "position": [-1.1311454225587123, 2.505302240114892, 8.837156948143722],
+      "target": [0, 0, -2],
+      "follow": {
+        "distance": 7,
+        "height": 4.65,
+        "smoothness": 8,
+        "targetOffset": [0, 0.65, -0.75],
+        "turnSpeed": 2.25
+      }
+    },
+    "world": {
+      "bounds": {
+        "minX": -7,
+        "maxX": 7,
+        "minZ": -23,
+        "maxZ": 5
+      },
+      "fallLimit": -4.5,
+      "gravity": [0, -16, 0]
+    },
+    "order": 1,
+    "description": "Uma travessia em zigue-zague, com dois pontos de retorno.",
+    "difficulty": "Intermediário",
+    "player": {
+      "collider": {
+        "offset": [0, 0.38, 0],
+        "radius": 0.38
+      },
+      "model": "character",
+      "movement": {
+        "boostSpeed": 7,
+        "jumpSpeed": 7.2,
+        "smoothing": 22,
+        "speed": 5.45,
+        "turnSmoothing": 16
+      }
+    },
+    "coins": {
+      "bobDistance": 0.08,
+      "bobSpeed": 4.2,
+      "pickupDistance": 0.72,
+      "spinSpeed": 3.4
+    },
+    "goal": {
+      "beacon": {
+        "bobDistance": 0.08,
+        "bobSpeed": 3.5
+      },
+      "radius": 0.92
+    },
+    "skybox": "sky_cross"
+  },
+  "layers": [
+    {
+      "id": "lights",
+      "name": "Lights",
+      "type": "Light3D"
+    },
+    {
+      "id": "platforms",
+      "name": "Platforms",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "coins",
+      "name": "Coins (children of their platform)",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "actors",
+      "name": "Player",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "goal",
+      "name": "Goal",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "scenery",
+      "name": "Scenery",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "markers",
+      "name": "Checkpoints",
+      "type": "MeshInstance3D"
+    },
+    {
+      "id": "clouds",
+      "name": "Clouds",
+      "type": "MeshInstance3D"
+    }
+  ],
+  "prefabs": {
+    "platform": {
+      "type": "MeshInstance3D",
+      "components": {
+        "Mesh": {
+          "type": "beveledCube",
+          "bevel": 0.075
+        },
+        "Material": {
+          "roughness": 0.96,
+          "metallic": 0,
+          "albedoMap": "rock_albedo",
+          "normalMap": "rock_normal",
+          "ormMap": "rock_arm",
+          "heightMap": "rock_height",
+          "normalScale": 1.05,
+          "heightScale": 0.012,
+          "anisotropy": 8
+        },
+        "Data": {
+          "castShadow": true
+        }
+      }
+    },
+    "coin": {
+      "type": "MeshInstance3D",
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.22,
+          "widthSegments": 24,
+          "heightSegments": 12
+        },
+        "Material": {
+          "type": "shader",
+          "shader": "coin"
+        },
+        "Data": {
+          "castShadow": true,
+          "receiveShadow": false
+        }
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "light_ambient",
+      "name": "Ambient Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "ambient",
+          "color": [0.95, 0.98, 1],
+          "intensity": 0.18
+        }
+      }
+    },
+    {
+      "id": "light_sky",
+      "name": "Hemisphere Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "hemisphere",
+          "groundColor": [0.2, 0.3, 0.17],
+          "intensity": 0.24,
+          "skyColor": [0.62, 0.8, 1]
+        }
+      }
+    },
+    {
+      "id": "light_sun",
+      "name": "Sun",
+      "type": "Light3D",
+      "layer": "lights",
+      "transform": {
+        "position": [0, 0, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "directional",
+          "color": [1, 0.95, 0.8],
+          "direction": [-0.48, -1, -0.34],
+          "intensity": 1.3,
+          "shadowBias": 0.0016,
+          "shadowDistance": 30,
+          "shadowMapSize": 2048,
+          "shadowStrength": 0.84,
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "island-0",
+      "name": "Platform island-0",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [0, 0, 2],
+        "rotation": [0, 0, 0],
+        "scale": [5, 0.5, 4]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1.25, 1]
+        }
+      }
+    },
+    {
+      "id": "island-1",
+      "name": "Platform island-1",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [-3, 0.45, -1],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        }
+      }
+    },
+    {
+      "id": "island-2",
+      "name": "Platform island-2",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [0, 0.9, -4],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        },
+        "Platform": {
+          "checkpoint": true
+        }
+      }
+    },
+    {
+      "id": "island-3",
+      "name": "Platform island-3",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [3, 1.35, -7],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        },
+        "Platform": {
+          "motion": {
+            "axis": "x",
+            "amplitude": 0.35,
+            "speed": 0.8,
+            "phase": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "island-4",
+      "name": "Platform island-4",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [0, 1.8, -10],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        },
+        "Platform": {
+          "blink": {
+            "period": 5.5,
+            "phase": 0,
+            "solidDuration": 4,
+            "warningDuration": 0.8
+          }
+        }
+      }
+    },
+    {
+      "id": "island-5",
+      "name": "Platform island-5",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [-3, 2.25, -13],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        },
+        "Platform": {
+          "checkpoint": true
+        }
+      }
+    },
+    {
+      "id": "island-6",
+      "name": "Platform island-6",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [0, 2.7, -16],
+        "rotation": [0, 0, 0],
+        "scale": [3.6, 0.5, 3.2]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1, 1]
+        }
+      }
+    },
+    {
+      "id": "island-7",
+      "name": "Platform island-7",
+      "type": "MeshInstance3D",
+      "layer": "platforms",
+      "prefab": "platform",
+      "transform": {
+        "position": [3, 3.15, -19],
+        "rotation": [0, 0, 0],
+        "scale": [5, 0.5, 4]
+      },
+      "components": {
+        "Material": {
+          "albedoColor": [0.8, 0.91, 0.92, 1],
+          "uvScale": [1.25, 1]
+        }
+      }
+    },
+    {
+      "id": "coin_1",
+      "name": "Coin 1",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-0",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.2, 2, 0.25]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_2",
+      "name": "Coin 2",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-1",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_3",
+      "name": "Coin 3",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-2",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_4",
+      "name": "Coin 4",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-3",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_5",
+      "name": "Coin 5",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-4",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_6",
+      "name": "Coin 6",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-5",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_7",
+      "name": "Coin 7",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-6",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "coin_8",
+      "name": "Coin 8",
+      "type": "MeshInstance3D",
+      "layer": "coins",
+      "prefab": "coin",
+      "parent": "island-7",
+      "transform": {
+        "position": [0, 1.9, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.2, 2, 0.25]
+      },
+      "components": {
+        "Coin": {
+          "value": 10
+        }
+      }
+    },
+    {
+      "id": "player",
+      "name": "Player",
+      "type": "MeshInstance3D",
+      "layer": "actors",
+      "scripts": [
+        "src/entities/TrailPlayer.js"
+      ],
+      "transform": {
+        "position": [0, 0.4, 2.7],
+        "rotation": [0, 3.141593, 0],
+        "scale": [0.72, 0.72, 0.72]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.5,
+          "widthSegments": 24,
+          "heightSegments": 12
+        },
+        "Material": {
+          "albedoMap": "textura_player",
+          "roughness": 0.62,
+          "metallic": 0
+        },
+        "Data": {
+          "model": "character",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "goal",
+      "name": "Goal",
+      "type": "Node3D",
+      "layer": "goal",
+      "scripts": [
+        "src/entities/TrailGoal.js"
+      ],
+      "transform": {
+        "position": [4, 3.4299999999999997, -19.5],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1]
+      }
+    },
+    {
+      "id": "goal_beacon",
+      "name": "Goal Beacon",
+      "type": "MeshInstance3D",
+      "layer": "goal",
+      "parent": "goal",
+      "transform": {
+        "position": [0, 0.32, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 0.18,
+          "widthSegments": 20,
+          "heightSegments": 10
+        },
+        "Material": {
+          "albedoColor": [1, 0.45, 0.15, 1],
+          "emissiveColor": [0.28, 0.06, 0.01],
+          "roughness": 0.28
+        },
+        "Data": {
+          "castShadow": false,
+          "receiveShadow": false
+        }
+      }
+    },
+    {
+      "id": "goal_ring",
+      "name": "Goal Ring",
+      "type": "MeshInstance3D",
+      "layer": "goal",
+      "parent": "goal",
+      "transform": {
+        "position": [0, 0.03, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "segments": 48,
+          "innerRadius": 0.38,
+          "outerRadius": 0.55
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [1, 0.43, 0.2, 1]
+        },
+        "Data": {
+          "castShadow": false,
+          "receiveShadow": false
+        }
+      }
+    },
+    {
+      "id": "light_goal",
+      "name": "Goal Light",
+      "type": "Light3D",
+      "layer": "lights",
+      "parent": "goal",
+      "transform": {
+        "position": [0, 1.3, 0]
+      },
+      "components": {
+        "Light": {
+          "type": "point",
+          "color": [0.38, 1, 0.52],
+          "intensity": 1.1,
+          "range": 5
+        }
+      }
+    },
+    {
+      "id": "goal_pole",
+      "name": "Goal Pole",
+      "type": "MeshInstance3D",
+      "layer": "goal",
+      "transform": {
+        "position": [4.4, 4.95, -19.7],
+        "rotation": [0, 0, 0],
+        "scale": [0.07, 3.1, 0.07]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "albedoColor": [0.92, 0.96, 1, 1],
+          "roughness": 0.45,
+          "metallic": 0.12
+        }
+      }
+    },
+    {
+      "id": "goal_flag",
+      "name": "Goal Flag",
+      "type": "MeshInstance3D",
+      "layer": "goal",
+      "transform": {
+        "position": [3.94, 5.890000000000001, -19.7],
+        "rotation": [0, 0, 0],
+        "scale": [0.92, 0.48, 0.055]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [1, 0.36, 0.16, 1]
+        },
+        "Data": {
+          "castShadow": false,
+          "receiveShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-0_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-0",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-0_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-0",
+      "transform": {
+        "position": [-0.48, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.014, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-0_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-0",
+      "transform": {
+        "position": [0.48, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.014, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-1_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-1",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-1_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-1",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-1_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-1",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-2_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-2",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-2_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-2",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-2_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-2",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-2_checkpoint",
+      "name": "Checkpoint",
+      "type": "MeshInstance3D",
+      "layer": "markers",
+      "parent": "island-2",
+      "transform": {
+        "position": [0, 0.55, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "innerRadius": 0.6,
+          "outerRadius": 0.72,
+          "segments": 48
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [1, 0.75, 0.2, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-3_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-3",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-3_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-3",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-3_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-3",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-4_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-4",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-4_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-4",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-4_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-4",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-5_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-5",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-5_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-5",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-5_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-5",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-5_checkpoint",
+      "name": "Checkpoint",
+      "type": "MeshInstance3D",
+      "layer": "markers",
+      "parent": "island-5",
+      "transform": {
+        "position": [0, 0.55, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.277778, 2, 0.3125]
+      },
+      "components": {
+        "Mesh": {
+          "type": "ring",
+          "innerRadius": 0.6,
+          "outerRadius": 0.72,
+          "segments": 48
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [1, 0.75, 0.2, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-6_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-6",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-6_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-6",
+      "transform": {
+        "position": [-0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-6_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-6",
+      "transform": {
+        "position": [0.472222, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.019444, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-7_rock",
+      "name": "Rock underside",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-7",
+      "transform": {
+        "position": [0, -1.6, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.45, 2, 0.43]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 7,
+          "heightSegments": 4
+        },
+        "Material": {
+          "albedoColor": [0.211765, 0.403922, 0.470588, 1],
+          "roughness": 1
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-7_rail_left",
+      "name": "Rail left",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-7",
+      "transform": {
+        "position": [-0.48, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.014, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "island-7_rail_right",
+      "name": "Rail right",
+      "type": "MeshInstance3D",
+      "layer": "scenery",
+      "parent": "island-7",
+      "transform": {
+        "position": [0.48, 0.53, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.014, 0.05, 0.85]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.407843, 0.894118, 0.737255, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_1",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [12, -3, 4],
+        "rotation": [0, 0, 0],
+        "scale": [3, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_2",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [-11, -4, 0],
+        "rotation": [0, 0, 0],
+        "scale": [4, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_3",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [12, -5, -4],
+        "rotation": [0, 0, 0],
+        "scale": [5, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_4",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [-11, -3, -8],
+        "rotation": [0, 0, 0],
+        "scale": [3, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_5",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [12, -4, -12],
+        "rotation": [0, 0, 0],
+        "scale": [4, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_6",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [-11, -5, -16],
+        "rotation": [0, 0, 0],
+        "scale": [5, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_7",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [12, -3, -20],
+        "rotation": [0, 0, 0],
+        "scale": [3, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "cloud_8",
+      "name": "Cloud",
+      "type": "MeshInstance3D",
+      "layer": "clouds",
+      "transform": {
+        "position": [-11, -4, -24],
+        "rotation": [0, 0, 0],
+        "scale": [4, 0.7, 1.7]
+      },
+      "components": {
+        "Mesh": {
+          "type": "sphere",
+          "radius": 1,
+          "widthSegments": 10,
+          "heightSegments": 6
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [0.85098, 0.917647, 0.980392, 1]
+        },
+        "Data": {
+          "castShadow": false
+        }
+      }
+    }
+  ]
+}

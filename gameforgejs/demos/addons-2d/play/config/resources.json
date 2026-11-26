@@ -1,0 +1,23 @@
+{
+  "images": [
+    {
+      "name": "hills",
+      "path": "../assets/hills.svg"
+    },
+    {
+      "name": "trees",
+      "path": "../assets/trees.svg"
+    }
+  ],
+  "jsons": [
+    {
+      "name": "playground_scene",
+      "path": "../scenes/playground.gfscene.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    }
+  ],
+  "shaders": []
+}

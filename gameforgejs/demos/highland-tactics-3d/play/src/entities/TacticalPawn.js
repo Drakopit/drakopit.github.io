@@ -7,6 +7,6 @@ export class TacticalPawn extends GameObject {
         super();
         this.stats = this.AddComponent(new UnitStats(definition));
         this.travel = this.AddComponent(new UnitTravel(grid));
-        this.visual = this.AddComponent(new UnitVisual(scene, definition.color, definition.visualStyle));
+        this.visual = this.AddComponent(new UnitVisual(scene, definition.color, definition.visualStyle, definition.heroWeapon));
     }
 }

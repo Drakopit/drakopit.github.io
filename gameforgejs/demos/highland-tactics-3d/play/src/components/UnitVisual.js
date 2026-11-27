@@ -1,8 +1,8 @@
 import { Component } from 'gameforgejs/core';
-import { Mesh, PrimitiveMesh, ToonMaterial, Transform3D } from 'gameforgejs/3d';
+import { Mesh, ModelMeshFactory, PrimitiveMesh, ToonMaterial, Transform3D } from 'gameforgejs/3d';
 /** Original low-poly pawns with a cape, shield and forward-pointing weapon. */
 export class UnitVisual extends Component {
-    constructor(scene, color, visualStyle = null) {
+    constructor(scene, color, visualStyle = null, heroWeapon = false) {
         super();
         this.scene = scene;
         this.root = new Transform3D();
@@ -47,6 +47,7 @@ export class UnitVisual extends Component {
             { p: [-0.26, 0.4, -0.06], s: [0.08, 0.3, 0.27], m: steel },
             { p: [0.25, 0.4, -0.27], s: [0.055, 0.055, 0.55], m: steel },
         ];
+        if (heroWeapon) parts.pop();
         if (['weapon', 'armor', 'consumable', 'rest'].includes(visualStyle)) {
             parts.splice(-2);
             if (visualStyle === 'weapon') parts.push(
@@ -72,9 +73,22 @@ export class UnitVisual extends Component {
         }
         this.cloth = cloth;
         this.original = [...cloth.albedoColor];
+        this.heroWeapon = heroWeapon;
+        this.weapons = [];
     }
-    OnStart() { for (const mesh of this.meshes)
-        this.scene.Add(mesh); }
+    OnStart() {
+        for (const mesh of this.meshes) this.scene.Add(mesh);
+        if (this.heroWeapon) {
+            this.weapons = ['highland-sword', 'highland-staff'].map(name => {
+                const model = ModelMeshFactory.FromAsset(name);
+                model.transform.parent = this.root;
+                model.SetPosition(0.27, 0.42, -0.23);
+                model.SetScale(0.38);
+                model.AddTo(this.scene);
+                return model;
+            });
+        }
+    }
     OnUpdate() {
         const stats = this.owner.stats, p = this.owner.travel.position;
         this.root.SetPosition(p.x, p.y, p.z);
@@ -82,7 +96,16 @@ export class UnitVisual extends Component {
         this.cloth.albedoColor = stats.flash > 0 ? [1, 0.8, 0.6, 1] : this.original;
         for (const mesh of this.meshes)
             mesh.visible = stats.hp > 0;
+        const weaponIndex = stats.visualWeapon === 'Runed Staff' ? 1
+            : ['Training Blade', 'Highland Edge'].includes(stats.visualWeapon) ? 0 : -1;
+        this.weapons.forEach((model, index) => {
+            const visible = stats.hp > 0 && index === weaponIndex;
+            for (const mesh of model.meshes) mesh.visible = visible;
+        });
     }
-    OnDestroy() { for (const mesh of this.meshes)
-        this.scene.Remove(mesh); }
+    OnDestroy() {
+        for (const mesh of this.meshes) this.scene.Remove(mesh);
+        for (const model of this.weapons)
+            for (const mesh of model.meshes) this.scene.Remove(mesh);
+    }
 }

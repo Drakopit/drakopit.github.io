@@ -1,6 +1,8 @@
 import { ActionManager, Input, Touch } from 'gameforgejs/core';
 import { Commands, Facings } from '../data/BattleRules.js';
 import { ActiveSkills } from '../data/ClassSkills.js';
+import { DefaultTarget } from './ControlModes.js';
+import { CommandAvailable, FaceNearestEnemy } from '../data/HighlandActions.js';
 
 /** Shared command routing for keyboard, gamepad, native buttons, and world picking. */
 export class TacticalControls {
@@ -26,12 +28,21 @@ export class TacticalControls {
             l.hud.ToggleRing();
             return;
         }
+        if (l.exploring === 'battle' && t.phase === 'command'
+            && ['PC', 'Personalizado'].includes(l.controlSettings.mode)) {
+            for (let index = 0; index < 9; index++) {
+                if (!ActionManager.IsActionDown(`RADIAL_${index + 1}`)) continue;
+                this.SelectHotkey(index + 1);
+                return;
+            }
+        }
         if (l.exploring === 'explore') {
             const panelActions = [
                 ['INVENTORY', 'bag'],
                 ['EQUIPMENT', 'gear'],
                 ['CHARACTER', 'hero'],
                 ['PARTY', 'party'],
+                ['SETTINGS', 'settings'],
             ];
             for (const [action, panel] of panelActions) {
                 if (ActionManager.IsActionDown(action)) {
@@ -112,6 +123,12 @@ export class TacticalControls {
                 else
                     l.hud.SelectShopTab(direction === 'LEFT' ? 'buy' : 'sell');
             }
+            else if (l.exploring === 'explore' && l.hud.panel === 'settings')
+                l.hud.MoveSettingsSelection(index === 0 || index === 3 ? -1 : 1);
+            else if (l.exploring === 'explore' && l.hud.panel === 'map')
+                l.hud.MoveMapSelection(index === 0 || index === 3 ? -1 : 1);
+            else if (l.exploring === 'explore' && l.hud.panel === 'skills')
+                l.hud.MoveSkillTreeSelection(index === 0 || index === 3 ? -1 : 1);
             else if (t.phase === 'command')
                 t.command = (t.command + (index === 0 || index === 3 ? -1 : 1) + Commands.length) % Commands.length;
             else if (t.phase === 'face')
@@ -140,6 +157,14 @@ export class TacticalControls {
                 l.ToggleCompanion();
                 return;
             }
+            if (l.hud.panel === 'settings' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateSettingsSelection();
+                return;
+            }
+            if (l.hud.panel === 'skills' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateSkillTreeSelection();
+                return;
+            }
             if (l.hud.panel === 'bag' && ActionManager.IsActionDown('CONFIRM')) {
                 l.hud.ActivateBagItem();
                 return;
@@ -162,16 +187,16 @@ export class TacticalControls {
         this.UpdateBattleHover();
         if (t.phase === 'face') {
             const point = Touch.ToScreen(Input.instance.mouse.position, l.ui.Screen);
-            if (!this.facingPointer || point.x !== this.facingPointer.x || point.y !== this.facingPointer.y) {
+            if (this.facingPointer && (point.x !== this.facingPointer.x || point.y !== this.facingPointer.y)) {
                 const facing = l.terrain.FacingAtPoint(point, t, l.camera, l.ui.Screen);
                 if (facing >= 0) t.active.stats.facing = facing;
-                this.facingPointer = { x: point.x, y: point.y };
             }
+            this.facingPointer = { x: point.x, y: point.y };
             for (const raw of this.Points()) {
                 const facing = l.terrain.FacingAtPoint(Touch.ToScreen(raw, l.ui.Screen), t, l.camera, l.ui.Screen);
                 if (facing >= 0) {
                     t.active.stats.facing = facing;
-                    t.EndTurn();
+                    l.actions.EndTurn();
                     return;
                 }
             }
@@ -248,26 +273,64 @@ export class TacticalControls {
     Confirm() {
         const t = this.level.turn;
         if (t.phase === 'command') {
-            if (this.level.hud.CommandAvailable(t.command)) t.Choose(t.command);
-            else t.message = `${Commands[t.command]} is unavailable this turn.`;
+            this.SelectCommand(t.command);
         }
         else if (t.phase === 'move') {
-            if (!t.Move(t.cursor))
+            if (!this.level.actions.Move(t.cursor))
                 t.message = 'Choose a blue reachable tile';
         }
         else if (t.phase === 'target') {
             const target = t.Alive().find(p => p.stats.col === t.cursor.col && p.stats.row === t.cursor.row);
-            if (!t.Attack(target))
+            if (!this.level.actions.UseSkill(target))
                 t.message = 'Choose a highlighted target in reach and line of sight';
         }
         else if (t.phase === 'face')
-            t.EndTurn();
+            this.level.actions.EndTurn();
         else if (t.phase === 'item')
             this.level.UseBattlePotion();
         else if (t.phase === 'skill-select') {
             const skills = ActiveSkills(t.active.stats.archetype, t.active.stats.unlockedSkills);
             const skill = skills[t.skillCursor ?? 0];
-            if (skill) t.SelectSkill(skill.id);
+            if (skill) this.SelectSkill(skill.id);
         }
+    }
+
+    SelectCommand(index) {
+        const l = this.level, t = l.turn;
+        if (l.exploring !== 'battle' || !CommandAvailable(t, l.player, l.campaign, index)) {
+            t.message = `${Commands[index] ?? 'Command'} is unavailable this turn.`;
+            return false;
+        }
+
+        t.Choose(index);
+        if (l.controlSettings.smartTarget && t.phase === 'face') FaceNearestEnemy(t);
+        this.SelectDefaultTarget();
+        return true;
+    }
+
+    SelectHotkey(number) {
+        const l = this.level, t = l.turn;
+        if (l.exploring !== 'battle' || t.phase !== 'command'
+            || !['PC', 'Personalizado'].includes(l.controlSettings.mode) || number < 1 || number > 9) return false;
+        l.hud.CloseRing();
+        if (number <= 5) return this.SelectCommand(number - 1);
+        const skill = ActiveSkills(t.active?.stats.archetype, t.active?.stats.unlockedSkills)[number - 6];
+        if (!skill) {
+            t.message = 'No unlocked skill in that slot.';
+            return false;
+        }
+        return this.SelectCommand(2) && this.SelectSkill(skill.id);
+    }
+
+    SelectSkill(id) {
+        if (!this.level.turn.SelectSkill(id)) return false;
+        this.SelectDefaultTarget();
+        return true;
+    }
+
+    SelectDefaultTarget() {
+        if (!this.level.controlSettings.smartTarget) return;
+        const target = DefaultTarget(this.level.turn);
+        if (target) this.level.turn.cursor = { col: target.stats.col, row: target.stats.row };
     }
 }

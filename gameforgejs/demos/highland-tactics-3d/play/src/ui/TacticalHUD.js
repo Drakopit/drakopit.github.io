@@ -4,6 +4,8 @@ import { Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo } fr
 import { WorldMapDisplay } from '../data/WorldMaps.js';
 import { BattleRules, Commands, Facings, GetAbilityProfile } from '../data/BattleRules.js';
 import { ActiveSkills, SkillTrees } from '../data/ClassSkills.js';
+import { ControlModes, ControlSettings } from '../input/ControlModes.js';
+import { CommandAvailable } from '../data/HighlandActions.js';
 
 export function InventoryGridLayout(x, y, width, slotHeight) {
     const gap = 2, inner = width - 24, slotWidth = (inner - 8) / 5;
@@ -93,7 +95,7 @@ export class TacticalHUD {
         this.frame = new HUDFrame(level.ui.Draw);
         this.help = new InputHelpPanel(new Draw(this.screen), {
             title: 'Highland Tactics / Controls',
-            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character · K skills · M map · P party · F vendor · H help', 'Inventory: arrows select · [ / ] category · Enter use/equip.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'In battle: V tactical ring · arrows / 1–5 select · Enter confirm'],
+            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character · K skills · M map · P party · F vendor · H help', 'Inventory: arrows select · [ / ] category · Enter use/equip.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1–5 commands · 6–9 skills · V toggles tactical ring.'],
         });
         this.panel = null;
         this.selectedArchetype = 'vanguard';
@@ -110,6 +112,11 @@ export class TacticalHUD {
         this.ringOpen = false;
         this.ringProgress = 0;
         this.ringSelected = 0;
+        this.settingsSelection = 0;
+        this.mapSelection = 0;
+        this.skillTreeSelection = 0;
+        this.skillChoiceFocus = null;
+        this.skillChoicePointer = null;
         this.ringLayout = null;
         this.headerHeight = 140;
         this.buttons = [];
@@ -126,7 +133,7 @@ export class TacticalHUD {
             { label: 'Map', shortcut: 'M', panel: 'map', icon: 'map' },
             { label: 'Shop', shortcut: 'F', icon: 'shop' },
             { label: 'Party', shortcut: 'P', panel: 'party', icon: 'party' },
-            { label: 'Help', shortcut: 'H', icon: 'help' },
+            { label: 'Settings', shortcut: 'B', panel: 'settings', icon: 'help' },
         ].map(item => ({ ...item, button: this.Button('', () => this.ActivateBar(item)).button }));
         this.bagCategories = ['All', 'Weapons', 'Armor', 'Consumables'].map(category => ({
             ...this.Button(category.toUpperCase(), () => this.SelectBagCategory(category)),
@@ -135,8 +142,9 @@ export class TacticalHUD {
         this.bagSlots = Array.from({ length: 30 }, (_, index) =>
             this.Button('', () => { this.selectedBagIndex = index; }));
         this.gearSlots = EquipmentSlots.map(slot => ({
-            ...this.Button(slot.label, () => this.SelectGearSlot(slot.id)),
+            ...this.Button('', () => this.SelectGearSlot(slot.id)),
             slot: slot.id,
+            slotLabel: slot.label,
         }));
         this.gearPrevious = this.Button('‹', () => this.CycleGear(-1));
         this.gearNext = this.Button('›', () => this.CycleGear(1));
@@ -166,7 +174,7 @@ export class TacticalHUD {
             this.Button('RAIN', () => level.ToggleWeather()),
             this.Button('?', () => this.help.Toggle()),
         ];
-        this.commands = Commands.map((label, index) => this.Button(label, () => level.turn.Choose(index)));
+        this.commands = Commands.map((label, index) => this.Button(label, () => level.controls.SelectCommand(index)));
         this.skillNodeButtons = Object.values(SkillTrees).flat().map(skill => ({
             ...this.Button('LEARN', () => level.LearnSkill(skill.id)),
             skill,
@@ -174,11 +182,11 @@ export class TacticalHUD {
         this.skillChoiceButtons = Object.values(SkillTrees).flat()
             .filter(skill => skill.kind === 'active')
             .map(skill => ({
-                ...this.Button(skill.name.toUpperCase(), () => level.turn.SelectSkill(skill.id)),
+                ...this.Button(skill.name.toUpperCase(), () => this.FocusOrSelectSkill(skill.id)),
                 skill,
             }));
         this.facings = Facings.map((direction, index) => this.Button(direction.name, () => { level.turn.active.stats.facing = index; }));
-        this.wait = this.Button('CONFIRM WAIT', () => level.turn.EndTurn());
+        this.wait = this.Button('CONFIRM WAIT', () => level.actions.EndTurn());
         this.battlePotion = this.Button('USE POTION', () => level.UseBattlePotion());
         this.begin = this.Button('BEGIN ADVENTURE', () => level.CreateCharacter(this.selectedArchetype, this.nameField.GetText()));
         this.continue = this.Button('CONTINUE', () => level.ContinueGame());
@@ -206,7 +214,13 @@ export class TacticalHUD {
             return: this.Button('RETURN TO EXPLORATION', () => level.ReturnToExplore()),
             close: this.Button('×', () => { this.panel = null; }),
         };
-        this.talk = this.Button('TALK TO VENDOR', () => level.InteractShopkeeper());
+        this.talk = this.Button('', () => level.InteractShopkeeper());
+        this.mapZones = WorldMapDisplay('').zones.map((zone, index) =>
+            this.Button('', () => { this.mapSelection = index; }));
+        this.modeButtons = ControlModes.map(mode => this.Button(mode.toUpperCase(), () => this.SetControlMode(mode)));
+        this.customRadial = this.Button('', () => this.SetCustomOption('autoRadial'));
+        this.customTarget = this.Button('', () => this.SetCustomOption('smartTarget'));
+        this.settingsHelp = this.Button('HELP [H]', () => this.help.Toggle());
         this.nameField = new TextBox(this.screen);
         this.nameField.SetPlaceholder('Character name');
         this.nameField.SetMaxLength(20);
@@ -242,13 +256,79 @@ export class TacticalHUD {
     TogglePanel(panel) {
         if (panel === 'shop') return this.level.InteractShopkeeper();
         this.panel = this.panel === panel ? null : panel;
+        if (this.panel === 'map')
+            this.mapSelection = Math.max(0, WorldMapDisplay(this.level.zone.id).zones.findIndex(zone => zone.current));
+        if (this.panel === 'skills') this.skillTreeSelection = 0;
         this.panelPointer = null;
+    }
+
+    MoveMapSelection(step) {
+        this.mapSelection = (this.mapSelection + step + this.mapZones.length) % this.mapZones.length;
+    }
+
+    MoveSkillTreeSelection(step) {
+        const tree = SkillTrees[this.level.campaign.hero.archetype] ?? [];
+        if (tree.length) this.skillTreeSelection = (this.skillTreeSelection + step + tree.length) % tree.length;
+    }
+
+    ActivateSkillTreeSelection() {
+        const skill = SkillTrees[this.level.campaign.hero.archetype]?.[this.skillTreeSelection];
+        if (skill) this.level.LearnSkill(skill.id);
+    }
+
+    FocusOrSelectSkill(id) {
+        const turn = this.level.turn;
+        const skills = ActiveSkills(turn.active.stats.archetype, turn.active.stats.unlockedSkills);
+        const index = skills.findIndex(skill => skill.id === id);
+        if (index < 0) return;
+        turn.skillCursor = index;
+        if (this.level.controlSettings?.mode === 'Mobile' && this.skillChoiceFocus !== id) {
+            this.skillChoiceFocus = id;
+            turn.message = 'Tap again to choose this skill.';
+            return;
+        }
+        this.level.controls.SelectSkill(id);
+    }
+
+    UpdateSkillChoiceHover(pointer, choices, y, buttonWidth, gap) {
+        if (this.skillChoicePointer && pointer.x === this.skillChoicePointer.x && pointer.y === this.skillChoicePointer.y) return;
+        const index = choices.findIndex((skill, i) => pointer.x >= 15 + i * (buttonWidth + gap)
+            && pointer.x <= 15 + i * (buttonWidth + gap) + buttonWidth && pointer.y >= y + 53 && pointer.y <= y + 87);
+        if (index >= 0) this.level.turn.skillCursor = index;
+        this.skillChoicePointer = { x: pointer.x, y: pointer.y };
     }
 
     ToggleRing() {
         if (this.level.exploring !== 'battle' || this.level.turn.phase !== 'command') return;
         this.ringOpen = !this.ringOpen;
         if (this.ringOpen) this.ringSelected = this.level.turn.command ?? 0;
+    }
+
+    SetControlMode(mode) {
+        this.level.SetControlSettings(ControlSettings(mode, this.level.controlSettings));
+        this.settingsSelection = ControlModes.indexOf(mode);
+        this.ringOpen = false;
+        this.wasBattleCommand = false;
+    }
+
+    SetCustomOption(option) {
+        const settings = this.level.controlSettings;
+        if (settings.mode !== 'Personalizado') return;
+        this.level.SetControlSettings(ControlSettings('Personalizado', { ...settings, [option]: !settings[option] }));
+        this.settingsSelection = option === 'autoRadial' ? 4 : 5;
+    }
+
+    MoveSettingsSelection(step) {
+        const count = this.level.controlSettings.mode === 'Personalizado' ? 7 : 5;
+        this.settingsSelection = (this.settingsSelection + step + count) % count;
+    }
+
+    ActivateSettingsSelection() {
+        const selection = this.settingsSelection;
+        if (selection < ControlModes.length) this.SetControlMode(ControlModes[selection]);
+        else if (this.level.controlSettings.mode === 'Personalizado' && selection < 6)
+            this.SetCustomOption(selection === 4 ? 'autoRadial' : 'smartTarget');
+        else this.help.Toggle();
     }
 
     CloseRing() {
@@ -259,6 +339,10 @@ export class TacticalHUD {
         if (this.level.exploring === 'creation' && this.nameField?.Click?.())
             this.level.controls?.SuppressNextWorldClick();
         const command = this.level.exploring === 'battle' && this.level.turn.phase === 'command';
+        if (this.level.turn.phase !== 'skill-select') {
+            this.skillChoiceFocus = null;
+            this.skillChoicePointer = null;
+        }
         if (!command) {
             this.ringOpen = false;
             this.ringProgress = 0;
@@ -266,7 +350,7 @@ export class TacticalHUD {
             this.ringPointer = null;
         }
         else if (!this.wasBattleCommand) {
-            this.ringOpen = true;
+            this.ringOpen = this.level.controlSettings?.autoRadial ?? true;
             this.ringSelected = this.level.turn.command ?? 0;
         }
         this.wasBattleCommand = command;
@@ -289,18 +373,12 @@ export class TacticalHUD {
         }
         this.ringSelected = index;
         this.ringOpen = false;
-        this.level.turn.Choose(index);
+        this.level.controls.SelectCommand(index);
     }
 
     CommandAvailable(index) {
-        const t = this.level.turn;
-        if (this.level.exploring !== 'battle' || t.phase !== 'command' || !t.active || t.active.stats.team !== 'ally') return false;
-        if (index === 0) return !t.moved;
-        if (index === 1) return !t.acted && (t.active.stats.energy ?? 0) >= GetAbilityProfile(t.active.stats, t.active.stats.basicAbility).energy;
-        if (index === 2) return !t.acted && ActiveSkills(t.active.stats.archetype, t.active.stats.unlockedSkills)
-            .some(skill => (t.active.stats.energy ?? 0) >= GetAbilityProfile(t.active.stats, skill.id).energy);
-        if (index === 3) return !t.acted && t.active === this.level.player && (this.level.campaign.inventory.Potion ?? 0) > 0 && t.active.stats.hp < t.active.stats.maxHp;
-        return index === 4;
+        return this.level.exploring === 'battle'
+            && CommandAvailable(this.level.turn, this.level.player, this.level.campaign, index);
     }
 
     ActivateBar(item) {
@@ -480,9 +558,28 @@ export class TacticalHUD {
         const width = Math.min(430, s.Width - 20), y = layout[0].y - 31;
         f.Panel({ x: 10, y, width, height: 28 });
         f.Text(l.turn.message, 22, y + 19, { size: 10, color: f.theme.gold, maxWidth: width - 24 });
-        if (l.CanInteractShopkeeper())
-            this.Place(this.talk, 12, y - 38, Math.min(170, width - 4), 34, true);
         this.DrawExplorationBar(layout);
+    }
+
+    DrawVendorPrompt(vendor) {
+        const { level: l, screen: s, frame: f } = this;
+        const position = vendor.travel.position;
+        const point = l.camera.Project(new Vector3D(position.x, position.y + 1.5, position.z), s.Width, s.Height);
+        const width = 72, height = 28, x = point.x - width / 2, y = point.y - height;
+        const bottom = ExplorationBarLayout(s.Width, s.Height)[0].y - 31;
+        if (!point.visible || !Number.isFinite(x) || !Number.isFinite(y)
+            || x < 0 || x + width > s.Width || y < this.headerHeight || y + height > bottom) return;
+        this.Place(this.talk, x, y, width, height);
+        const c = s.Context;
+        c.save();
+        c.strokeStyle = f.theme.gold;
+        c.lineWidth = 1.5;
+        c.beginPath();
+        c.moveTo(x + 9, y + 8); c.lineTo(x + 21, y + 8); c.lineTo(x + 21, y + 17);
+        c.lineTo(x + 16, y + 17); c.lineTo(x + 12, y + 20); c.lineTo(x + 12, y + 17);
+        c.lineTo(x + 9, y + 17); c.closePath(); c.stroke();
+        c.restore();
+        f.Text('Talk', x + 47, y + 19, { size: 11, align: 'center', weight: 700, color: f.theme.gold });
     }
 
     DrawExplorationBar(layout) {
@@ -543,40 +640,31 @@ export class TacticalHUD {
     }
 
     DrawExploreRoute() {
-        const { level: l, screen: s, frame: f } = this;
+        const { level: l, screen: s } = this;
         const route = l.exploreRoute;
         if (!route?.path.length) return;
-        const project = tile => {
-            const world = l.terrain.World(l.grid.Get(tile.col, tile.row));
-            return l.camera.Project(new Vector3D(world.x, world.y + 0.06, world.z), s.Width, s.Height);
-        };
-        const points = [route.origin, ...route.path].map(project);
-        const drawLabel = (label, point) => {
-            const width = 72, height = 22;
-            const x = Math.max(4, Math.min(s.Width - width - 4, point.x - width / 2));
-            const preferredY = point.y < this.headerHeight + 50 ? point.y + 12 : point.y - height - 12;
-            const y = Math.max(this.headerHeight + 4, Math.min(s.Height - 126, preferredY));
-            const context = s.Context;
-            context.save();
-            context.beginPath();
-            context.roundRect(x, y, width, height, 5);
-            context.fillStyle = 'rgba(8, 15, 22, .96)';
-            context.fill();
-            context.strokeStyle = 'rgba(233, 221, 165, .85)';
-            context.lineWidth = 1;
-            context.stroke();
-            context.fillStyle = '#f9cb5b';
-            context.font = '700 10px Arial';
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            context.fillText(label, x + width / 2, y + height / 2);
-            context.restore();
-        };
-        if (points[0].visible && Number.isFinite(points[0].x) && Number.isFinite(points[0].y))
-            drawLabel('MoveFrom', points[0]);
-        const destination = points[points.length - 1];
-        if (destination.visible && Number.isFinite(destination.x) && Number.isFinite(destination.y))
-            drawLabel('MoveTo', destination);
+        const tile = l.grid.Get(route.destination.col, route.destination.row);
+        if (!tile) return;
+        const world = l.terrain.World(tile);
+        const point = l.camera.Project(new Vector3D(world.x, world.y + 0.06, world.z), s.Width, s.Height);
+        if (!point.visible || !Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
+        const c = s.Context;
+        c.save();
+        c.beginPath();
+        c.moveTo(point.x, point.y - 5);
+        c.lineTo(point.x - 8, point.y - 17);
+        c.lineTo(point.x - 4, point.y - 17);
+        c.lineTo(point.x - 4, point.y - 26);
+        c.lineTo(point.x + 4, point.y - 26);
+        c.lineTo(point.x + 4, point.y - 17);
+        c.lineTo(point.x + 8, point.y - 17);
+        c.closePath();
+        c.fillStyle = '#f9cb5b';
+        c.strokeStyle = '#172027';
+        c.lineWidth = 2;
+        c.fill();
+        c.stroke();
+        c.restore();
     }
 
     DrawBattle() {
@@ -607,17 +695,21 @@ export class TacticalHUD {
         const inspection = inspected
             ? `${inspected.stats.name} · ${inspected.stats.role ?? inspected.stats.team} · Lv ${inspected.stats.level ?? 1} · HP ${inspected.stats.hp}/${inspected.stats.maxHp} · EN ${inspected.stats.energy ?? 0}/${inspected.stats.energyMax ?? 2}${statuses ? ` · ${statuses}` : ''}${preview ? preview.heal !== undefined ? ` · +${preview.heal} HP` : preview.shield !== undefined ? ` · ${preview.shield} SHIELD` : preview.haste !== undefined ? ` · HASTE ${preview.haste} turns` : ` · ${preview.chance}% / ${preview.damage} dmg` : ''} · ${GetAbilityProfile(inspected.stats, inspected.stats.basicAbility).name}`
             : null;
+        const gap = 5, buttonWidth = Math.max(54, (width - 20 - gap * (this.commands.length - 1)) / this.commands.length);
+        if (t.phase === 'skill-select') {
+            const pointer = Touch.ToScreen(Input.instance.mouse.position, s);
+            this.UpdateSkillChoiceHover(pointer, ActiveSkills(t.active?.stats.archetype, t.active?.stats.unlockedSkills), y, buttonWidth, gap);
+        }
         const selectedSkill = t.phase === 'skill-select' && t.active
             ? ActiveSkills(t.active.stats.archetype, t.active.stats.unlockedSkills)[t.skillCursor ?? 0]
             : null;
         const skillHint = selectedSkill
-            ? `${selectedSkill.name} · ${GetAbilityProfile(t.active.stats, selectedSkill.id).energy} EN · ${selectedSkill.description}`
+            ? `${selectedSkill.name} · ${GetAbilityProfile(t.active.stats, selectedSkill.id).energy} EN · ${selectedSkill.description} · Preview: nearest valid target`
             : null;
         f.Text(skillHint ?? inspection ?? (tile ? `Tile ${tile.col},${tile.row} · H ${tile.h} · ${t.message}` : t.message), 21, y + 40, {
             size: 10, color: f.theme.gold, maxWidth: width - 22,
         });
         if (inspected && !this.ringOpen) this.DrawBattleInspection(inspected, preview, statuses);
-        const gap = 5, buttonWidth = Math.max(54, (width - 20 - gap * (this.commands.length - 1)) / this.commands.length);
         if (t.phase === 'skill-select') {
             const choices = ActiveSkills(t.active?.stats.archetype, t.active?.stats.unlockedSkills);
             choices.forEach((skill, index) => {
@@ -627,8 +719,12 @@ export class TacticalHUD {
         }
         else if (t.phase === 'item')
             this.Place(this.battlePotion, 15, y + 53, Math.min(150, width - 20), 34, true);
-        else if (t.phase === 'command')
+        else if (t.phase === 'command') {
             this.Place(this.menuTrigger, 15, y + 53, Math.min(150, width - 20), 34, true, this.ringOpen);
+            if (l.controlSettings?.mode === 'PC' || l.controlSettings?.mode === 'Personalizado')
+                f.Text('1 MOVE · 2 ATTACK · 3 SKILL · 4 ITEM · 5 WAIT · 6–9 SKILLS',
+                    175, y + 74, { size: 9, color: f.theme.gold, maxWidth: width - 185 });
+        }
         if (t.phase === 'face') {
             const faceWidth = (width - 18) / 5;
             this.facings.forEach((item, index) => this.Place(item, 13 + index * (faceWidth + 3), y + 53, faceWidth, 34, true, active?.facing === index));
@@ -1086,6 +1182,13 @@ export class TacticalHUD {
                 && pointer.y >= rect.y && pointer.y <= rect.y + rect.height;
             if (hovered) this.SelectGearSlot(rect.slot);
             this.Place(item, rect.x, rect.y, rect.width, rect.height, true, this.selectedGearSlot === rect.slot);
+            f.Text(item.slotLabel, rect.x + rect.width / 2, rect.y + 11, {
+                size: 9, align: 'center', weight: 700,
+                color: this.selectedGearSlot === rect.slot ? f.theme.gold : f.theme.text, maxWidth: rect.width - 8,
+            });
+            f.Text(l.campaign.equipment[rect.slot] ?? 'Empty', rect.x + rect.width / 2, rect.y + 23, {
+                size: 9, align: 'center', maxWidth: rect.width - 8,
+            });
         }
         const slot = EquipmentSlots.find(entry => entry.id === this.selectedGearSlot);
         const equipped = l.campaign.equipment[slot.id];
@@ -1100,55 +1203,99 @@ export class TacticalHUD {
         this.Place(this.gearEquip, x + 90, y + 227, width - 102, 28, Boolean(alternate));
     }
 
-    DrawWorldMap(x, y, width, hero) {
+    DrawWorldMap(x, y, width, height, hero) {
         const { frame: f, screen: s, level: l } = this;
         const map = WorldMapDisplay(l.zone.id, l.campaign.clearedZones);
-        const context = s.Context;
-        const left = x + 30, right = x + width - 30, centerY = y + 132;
-        const nodeX = zone => x + 30 + zone.position.x * (width - 60);
-        context.save();
-        context.strokeStyle = '#7a8990';
-        context.lineWidth = 3;
+        const c = s.Context;
+        const left = x + 12, top = y + 39, mapWidth = width - 24, mapHeight = height - 122;
+        const positions = map.zones.map((zone, index) => ({
+            x: left + mapWidth * zone.position.x,
+            y: top + mapHeight * [0.64, 0.39, 0.55][index],
+        }));
+        c.save();
+        c.fillStyle = '#273d37';
+        c.fillRect(left, top, mapWidth, mapHeight);
+        c.beginPath();
+        c.moveTo(left, top + mapHeight * 0.62);
+        c.lineTo(left + mapWidth * 0.36, top + mapHeight * 0.27);
+        c.lineTo(left + mapWidth * 0.67, top + mapHeight * 0.55);
+        c.lineTo(left + mapWidth, top + mapHeight * 0.26);
+        c.lineTo(left + mapWidth, top + mapHeight);
+        c.lineTo(left, top + mapHeight); c.closePath();
+        c.fillStyle = '#51654b'; c.fill();
+        c.beginPath();
+        c.moveTo(left + mapWidth * 0.48, top);
+        c.lineTo(left + mapWidth, top);
+        c.lineTo(left + mapWidth, top + mapHeight);
+        c.lineTo(left + mapWidth * 0.72, top + mapHeight);
+        c.closePath(); c.fillStyle = '#575247'; c.fill();
+        c.strokeStyle = 'rgba(213, 227, 197, .13)'; c.lineWidth = 1;
+        for (let i = 1; i < 6; i++) {
+            c.beginPath(); c.moveTo(left + mapWidth * i / 6, top); c.lineTo(left + mapWidth * i / 6, top + mapHeight); c.stroke();
+        }
+        for (let i = 1; i < 4; i++) {
+            c.beginPath(); c.moveTo(left, top + mapHeight * i / 4); c.lineTo(left + mapWidth, top + mapHeight * i / 4); c.stroke();
+        }
+        c.strokeStyle = '#89a99b'; c.lineWidth = 3;
+        c.beginPath(); c.moveTo(left + mapWidth * 0.12, top);
+        c.bezierCurveTo(left + mapWidth * 0.28, top + mapHeight * 0.3, left + mapWidth * 0.08, top + mapHeight * 0.65,
+            left + mapWidth * 0.22, top + mapHeight); c.stroke();
+        for (const [tx, ty] of [[0.08, 0.35], [0.24, 0.22], [0.34, 0.75], [0.43, 0.12], [0.56, 0.77]]) {
+            const px = left + mapWidth * tx, py = top + mapHeight * ty;
+            c.beginPath(); c.moveTo(px, py - 9); c.lineTo(px - 6, py + 4); c.lineTo(px + 6, py + 4); c.closePath();
+            c.fillStyle = '#203b31'; c.fill(); c.strokeStyle = '#91aa81'; c.lineWidth = 1; c.stroke();
+        }
+        for (const [mx, my] of [[0.68, 0.18], [0.82, 0.28], [0.9, 0.73]]) {
+            const px = left + mapWidth * mx, py = top + mapHeight * my;
+            c.beginPath(); c.moveTo(px - 12, py + 8); c.lineTo(px, py - 12); c.lineTo(px + 12, py + 8);
+            c.closePath(); c.fillStyle = '#827c6b'; c.fill(); c.strokeStyle = '#d7cba8'; c.stroke();
+        }
+        c.lineWidth = 3;
         for (const route of map.routes) {
-            const from = map.zones.find(zone => zone.id === route.from);
-            const to = map.zones.find(zone => zone.id === route.to);
-            context.beginPath();
-            context.moveTo(nodeX(from), centerY);
-            context.lineTo(nodeX(to), centerY);
-            context.strokeStyle = route.open ? '#cfb76e' : '#58636a';
-            context.setLineDash(route.open ? [] : [5, 4]);
-            context.stroke();
+            const from = positions[map.zones.findIndex(zone => zone.id === route.from)];
+            const to = positions[map.zones.findIndex(zone => zone.id === route.to)];
+            c.beginPath(); c.moveTo(from.x, from.y); c.lineTo(to.x, to.y);
+            c.strokeStyle = route.open ? '#dfc483' : '#8b8374';
+            c.setLineDash(route.open ? [] : [5, 4]); c.stroke();
         }
-        context.setLineDash([]);
-        for (const zone of map.zones) {
-            const px = nodeX(zone);
-            context.beginPath();
-            context.arc(px, centerY, zone.current ? 17 : 13, 0, Math.PI * 2);
-            context.fillStyle = zone.current ? '#d6b65d' : zone.cleared ? '#6aa88d' : '#243741';
-            context.strokeStyle = zone.current ? '#f5e1a1' : '#a9b5b8';
-            context.lineWidth = zone.current ? 3 : 1;
-            context.fill();
-            context.stroke();
-            f.Text(zone.current ? 'YOU' : zone.cleared ? '✓' : '·', px, centerY + 4, {
-                size: zone.current ? 9 : 12, align: 'center', weight: 700, color: zone.current ? '#15232b' : '#f2e7c7',
+        c.setLineDash([]);
+        map.zones.forEach((zone, index) => {
+            const { x: px, y: py } = positions[index];
+            const selected = index === this.mapSelection;
+            const button = this.mapZones[index].button;
+            button.enabled = true;
+            button.SetButton(new Rectangle(px - 25, py - 23, 50, 46));
+            c.beginPath(); c.arc(px, py, selected ? 19 : 16, 0, Math.PI * 2);
+            c.fillStyle = zone.current ? '#dbbc6e' : '#263932';
+            c.strokeStyle = selected ? '#fff1bb' : '#d2c292'; c.lineWidth = selected ? 3 : 1;
+            c.fill(); c.stroke();
+            c.strokeStyle = zone.current ? '#263932' : '#e5d6a5'; c.lineWidth = 2;
+            c.beginPath();
+            if (index === 0) {
+                c.moveTo(px - 8, py + 7); c.lineTo(px - 8, py - 3); c.lineTo(px, py - 9);
+                c.lineTo(px + 8, py - 3); c.lineTo(px + 8, py + 7); c.closePath();
+            } else if (index === 1) {
+                c.moveTo(px - 10, py + 7); c.lineTo(px - 3, py - 8); c.lineTo(px + 2, py + 1);
+                c.lineTo(px + 5, py - 4); c.lineTo(px + 11, py + 7); c.closePath();
+            } else {
+                c.moveTo(px - 7, py + 8); c.lineTo(px - 7, py - 8); c.lineTo(px - 3, py - 8);
+                c.lineTo(px - 3, py - 4); c.lineTo(px + 3, py - 4); c.lineTo(px + 3, py - 8);
+                c.lineTo(px + 7, py - 8); c.lineTo(px + 7, py + 8); c.closePath();
+            }
+            c.stroke();
+            f.Text(zone.name, px, py + 30, {
+                size: 9, align: 'center', weight: 700, color: '#fff3d4', maxWidth: mapWidth / 3,
             });
-            f.Text(zone.name, px, centerY + 36, {
-                size: 9, align: 'center', weight: zone.current ? 700 : 400, color: zone.current ? f.theme.gold : f.theme.text,
-                maxWidth: width / 3,
-            });
-        }
-        context.restore();
-        f.Text('CONNECTED HIGHLANDS', x + width / 2, y + 53, {
-            size: 12, align: 'center', weight: 700, color: f.theme.gold,
         });
-        f.Text(`Current: ${l.zone.name} · Local tile ${hero.col + 1}, ${hero.row + 1}`, x + width / 2, y + 80, {
-            size: 10, align: 'center', maxWidth: width - 28,
-        });
-        const nextZone = map.zones.find(zone => zone.id === 'ashen-ridge');
-        f.Text(nextZone && !map.routes.find(route => route.to === nextZone.id)?.open
-            ? 'The Ashen Ridge road opens after the Mistfell patrol is cleared.'
-            : 'Follow the marked roads between highland zones.', x + width / 2, y + 190, {
-            size: 9, align: 'center', maxWidth: width - 28,
+        c.restore();
+        const selected = map.zones[this.mapSelection];
+        const locked = selected.id === 'ashen-ridge' && !map.routes.find(route => route.to === selected.id)?.open;
+        f.Text(`${selected.name}${selected.current ? ' · YOU ARE HERE' : selected.cleared ? ' · CLEARED' : ''}`,
+            x + 14, y + height - 61, { size: 11, weight: 700, color: f.theme.gold, maxWidth: width - 28 });
+        f.Text(locked ? 'Road locked: clear the Mistfell patrol.' : 'Follow the roads to travel between regions.',
+            x + 14, y + height - 43, { size: 9, maxWidth: width - 28 });
+        f.Text(`Select a region · arrows / tap   |   Current tile ${hero.col + 1}, ${hero.row + 1}`, x + 14, y + height - 22, {
+            size: 9, maxWidth: width - 28,
         });
     }
 
@@ -1176,19 +1323,36 @@ export class TacticalHUD {
     DrawPanel() {
         if (!this.panel || this.level.exploring === 'creation') return;
         const { level: l, screen: s, frame: f } = this;
-        const x = 10, y = this.headerHeight + 16, width = Math.min(300, s.Width - 20);
         const hero = l.campaign.hero, panel = this.panel;
-        const heading = { hero: 'CHARACTER', bag: 'INVENTORY', gear: 'EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS' }[panel];
+        const width = Math.min(panel === 'map' ? 680 : 300, s.Width - 20);
+        const x = panel === 'map' ? (s.Width - width) / 2 : 10, y = this.headerHeight + 16;
+        const heading = { hero: 'CHARACTER', bag: 'INVENTORY', gear: 'EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
         const height = panel === 'shop' ? 276
+            : panel === 'settings' ? 228
             : panel === 'skills' ? 242
                 : panel === 'gear' ? 268
                 : panel === 'bag' ? (width < 400 ? 278 : 310)
-                    : panel === 'map' ? 246
+                    : panel === 'map' ? Math.min(410, Math.max(246, ExplorationBarLayout(s.Width, s.Height)[0].y - y - 10))
                     : 190;
         f.Panel({ x, y, width, height });
         f.Text(heading, x + 14, y + 23, { size: 14, weight: 700, color: f.theme.gold });
         this.Place(this.panelButtons.close, x + width - 38, y + 7, 28, 28, true);
-        if (panel === 'hero') {
+        if (panel === 'settings') {
+            const settings = l.controlSettings;
+            const buttonWidth = (width - 28) / 2;
+            this.modeButtons.forEach((item, index) => this.Place(item,
+                x + 12 + (index % 2) * (buttonWidth + 4), y + 36 + Math.floor(index / 2) * 32,
+                buttonWidth, 28, true, settings.mode === ControlModes[index] || this.settingsSelection === index));
+            this.customRadial.label = `AUTO RADIAL: ${settings.autoRadial ? 'ON' : 'OFF'}`;
+            this.customTarget.label = `SMART TARGET: ${settings.smartTarget ? 'ON' : 'OFF'}`;
+            this.Place(this.customRadial, x + 12, y + 105, width - 24, 28, settings.mode === 'Personalizado', this.settingsSelection === 4);
+            this.Place(this.customTarget, x + 12, y + 137, width - 24, 28, settings.mode === 'Personalizado', this.settingsSelection === 5);
+            if (settings.mode !== 'Personalizado')
+                f.Text(`Auto radial ${settings.autoRadial ? 'ON' : 'OFF'} · Smart target ON`, x + 14, y + 126, { size: 10 });
+            this.Place(this.settingsHelp, x + 12, y + 180, width - 24, 30, true,
+                this.settingsSelection === (settings.mode === 'Personalizado' ? 6 : 4));
+        }
+        else if (panel === 'hero') {
             f.Text(`${hero.className} · Level ${hero.level}`, x + 14, y + 48, { size: 12 });
             f.Text(`HP ${hero.hp}/${hero.maxHp} · ATK ${hero.attack} · MAG ${hero.magic} · DEF ${hero.defense}`, x + 14, y + 68, { size: 10, maxWidth: width - 28 });
             f.Text(`XP ${hero.xp}/${hero.nextXp} · Speed ${hero.speed}`, x + 14, y + 88, { size: 11 });
@@ -1199,7 +1363,7 @@ export class TacticalHUD {
             this.DrawBag(x, y, width, hero);
         }
         else if (panel === 'map')
-            this.DrawWorldMap(x, y, width, hero);
+            this.DrawWorldMap(x, y, width, height, hero);
         else if (panel === 'party') {
             const companion = l.battleData.units.filter(unit => unit.team === 'ally')[1];
             const progress = l.campaign.companion, stats = l.campaign.CompanionStats();
@@ -1224,14 +1388,24 @@ export class TacticalHUD {
                 const ready = skill.requires.every(required => l.campaign.unlockedSkills.includes(required));
                 const item = this.skillNodeButtons.find(entry => entry.skill.id === skill.id);
                 item.label = learned ? 'LEARNED' : ready && l.campaign.skillPoints > 0 ? 'UNLOCK' : 'LOCKED';
-                f.Text(`${skill.name} · ${skill.kind.toUpperCase()}`, x + 14, y + 69 + index * 45, { size: 11, weight: 700, maxWidth: width - 112 });
-                f.Text(skill.description, x + 14, y + 86 + index * 45, { size: 10, maxWidth: width - 28 });
+                const nodeY = y + 64 + index * 45, c = s.Context;
+                c.save();
+                c.strokeStyle = learned ? '#80c6a0' : '#9a906b'; c.lineWidth = 2;
+                if (index > 0) { c.beginPath(); c.moveTo(x + 22, nodeY - 38); c.lineTo(x + 22, nodeY - 8); c.stroke(); }
+                c.beginPath(); c.arc(x + 22, nodeY, 5, 0, Math.PI * 2);
+                c.fillStyle = learned ? '#80c6a0' : this.skillTreeSelection === index ? '#f9cb5b' : '#26343a';
+                c.fill(); c.stroke(); c.restore();
+                f.Text(`${skill.name} · ${skill.kind.toUpperCase()}`, x + 34, y + 69 + index * 45, { size: 10, weight: 700, maxWidth: width - 132 });
+                const requirement = skill.requires.map(id => tree.find(node => node.id === id)?.name ?? id).join(', ');
+                f.Text(requirement ? `Requires: ${requirement}` : 'Starting skill', x + 34, y + 84 + index * 45, { size: 9, maxWidth: width - 46 });
                 if (learned || !ready || l.campaign.skillPoints < 1)
                     f.Text(learned ? 'LEARNED' : ready ? 'NEED 1 SP' : 'LOCKED', x + width - 14, y + 69 + index * 45, {
                         size: 9, align: 'right', color: f.theme.muted,
                     });
-                this.Place(item, x + width - 91, y + 52 + index * 45, 78, 28, !learned && ready && l.campaign.skillPoints > 0);
+                this.Place(item, x + width - 91, y + 52 + index * 45, 78, 28, !learned && ready && l.campaign.skillPoints > 0, this.skillTreeSelection === index);
             });
+            if (tree[this.skillTreeSelection])
+                f.Text(tree[this.skillTreeSelection].description, x + 14, y + 235, { size: 9, maxWidth: width - 28 });
         }
         else if (panel === 'shop') {
             const vendor = l.activeVendor?.stats;
@@ -1298,13 +1472,18 @@ export class TacticalHUD {
         else if (l.exploring === 'explore') {
             this.DrawExploration();
             this.DrawPanel();
-            if (!l.hud.panel) for (const vendor of l.vendors ?? []) {
-                const position = vendor.travel.position;
-                const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.15, position.z), s.Width, s.Height);
-                if (projected.visible)
-                    this.frame.Text(vendor.stats.name.split(' ')[0].toUpperCase(), projected.x, projected.y - 12, {
-                        size: 10, align: 'center', weight: 700, color: this.frame.theme.gold,
-                    });
+            if (!l.hud.panel) {
+                const nearest = l.NearestVendor();
+                for (const vendor of l.vendors ?? []) {
+                    if (nearest?.vendor === vendor && nearest.distance <= 1) continue;
+                    const position = vendor.travel.position;
+                    const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.15, position.z), s.Width, s.Height);
+                    if (projected.visible)
+                        this.frame.Text(vendor.stats.name.split(' ')[0].toUpperCase(), projected.x, projected.y - 12, {
+                            size: 10, align: 'center', weight: 700, color: this.frame.theme.gold,
+                        });
+                }
+                if (nearest?.distance <= 1) this.DrawVendorPrompt(nearest.vendor);
             }
             if (l.hoveredEncounter)
                 this.DrawEncounterTooltip();

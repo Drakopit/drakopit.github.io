@@ -5,13 +5,13 @@
       "id": "highland-tactics-3d",
       "name": "Highland Tactics 3D",
       "dimension": "3d",
-      "description": "Explore three canonical scene-authored 21×17 zones, meet roaming patrol groups, visit four specialist shops, save progress, and develop four classes through tactical battles.",
-      "controls": "Walk with WASD/arrows or click any reachable tile; Escape cancels a route or closes a panel. F interacts with nearby vendors. I inventory, E equipment, C character and save, K skills, M map, P party. Enter/Space confirms battle actions; V toggles the tactical menu; use arrows or 1–5 to choose. Q/O orbit, T rain, R retry, H help. Tab opens semantic controls for supported menus; character creation, world and battle grid are not fully screen-reader accessible.",
+      "description": "Explore three authored 21×17 zones with click-to-path route indicators, roaming patrols, and shopkeeper NPCs. Manage eight equipment slots and develop four classes through tactical battles, with a world map, skill graph and area previews, and PC, Console, Mobile, and Personalizado control modes.",
+      "controls": "Walk with WASD/arrows or click any reachable tile; gold route tiles and an arrow show the path and destination. F or the Talk icon interacts with nearby vendors. I inventory, E equipment, C character/save, K skill graph, M world map, P party, B settings/control modes. In PC battle mode, 1–5 select Move, Attack, Skill, Item, and Wait; 6–9 select unlocked skills. V opens the optional tactical ring. Console and Mobile use radial commands; Personalizado can toggle radial opening and smart targeting. Enter/Space confirms; Escape cancels. Q/O orbit, T rain, R retry, H help. Tab opens semantic controls for supported menus; screen-reader navigation is not available for character creation, world exploration, or the battle grid.",
       "playable": true,
       "screenshot": true,
       "screenshotExtension": "png",
       "statusLabel": "Playable",
-      "sourceRevision": "90ca559d7c2d60dcc3331d4003cfdf29162fab94",
+      "sourceRevision": "9071e120edb127171d9fcd1a5bd74aa7f2659f85",
       "runtimeRevision": "16f95fc35922fee19ee3849738bff6b858748ec4"
     },
     {

@@ -11,6 +11,8 @@ import { TerrainView } from '../rendering/TerrainView.js';
 import { TurnSystem } from '../components/TurnSystem.js';
 import { TacticalControls } from '../input/TacticalControls.js';
 import { TacticalHUD } from '../ui/TacticalHUD.js';
+import { ControlSettings } from '../input/ControlModes.js';
+import { HighlandActions } from '../data/HighlandActions.js';
 
 /** Scene composition and campaign transitions; combat rules remain in ECS components. */
 export class HighlandLevel extends Level3D {
@@ -19,9 +21,24 @@ export class HighlandLevel extends Level3D {
         this.id = sceneId;
         this.sceneId = sceneId;
         this.caption = 'Highland Tactics 3D';
+        this.actions = new HighlandActions(this);
     }
 
     BuildScene() {
+        let settings = this.sceneParams.controlSettings;
+        let settingsError = null;
+        if (!settings) {
+            try {
+                const saved = globalThis.localStorage?.getItem('highland-control-settings-v1');
+                if (saved) settings = JSON.parse(saved);
+                settings = ControlSettings(settings?.mode ?? 'PC', settings);
+            }
+            catch (error) {
+                settings = ControlSettings();
+                settingsError = `Control settings could not be loaded: ${error.message}`;
+            }
+        }
+        this.controlSettings = ControlSettings(settings.mode, settings);
         const document = this.context.assets.jsons[this.sceneId];
         if (!document) throw new Error(`Highland scene "${this.sceneId}" is missing from resources.json.`);
         const prefabs = SceneDocument.LoadedPrefabs(this.context.assets);
@@ -77,6 +94,7 @@ export class HighlandLevel extends Level3D {
         this.turn.message = this.isBattleScene ? '' : this.exploring === 'creation'
             ? 'Choose a calling to begin your journey.'
             : `${this.zone.name} · ${this.zone.subtitle}`;
+        if (settingsError) this.turn.message = settingsError;
         const director = new GameObject();
         this.sound = director.AddComponent(new SoundEffects(this.context.services.get('audio')));
         this.turn.sound = this.sound;
@@ -118,6 +136,18 @@ export class HighlandLevel extends Level3D {
             team: 'ally',
             unlockedSkills: [...this.campaign.unlockedSkills],
         };
+    }
+
+    SetControlSettings(settings) {
+        this.controlSettings = ControlSettings(settings.mode, settings);
+        try {
+            if (!globalThis.localStorage) throw new Error('browser storage is unavailable');
+            globalThis.localStorage.setItem('highland-control-settings-v1', JSON.stringify(this.controlSettings));
+            this.turn.message = `${this.controlSettings.mode} controls selected.`;
+        }
+        catch (error) {
+            this.turn.message = `Control settings apply for this session, but could not be saved: ${error.message}`;
+        }
     }
 
     CreateShopkeeper(vendor = this.zone.vendors?.[0]) {
@@ -356,7 +386,7 @@ export class HighlandLevel extends Level3D {
         this.campaign.zoneId = zoneId;
         this.campaign.hero.col = position.col;
         this.campaign.hero.row = position.row;
-        this.LoadScene(zoneId, { campaign: this.campaign.SaveData(), entry: position });
+        this.LoadScene(zoneId, { campaign: this.campaign.SaveData(), entry: position, controlSettings: this.controlSettings });
         return true;
     }
 
@@ -471,6 +501,7 @@ export class HighlandLevel extends Level3D {
             zoneId: this.zone.id,
             encounterId,
             returnPosition: this.returnPosition,
+            controlSettings: this.controlSettings,
         });
         return true;
     }
@@ -520,34 +551,28 @@ export class HighlandLevel extends Level3D {
         this.exploring = 'battle';
         this.cameraViewTarget = 16;
         this.resultHandled = false;
+        this.lootResult = null;
         this.sound.Play('warning');
     }
 
     FinishBattle() {
         if (this.exploring !== 'battle' || this.resultHandled || !this.turn.result) return;
-        this.resultHandled = true;
-        this.campaign.SyncHero(this.player.stats);
-        const companion = this.pawns.find(pawn => pawn.stats.id === 'orin');
-        if (companion) this.campaign.SyncCompanion(companion.stats);
-        this.exploring = 'result';
-        this.turn.enabled = false;
         if (this.turn.result === 'VICTORY') {
-            this.campaign.clearedZones.add(this.encounterId);
-            this.campaign.hero.hp = Math.max(1, this.campaign.hero.hp);
-            this.campaign.gold += this.encounterId === 'ashen-ridge' ? 45 : 30;
-            const experience = this.encounterId === 'ashen-ridge' ? 90 : 60;
-            const levels = this.campaign.AwardExperience(experience);
-            if (companion) {
-                this.campaign.AwardCompanionExperience(experience);
-                this.campaign.companion.hp = Math.max(1, this.campaign.companion.hp);
-            }
+            const { levels } = this.lootResult ?? this.actions.Loot();
+            this.resultHandled = true;
             this.turn.message = levels
                 ? `VICTORY · Level ${this.campaign.hero.level}! Return to ${this.zone.name}.`
                 : `VICTORY · +${this.encounterId === 'ashen-ridge' ? 90 : 60} XP · Return to ${this.zone.name}.`;
         }
         else {
+            this.campaign.SyncHero(this.player.stats);
+            const companion = this.pawns.find(pawn => pawn.stats.id === 'orin');
+            if (companion) this.campaign.SyncCompanion(companion.stats);
+            this.resultHandled = true;
             this.turn.message = 'DEFEAT · Return to Hearthvale and recover before another patrol.';
         }
+        this.exploring = 'result';
+        this.turn.enabled = false;
     }
 
     ReturnToExplore() {
@@ -630,8 +655,7 @@ export class HighlandLevel extends Level3D {
     }
 
     EquipItem(item) {
-        const slot = EquipmentSlot(item);
-        if (!slot || !this.campaign.EquipOwned(item, slot)) return false;
+        if (!this.actions.Equip(item)) return false;
         this.SyncEquipmentToPlayer();
         this.turn.message = `${item} equipped.`;
         this.sound.Play('select');

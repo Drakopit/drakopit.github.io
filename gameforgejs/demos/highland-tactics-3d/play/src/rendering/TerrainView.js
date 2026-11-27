@@ -2,6 +2,7 @@ import { GameObject } from 'gameforgejs/2d';
 import { Vector3D } from 'gameforgejs/core';
 import { Geometry3D, Mesh, PrimitiveMesh, UnlitMaterial } from 'gameforgejs/3d';
 import { BattleRules, Facings, GetAbilityProfile, MapScale } from '../data/BattleRules.js';
+import { ActiveSkills } from '../data/ClassSkills.js';
 const highlight = PrimitiveMesh.Plane(MapScale.tile * 0.92, MapScale.tile * 0.92);
 const facingArrow = new Geometry3D({
     positions: [-0.2, 0, 0.11, 0.2, 0, 0.11, 0, 0, -0.25],
@@ -34,10 +35,21 @@ export class TerrainView extends GameObject {
     World(tile) { return new Vector3D((tile.col - (this.grid.cols - 1) / 2) * MapScale.tile, MapScale.base + tile.h * MapScale.elevation, (tile.row - (this.grid.rows - 1) / 2) * MapScale.tile); }
     Highlights(turn, exploreRoute = null) {
         const active = turn.active?.stats;
-        const profile = turn.phase === 'target' && active ? GetAbilityProfile(active, turn.ability) : null;
-        const targetTile = profile?.splash && turn.cursor ? this.grid.Get(turn.cursor.col, turn.cursor.row) : null;
+        const previewSkill = turn.phase === 'skill-select' && active
+            ? ActiveSkills(active.archetype, active.unlockedSkills)[turn.skillCursor ?? 0] : null;
+        const ability = previewSkill?.id ?? turn.ability;
+        const profile = (turn.phase === 'target' || previewSkill) && active ? GetAbilityProfile(active, ability) : null;
+        const previewTarget = previewSkill ? turn.Alive()
+            .filter(pawn => BattleRules.CanAttack(this.grid, active, pawn.stats, ability))
+            .sort((a, b) => {
+                const distance = pawn => Math.abs(pawn.stats.col - active.col) + Math.abs(pawn.stats.row - active.row);
+                return distance(a) - distance(b) || String(a.stats.id).localeCompare(String(b.stats.id));
+            })[0]?.stats : null;
+        const targetTile = previewTarget
+            ? this.grid.Get(previewTarget.col, previewTarget.row)
+            : turn.phase === 'target' && turn.cursor ? this.grid.Get(turn.cursor.col, turn.cursor.row) : null;
         const occupant = targetTile && turn.Alive().find(p => p.stats.col === targetTile.col && p.stats.row === targetTile.row)?.stats;
-        const validTarget = targetTile && BattleRules.CanAttack(this.grid, active, occupant ?? { ...targetTile, hp: 1, team: 'target' }, turn.ability);
+        const validTarget = targetTile && BattleRules.CanAttack(this.grid, active, occupant ?? { ...targetTile, hp: 1, team: 'target' }, ability);
         const routeKeys = new Set(exploreRoute?.path.map(point => this.grid.Key(point)) ?? []);
         const originKey = exploreRoute ? this.grid.Key(exploreRoute.origin) : null;
         const destinationKey = exploreRoute ? this.grid.Key(exploreRoute.destination) : null;
@@ -56,13 +68,18 @@ export class TerrainView extends GameObject {
                 if (turn.Alive().some(p => p.stats.team !== active.team && p.stats.col === tile.col && p.stats.row === tile.row))
                     overlay.material.albedoColor = [1, 0.75, 0.2, 0.65];
             }
-            if (validTarget && !(tile.col === targetTile.col && tile.row === targetTile.row)
-                && !turn.Alive().some(p => p.stats.team === active.team && p.stats.col === tile.col && p.stats.row === tile.row)
+            if (previewSkill && validTarget && tile.col === targetTile.col && tile.row === targetTile.row) {
+                overlay.visible = true;
+                overlay.material.albedoColor = [1, 0.8, 0.22, 0.8];
+            }
+            if (validTarget && (profile.splash || profile.healSplash)
+                && !(tile.col === targetTile.col && tile.row === targetTile.row)
+                && (profile.healSplash || !turn.Alive().some(p => p.stats.team === active.team && p.stats.col === tile.col && p.stats.row === tile.row))
                 && BattleRules.InSplash(this.grid, active, targetTile, tile, profile)) {
                 overlay.visible = true;
-                overlay.material.albedoColor = [1, 0.48, 0.13, 0.6];
+                overlay.material.albedoColor = profile.healSplash ? [0.2, 0.9, 0.65, 0.6] : [1, 0.48, 0.13, 0.6];
             }
-            if (turn.cursor?.col === tile.col && turn.cursor?.row === tile.row) {
+            if (turn.phase !== 'skill-select' && turn.cursor?.col === tile.col && turn.cursor?.row === tile.row) {
                 overlay.visible = true;
                 overlay.material.albedoColor = turn.phase === 'explore' ? [0.42, 1, 0.61, 0.65] : [1, 0.91, 0.45, 0.65];
             }

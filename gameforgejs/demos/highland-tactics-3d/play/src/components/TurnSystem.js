@@ -140,6 +140,9 @@ export class TurnSystem extends Component {
         this.message = `${profile.name}: choose a target`;
         return true;
     }
+    CanTarget(pawn) {
+        return Boolean(this.active && pawn && BattleRules.CanAttack(this.grid, this.active.stats, pawn.stats, this.ability));
+    }
     Move(tile) {
         if (!this.active || !['move', 'ai'].includes(this.phase))
             return false;

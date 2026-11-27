@@ -142,7 +142,101 @@
         "position": [1456, 402]
       },
       "size": [28, 78],
-      "name": "Goal flag"
+      "name": "Goal flag",
+      "components": {
+        "ParticleEmitter": {
+          "rate": 18,
+          "maxParticles": 64,
+          "lifetime": [0.7, 1.4],
+          "speed": [20, 50],
+          "direction": [0, -1, 0],
+          "spread": 50,
+          "gravity": [0, 14, 0],
+          "sizeOverLife": [[0, 14], [1, 2]],
+          "blend": "additive",
+          "sprite": "soft",
+          "colorOverLife": [[0, [1, 0.86, 0.45, 0.9]], [1, [1, 0.7, 0.25, 0]]]
+        }
+      }
+    },
+    {
+      "id": "hud",
+      "name": "Stage HUD",
+      "type": "UICanvas",
+      "components": {
+        "UICanvas": {
+          "referenceSize": [960, 544]
+        }
+      }
+    },
+    {
+      "id": "hud_panel",
+      "name": "Stage panel",
+      "type": "UIElement",
+      "parent": "hud",
+      "components": {
+        "UIElement": {
+          "kind": "panel",
+          "anchor": "top-left",
+          "offset": [12, 12],
+          "size": [800, 92],
+          "background": [0.05, 0.09, 0.08, 0.78]
+        }
+      }
+    },
+    {
+      "id": "hud_title",
+      "name": "Stage title",
+      "type": "UIElement",
+      "parent": "hud_panel",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 8],
+          "size": [776, 28],
+          "text": "{title}",
+          "fontSize": 20,
+          "color": [0.93, 0.96, 0.93, 1],
+          "background": [0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "hud_coins",
+      "name": "Coin counter",
+      "type": "UIElement",
+      "parent": "hud_panel",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 38],
+          "size": [300, 22],
+          "text": "Coins {coins}/{total}",
+          "fontSize": 15,
+          "color": [0.93, 0.96, 0.93, 1],
+          "background": [0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "hud_goal",
+      "name": "Instruction",
+      "type": "UIElement",
+      "parent": "hud_panel",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 62],
+          "size": [776, 20],
+          "text": "{instruction}",
+          "fontSize": 12,
+          "color": [0.93, 0.96, 0.93, 1],
+          "background": [0, 0, 0, 0]
+        }
+      }
     }
   ]
 }

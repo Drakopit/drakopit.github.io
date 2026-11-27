@@ -2,7 +2,7 @@
 import { EventEmitter, Vector2D } from 'gameforgejs/core';
 import { GameObject, ParticleSystem, CanvasRenderTarget } from 'gameforgejs/2d';
 import { RippleField } from '../components/RippleField.js';
-import { ParticleEmitter } from '../components/ParticleEmitter.js';
+import { FoundrySparkEmitter } from '../components/FoundrySparkEmitter.js';
 import { WeatherEmitter } from '../components/WeatherEmitter.js';
 import { PropPhysics } from '../systems/PropPhysics.js';
 import { SeededRandom } from '../data/SeededRandom.js';
@@ -25,7 +25,7 @@ export class FoundryWorld extends GameObject {
         /** @type {ParticleSystem} */ this.splashes = this.AddComponent(new ParticleSystem({ capacity: settings.data.limits.splashes }));
         /** @type {WeatherEmitter} */ this.weather = this.AddComponent(new WeatherEmitter(this));
         this.rain.onStep = particle => this.weather.StepRain(particle);
-        /** @type {ParticleEmitter} */ this.emission = this.AddComponent(new ParticleEmitter(this));
+        /** @type {FoundrySparkEmitter} */ this.emission = this.AddComponent(new FoundrySparkEmitter(this));
         /** @type {PropPhysics} */ this.physics = this.AddComponent(new PropPhysics(this));
     }
     /** @param {number} dt */

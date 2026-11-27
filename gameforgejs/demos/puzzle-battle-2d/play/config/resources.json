@@ -1,9 +1,7 @@
 {
-  "images": [],
-  "sprites": [],
-  "audios": [],
-  "fonts": [],
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "arena_scene",
@@ -14,5 +12,6 @@
       "path": "./prompts.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "showcase",
-      "path": "./showcase.json"
+      "path": "../data/showcase.json"
     },
     {
       "name": "prompts",
@@ -14,5 +16,6 @@
       "path": "../scenes/foundry.gfscene.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

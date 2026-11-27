@@ -1,18 +1,5 @@
 {
-  "audios": [
-    {
-      "name": "bgm_fase1",
-      "path": "../assets/shared/battle_sound.mpeg"
-    },
-    {
-      "name": "sfx_jump",
-      "path": "../assets/shared/Jump 1.wav"
-    },
-    {
-      "name": "sfx_laser",
-      "path": "../assets/shared/Blow 1V2.wav"
-    }
-  ],
+  "schemaVersion": 1,
   "images": [
     {
       "name": "textura_chao",
@@ -43,6 +30,20 @@
       "path": "../assets/Materials/RockGround/rock_ground_disp_1k.jpg"
     }
   ],
+  "audios": [
+    {
+      "name": "bgm_fase1",
+      "path": "../assets/shared/battle_sound.mpeg"
+    },
+    {
+      "name": "sfx_jump",
+      "path": "../assets/shared/Jump 1.wav"
+    },
+    {
+      "name": "sfx_laser",
+      "path": "../assets/shared/Blow 1V2.wav"
+    }
+  ],
   "jsons": [
     {
       "name": "sky_trail_course",
@@ -71,7 +72,6 @@
       "path": "../assets/Models/character.glb"
     }
   ],
-  "schemaVersion": 1,
   "shaders": [
     {
       "name": "coin",

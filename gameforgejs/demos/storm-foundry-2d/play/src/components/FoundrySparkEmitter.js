@@ -5,7 +5,7 @@ import { HueColor } from '../data/Palette.js';
 const MAX_BIRTHS_PER_UPDATE = 80;
 
 /** Live emitter tuning changes future births; existing particles keep their curves. */
-export class ParticleEmitter extends Component {
+export class FoundrySparkEmitter extends Component {
     /** @param {import('../entities/FoundryWorld.js').FoundryWorld} world */
     constructor(world) { super(); this.world = world; this.carry = 0; }
     /** @param {number} dt */

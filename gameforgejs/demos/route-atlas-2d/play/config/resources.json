@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "scenario",
-      "path": "./scenario.json"
+      "path": "../data/scenario.json"
     },
     {
       "name": "prompts",
@@ -14,5 +16,6 @@
       "path": "../scenes/atlas.gfscene.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

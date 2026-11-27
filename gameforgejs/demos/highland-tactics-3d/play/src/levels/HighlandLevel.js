@@ -142,6 +142,8 @@ export class HighlandLevel extends Level3D {
 
     SetControlSettings(settings) {
         this.controlSettings = ControlSettings(settings.mode, settings);
+        // A mode chosen mid-turn applies now: the ring re-reads autoRadial on the next frame.
+        if (this.hud) this.hud.wasBattleCommand = false;
         try {
             if (!globalThis.localStorage) throw new Error('browser storage is unavailable');
             globalThis.localStorage.setItem('highland-control-settings-v1', JSON.stringify(this.controlSettings));

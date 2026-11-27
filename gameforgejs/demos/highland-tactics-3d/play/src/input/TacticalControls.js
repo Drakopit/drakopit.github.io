@@ -330,7 +330,9 @@ export class TacticalControls {
 
     SelectDefaultTarget() {
         if (!this.level.controlSettings.smartTarget) return;
-        const target = DefaultTarget(this.level.turn);
-        if (target) this.level.turn.cursor = { col: target.stats.col, row: target.stats.row };
+        const turn = this.level.turn;
+        const target = DefaultTarget(turn);
+        if (target) turn.cursor = { col: target.stats.col, row: target.stats.row };
+        else if (turn.phase === 'target') turn.message = 'No target in reach. Move closer first [1].';
     }
 }

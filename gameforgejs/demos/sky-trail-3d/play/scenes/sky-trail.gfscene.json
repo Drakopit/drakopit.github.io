@@ -86,7 +86,7 @@
     {
       "id": "goal",
       "name": "Goal",
-      "type": "MeshInstance3D"
+      "type": "Node3D"
     },
     {
       "id": "scenery",

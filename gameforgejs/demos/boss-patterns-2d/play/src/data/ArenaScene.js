@@ -4,7 +4,7 @@ import { SceneDocument } from 'gameforgejs/core';
  * Adds the arena size and start anchors from scenes/arena.gfscene.json
  * to the scenario rules. The scene world is the arena; each anchor is the
  * centre of its marker.
- * @param {Object} scenario - config/scenario.json (combat tuning).
+ * @param {Object} scenario - data/scenario.json (combat tuning).
  * @param {Object} document - Parsed scene JSON.
  * @returns {Object} Scenario with `arena.width/height` and `anchors`.
  */

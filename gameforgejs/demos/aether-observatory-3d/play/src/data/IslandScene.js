@@ -5,7 +5,7 @@ import { SceneDocument } from 'gameforgejs/core';
  * scenario rules: each island node is a 1.2-thick slab centred at y = -0.6
  * (X/Z position and scale give x, z, width and depth) and the `player_spawn`
  * node is movement.spawn.
- * @param {Object} scenario - config/scenario.json.
+ * @param {Object} scenario - data/scenario.json.
  * @param {Object} document - Parsed scene JSON.
  * @returns {Object} Scenario with `islands` and `movement.spawn`.
  */

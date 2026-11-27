@@ -1,4 +1,22 @@
 {
+  "schemaVersion": 1,
+  "images": [
+    {
+      "name": "sky_cross",
+      "path": "../assets/sky/daylight-cross.png"
+    }
+  ],
+  "audios": [],
+  "jsons": [
+    {
+      "name": "courtyard",
+      "path": "../scenes/courtyard.gfscene.json"
+    },
+    {
+      "name": "prompts",
+      "path": "./prompts.json"
+    }
+  ],
   "models": [
     {
       "name": "knight",
@@ -31,22 +49,6 @@
     {
       "name": "forest-bush",
       "path": "../assets/kaykit/forest/Bush_1_A_Color1.gltf"
-    }
-  ],
-  "images": [
-    {
-      "name": "sky_cross",
-      "path": "../assets/sky/daylight-cross.png"
-    }
-  ],
-  "jsons": [
-    {
-      "name": "courtyard",
-      "path": "../scenes/courtyard.gfscene.json"
-    },
-    {
-      "name": "prompts",
-      "path": "./prompts.json"
     }
   ],
   "shaders": [

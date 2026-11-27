@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 1,
   "images": [
     {
       "name": "heroi_run",
@@ -201,6 +202,6 @@
       "path": "../scenes/boss.gfscene.json"
     }
   ],
-  "schemaVersion": 1,
+  "models": [],
   "shaders": []
 }

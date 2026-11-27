@@ -29,7 +29,7 @@
     {
       "id": "islands",
       "name": "Islands",
-      "type": "MeshInstance3D"
+      "type": "Node3D"
     },
     {
       "id": "markers",

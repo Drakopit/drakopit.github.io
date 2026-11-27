@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 1,
   "images": [
     {
       "name": "fight_char_blue",
@@ -17,7 +18,7 @@
       "path": ".././assets/Chars/Char_5.png"
     }
   ],
-  "schemaVersion": 1,
+  "audios": [],
   "jsons": [
     {
       "name": "arena_scene",
@@ -28,5 +29,6 @@
       "path": "./prompts.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

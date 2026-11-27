@@ -1,5 +1,7 @@
 {
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "tech_demo_scene",
@@ -10,5 +12,6 @@
       "path": "./prompts.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

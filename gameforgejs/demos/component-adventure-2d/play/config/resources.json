@@ -1,5 +1,7 @@
 {
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "adventure_rooms",
@@ -10,5 +12,6 @@
       "path": "./prompts.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

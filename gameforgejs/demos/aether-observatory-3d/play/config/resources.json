@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
+  "images": [],
+  "audios": [],
   "jsons": [
     {
       "name": "scenario",
-      "path": "./scenario.json"
+      "path": "../data/scenario.json"
     },
     {
       "name": "prompts",
@@ -14,6 +16,7 @@
       "path": "../scenes/islands.gfscene.json"
     }
   ],
+  "models": [],
   "shaders": [
     {
       "name": "pool_water",

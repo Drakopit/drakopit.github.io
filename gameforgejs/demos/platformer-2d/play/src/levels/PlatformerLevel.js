@@ -1,5 +1,5 @@
 import { Level, ActionManager, Vector2D, AssetManager, GameViewport, Input, SoundEffects } from 'gameforgejs/core';
-import { Screen, Draw, Camera } from 'gameforgejs/2d';
+import { Screen, Draw, Camera, SceneSystems2D } from 'gameforgejs/2d';
 import { TilePlatformerWorld } from 'gameforgejs/addons/platformer';
 import { Player } from '../entities/Player.js';
 import { Coin } from '../entities/Coin.js';
@@ -19,11 +19,11 @@ export class PlatformerLevel extends Level {
     }
 
     OnStart(context = this.context) {
-        if (typeof this.stageSource === 'string') this.stage = StageFromScene(context.assets.jsons[this.stageSource]);
+        const scene = typeof this.stageSource === 'string' ? context.assets.jsons[this.stageSource] : null;
+        if (scene) this.stage = StageFromScene(scene);
         const { width, height } = context.config.screen;
         this.screen = new Screen(this.TelaId, width, height, { config: context.config });
         this.draw = new Draw(this.screen);
-        this.hud = new PlatformerHUD(this.screen);
         this.world = new TilePlatformerWorld({
             tileSize: this.stage.tileSize,
             worldWidth: this.stage.columns,
@@ -43,6 +43,10 @@ export class PlatformerLevel extends Level {
             return coin;
         });
         this.collectedCount = 0;
+        // The scene's systems: the goal flag's sparkle (ParticleEmitter) and the stage HUD (UICanvas).
+        const { x: goalX, y: goalY } = this.stage.goal;
+        this.systems = scene ? SceneSystems2D.Attach(this, scene, { objects: { goal: () => [goalX + 16, goalY + 9, 0] } }) : null;
+        this.hud = new PlatformerHUD(this.screen, this.systems?.Find('hud')?.canvas ?? null);
 
         this.camera = new Camera(new Vector2D(0, 0), new Vector2D(width, height));
         this.camera.Init(this.screen, {
@@ -162,6 +166,7 @@ export class PlatformerLevel extends Level {
     }
 
     OnGUI() {
+        this.hud.Bind(this);
         super.OnGUI();
         this.hud.Draw(this);
         this.controls.Draw();

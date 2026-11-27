@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 1,
   "images": [
     {
       "name": "hills",
@@ -9,6 +10,7 @@
       "path": "../assets/trees.svg"
     }
   ],
+  "audios": [],
   "jsons": [
     {
       "name": "playground_scene",
@@ -19,5 +21,6 @@
       "path": "./prompts.json"
     }
   ],
+  "models": [],
   "shaders": []
 }

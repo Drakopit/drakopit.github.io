@@ -8,6 +8,8 @@
     "title": "GameForgeJS — Platform Adventure 2D"
   },
   "screen": {
+    "width": 640,
+    "height": 480,
     "fullScreen": true,
     "responsive": {
       "mode": "contain"

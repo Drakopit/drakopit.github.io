@@ -99,6 +99,21 @@
         "Data": {
           "castShadow": false,
           "receiveShadow": false
+        },
+        "ParticleEmitter": {
+          "rate": 70,
+          "maxParticles": 240,
+          "lifetime": [1.2, 2.4],
+          "speed": [1, 2.4],
+          "direction": [0, 1, 0],
+          "spread": 180,
+          "gravity": [0, 0, 0],
+          "shape": "sphere",
+          "shapeSize": [5.8, 5.8, 5.8],
+          "blend": "additive",
+          "sprite": "soft",
+          "sizeOverLife": [[0, 2.4], [1, 0.6]],
+          "colorOverLife": [[0, [1, 0.55, 0.15, 1]], [1, [0.9, 0.2, 0.05, 0]]]
         }
       }
     },
@@ -347,6 +362,119 @@
           "speed": 0.0015,
           "rotation": 1,
           "inclination": 0.03
+        }
+      }
+    },
+    {
+      "id": "hud",
+      "name": "HUD",
+      "type": "UICanvas",
+      "components": {
+        "UICanvas": {
+          "referenceSize": [960, 540],
+          "fontFamily": "Arial, sans-serif"
+        }
+      }
+    },
+    {
+      "id": "hud_title",
+      "name": "Title panel",
+      "type": "UIElement",
+      "parent": "hud",
+      "components": {
+        "UIElement": {
+          "kind": "panel",
+          "anchor": "top-left",
+          "offset": [16, 14],
+          "size": [330, 86],
+          "background": [0.008, 0.012, 0.04, 0.45],
+          "radius": 4
+        }
+      }
+    },
+    {
+      "id": "hud_title_text",
+      "name": "Title",
+      "type": "UIElement",
+      "parent": "hud_title",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 12],
+          "size": [306, 30],
+          "text": "Sistema Solar - Render3D",
+          "fontSize": 22,
+          "color": [1, 0.85, 0.54, 1],
+          "background": [0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "hud_focus",
+      "name": "Focus panel",
+      "type": "UIElement",
+      "parent": "hud",
+      "components": {
+        "UIElement": {
+          "kind": "panel",
+          "anchor": "bottom-right",
+          "offset": [12, 12],
+          "size": [290, 80]
+        }
+      }
+    },
+    {
+      "id": "hud_body",
+      "name": "Body name",
+      "type": "UIElement",
+      "parent": "hud_focus",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 6],
+          "size": [266, 22],
+          "text": "{body}",
+          "fontSize": 16,
+          "background": [0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "hud_facts",
+      "name": "Body facts",
+      "type": "UIElement",
+      "parent": "hud_focus",
+      "components": {
+        "UIElement": {
+          "kind": "text",
+          "anchor": "top-left",
+          "offset": [12, 26],
+          "size": [266, 18],
+          "text": "{facts}",
+          "fontSize": 12,
+          "color": [0.87, 0.91, 1, 1],
+          "background": [0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": "hud_next",
+      "name": "Next body",
+      "type": "UIElement",
+      "parent": "hud_focus",
+      "components": {
+        "UIElement": {
+          "kind": "button",
+          "anchor": "bottom",
+          "offset": [0, 4],
+          "size": [282, 28],
+          "text": "Next body",
+          "action": "next",
+          "align": "center",
+          "fontSize": 14,
+          "color": [1, 0.85, 0.54, 1]
         }
       }
     }

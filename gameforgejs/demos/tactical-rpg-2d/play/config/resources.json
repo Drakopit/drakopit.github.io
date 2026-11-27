@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 1,
   "images": [
     {
       "name": "blue_archer_idle",
@@ -101,6 +102,7 @@
       "path": ".././assets/Tiny Swords/Units/Red Units/Archer/Archer_Run.png"
     }
   ],
+  "audios": [],
   "jsons": [
     {
       "name": "tactical_scene",
@@ -115,6 +117,6 @@
       "path": "./prompts.json"
     }
   ],
-  "schemaVersion": 1,
+  "models": [],
   "shaders": []
 }

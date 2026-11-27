@@ -1,11 +1,12 @@
-import { Button, HUDFrame, GameObject, InputHelpPanel as InfoPanel } from 'gameforgejs/2d';
-import { Vector3D, SoundEffects, Input, Touch } from 'gameforgejs/core';
+import { GameObject, InputHelpPanel as InfoPanel } from 'gameforgejs/2d';
+import { Vector3D, SoundEffects, Input, Touch, SceneSystems } from 'gameforgejs/core';
 import { ActionManager } from "gameforgejs/core";
 import { AssetManager } from "gameforgejs/core";
 import {
     CelestialBodyMaterial,
     Level3D,
     Mesh,
+    ParticleRenderer3D,
     PerspectiveCamera,
     PrimitiveMesh,
     SceneManifest3D,
@@ -43,9 +44,6 @@ export class SolarSystemLevel extends Level3D {
         this.focus = -1;
         this.lastTarget = null;
         this.look = new Vector3D();
-        this.focusFrame = new HUDFrame(this.ui.Draw);
-        this.focusButton = new Button(this.ui.Screen, { pointerInput: true });
-        this.focusButton.OnClick(() => this.SelectBody((this.focus + 2) % (this.Bodies().length + 1) - 1));
         this.help = new InfoPanel(this.ui.Draw, { title: 'SOLAR SYSTEM / CONTROLS', lines: [] });
         // Camera, lights, sun and planets come from scenes/solar-system.gfscene.json.
         const solar = SolarFromScene(this.context.assets.jsons.solar_scene);
@@ -56,6 +54,13 @@ export class SolarSystemLevel extends Level3D {
         this.CreateSun(solar.sun);
         solar.planets.forEach((planet, index) => this.CreatePlanet(planet, index));
         this.CreateStarfield();
+        // The scene's systems: the sun's corona (ParticleEmitter) and the HUD (UICanvas, drawn on the UI screen).
+        this.systems = SceneSystems.Attach(this, this.context.assets.jsons.solar_scene, {
+            target: node => (node.id === 'sun' ? this.sun : null),
+            particles: emitter => new ParticleRenderer3D(this.scene, emitter),
+        });
+        this.hud = this.systems.Find('hud').canvas;
+        this.hud.On('next', () => this.SelectBody((this.focus + 2) % (this.Bodies().length + 1) - 1));
     }
 
     CreateSun({ scale, material }) {
@@ -233,7 +238,8 @@ export class SolarSystemLevel extends Level3D {
         const contact = Input.instance?.touch.GetStartedTouches()[0];
         const point = contact ? Touch.ToScreen(contact.startPosition, screen)
             : mouse?.buttonsDown[0] ? mouse.getPositionRelative(screen.Canvas) : null;
-        const menu = this.focusButton.rect;
+        // Clicks on the HUD's focus panel are its own (the "Next body" button), not body picks.
+        const menu = this.hud.Element('hud_focus')?.rect ?? { x: 0, y: 0, width: 0, height: 0 };
         if (point && !(point.x >= menu.x && point.x <= menu.x + menu.width && point.y >= menu.y && point.y <= menu.y + menu.height)) {
             const hits = bodies.map((candidate, index) => {
                 const p = this.camera.Project(Vector3D.FromArray(candidate.mesh.transform.position), screen.Width, screen.Height);
@@ -244,36 +250,18 @@ export class SolarSystemLevel extends Level3D {
     }
 
     OnGUI() {
+        // The title and focus panels are the scene's `hud` UICanvas; fill its bindings before it draws.
+        const body = this.Bodies()[this.focus];
+        this.hud?.Set({ body: body?.name ?? 'System overview', facts: body?.facts ?? 'Select a body in the view' });
         super.OnGUI();
         if (!this.ui) return;
-
         const draw = this.ui.Draw;
-        const ctx = draw.screen.Context;
-
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        draw.Color = "#02030A";
-        draw.DrawRect(16, 14, 330, 86);
-        ctx.restore();
-
         draw.SetTextAlign("left");
-        draw.Color = "#FFD98A";
-        draw.Font = "Arial";
-        draw.FontSize = "22px";
-        draw.DrawText("Sistema Solar - Render3D", 28, 46);
         draw.Color = "#DDE7FF";
+        draw.Font = "Arial";
         draw.FontSize = "14px";
         this.help.DrawAction('HELP',28,56);
-        const w = this.ui.Screen.Width, h = this.ui.Screen.Height;
-        const width = Math.min(290, w - 24);
-        const x = w - width - 12, y = h - 92;
-        const body = this.Bodies()[this.focus];
-        this.focusFrame.Panel({ x, y, width, height: 80 });
-        this.focusFrame.Text(body?.name ?? 'System overview', x + 12, y + 21, { size: 16, weight: 700 });
-        this.focusFrame.Text(body?.facts ?? 'Select a body in the view', x + 12, y + 41, { maxWidth: width - 24 });
-        this.focusButton.SetButton({ x, y: y + 46, width, height: 34 });
-        this.focusFrame.Text('Next body', x + 12, y + 65, { color: this.focusFrame.theme.gold });
         this.help.OnDrawn();
     }
-    OnExit() { this.focusButton?.Dispose(); this.help?.Dispose(); super.OnExit(); }
+    OnExit() { this.help?.Dispose(); super.OnExit(); }
 }

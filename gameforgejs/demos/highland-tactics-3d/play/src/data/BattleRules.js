@@ -48,9 +48,11 @@ export class BattleRules {
         const chance = Math.max(50, Math.min(100, (side === 'BACK' ? 100 : side === 'SIDE' ? 95 : 85) + elevation * 3));
         const armor = defender.exposed ? 0 : Math.round((defender.defense ?? 3) * (1 - (profile.pierce ?? 0)));
         const power = profile.magic ? (attacker.magic ?? attacker.attack) : attacker.attack;
+        // Arcane resistance (percent, from gear, at most 50) softens magic damage.
+        const arcane = profile.magic ? 1 - Math.min(50, Math.max(0, defender.resist?.arcane ?? 0)) / 100 : 1;
         const damage = Math.max(1, Math.round((power * profile.power - armor + elevation * 2)
             * (side === 'BACK' ? 1.35 + (profile.backBonus ?? 0) : side === 'SIDE' ? 1.15 : 1)
-            * (defender.guarded ? 0.5 : 1)));
+            * (defender.guarded ? 0.5 : 1) * arcane));
         const blocked = Math.min(damage, defender.shield ?? 0);
         return { chance, damage: damage - blocked, blocked, rawDamage: damage, side, elevation };
     }

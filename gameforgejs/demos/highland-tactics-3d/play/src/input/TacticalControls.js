@@ -28,6 +28,8 @@ export class TacticalControls {
     Update(dt) {
         const l = this.level, t = l.turn;
         if (l.exploring === 'creation' && l.hud.nameField?.isActive) return;
+        // Typing in the inventory search box (and the key that ends it) never reaches the game.
+        if (l.hud.search?.active || l.hud.ConsumeSearchRelease?.()) return;
         if (ActionManager.IsActionDown('HELP'))
             l.hud.help.Toggle();
         if (l.hud.help.visible) return;
@@ -77,7 +79,7 @@ export class TacticalControls {
             l.hud.TogglePanel('map');
             return;
         }
-        if (l.exploring === 'explore' && ['bag', 'gear'].includes(l.hud.panel)) {
+        if (l.exploring === 'explore' && l.hud.panel === 'bag') {
             if (ActionManager.IsActionDown('PANEL_PREV')) { l.hud.CycleBagCategory(-1); return; }
             if (ActionManager.IsActionDown('PANEL_NEXT')) { l.hud.CycleBagCategory(1); return; }
         }

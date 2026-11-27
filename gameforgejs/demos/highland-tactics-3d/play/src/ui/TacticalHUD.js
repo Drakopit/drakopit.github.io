@@ -1,16 +1,23 @@
 import { Input, Vector3D } from 'gameforgejs/core';
 import { Draw, HUDFrame, InputHelpPanel, Button, Rectangle, TextBox, Touch } from 'gameforgejs/2d';
-import { BagFilters, Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo, SlotFor, Attributes } from '../data/HighlandCampaign.js';
+import { BagFilters, Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, InBagFilter, ItemInfo, ItemWeight, SlotFor, Attributes } from '../data/HighlandCampaign.js';
 import { WorldMapDisplay } from '../data/WorldMaps.js';
 import { BattleRules, Commands, Facings, GetAbilityProfile } from '../data/BattleRules.js';
 import { ActiveSkills, SkillTrees } from '../data/ClassSkills.js';
 import { ControlModes, ControlSettings } from '../input/ControlModes.js';
 import { BattleConsumables, CommandAvailable } from '../data/HighlandActions.js';
 import { CombatDock, DockLayout } from './CombatDock.js';
-import { BagColumns, CharacterSheet, CompareStats, SheetLayout } from './CharacterSheet.js';
+import { BagColumns, BagSorts, InventoryLayout, InventoryPanel } from './InventoryPanel.js';
+import { EquipmentLayout, EquipmentPanel } from './EquipmentPanel.js';
+import { CompareStats, ItemValue } from './ItemCard.js';
 import { DrawItemIcon } from './ItemIcons.js';
 
-export { DockLayout, SheetLayout };
+export { DockLayout, InventoryLayout, EquipmentLayout };
+
+/** World log: messages kept, and lines shown above the exploration bar. */
+const LogLimit = 30, LogLines = 3;
+const RarityOrder = Object.freeze({ epic: 0, rare: 1, uncommon: 2, common: 3 });
+const CategoryOrder = Object.freeze(['Weapons', 'Armor', 'Accessories', 'Consumables', 'Special', 'Materials']);
 
 /** What each vendor stocks: gear by specialty, consumables at the alchemist. */
 export const VendorStock = Object.freeze({
@@ -92,12 +99,14 @@ export class TacticalHUD {
         this.frame = new HUDFrame(level.ui.Draw);
         this.help = new InputHelpPanel(new Draw(this.screen), {
             title: 'Highland Tactics / Controls',
-            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character & attributes · K skills · M map · F vendor · H help', 'Character sheet (E / I): double-click or drag to equip · [ / ] filter · Enter equip/use.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
+            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character & attributes · K skills · M map · F vendor · H help', 'Inventory (I): [ ] tabs · / search · Enter use/equip/read. Equipment (E): arrows pick slot/item · Enter equip.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
         });
         this.panel = null;
         this.selectedArchetype = 'vanguard';
         this.inventoryCategory = 'All';
         this.selectedBagIndex = 0;
+        this.bagSort = 'Newest';
+        this.search = { text: '', active: false, released: false };
         this.inventorySlots = [];
         this.slotRects = [];
         this.shopTab = 'buy';
@@ -200,14 +209,15 @@ export class TacticalHUD {
         this.customDock = this.Button('', () => this.SetCustomOption('dock'));
         this.customLarge = this.Button('', () => this.SetCustomOption('largeTargets'));
         this.dock = new CombatDock(this);
-        this.sheet = new CharacterSheet(this);
+        this.inventory = new InventoryPanel(this);
+        this.equipmentPanel = new EquipmentPanel(this);
         this.settingsHelp = this.Button('HELP [H]', () => this.help.Toggle());
         this.nameField = new TextBox(this.screen);
         this.nameField.SetPlaceholder('Character name');
         this.nameField.SetMaxLength(20);
         this.nameField.SetText('Highland Recruit');
         this.nameField.onSubmit = () => this.nameField.SetActive(false);
-        this.nameFieldInput = event => this.HandleNameInput(event);
+        this.nameFieldInput = event => this.HandleNameInput(event) || this.HandleSearchInput(event);
         if (typeof window !== 'undefined') window.addEventListener('keydown', this.nameFieldInput);
     }
 
@@ -232,6 +242,103 @@ export class TacticalHUD {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Inventory search: "/" (or a click on the box) starts typing while the inventory is open;
+     * letters, digits and spaces filter by name, Backspace deletes, Enter or Escape stops typing.
+     */
+    HandleSearchInput(event) {
+        if (this.panel !== 'bag') return false;
+        if (!this.search.active) {
+            if (event.key !== '/') return false;
+            this.SetSearchActive(true);
+            event.preventDefault?.();
+            return true;
+        }
+        if (event.key === 'Enter' || event.key === 'Escape') {
+            this.SetSearchActive(false);
+            this.search.released = true;
+        }
+        else if (event.key === 'Backspace') this.SetSearchText(this.search.text.slice(0, -1));
+        else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) this.SetSearchText(this.search.text + event.key);
+        else return false;
+        event.preventDefault?.();
+        return true;
+    }
+
+    SetSearchActive(active) {
+        this.search.active = Boolean(active) && this.panel === 'bag';
+    }
+
+    SetSearchText(text) {
+        this.search.text = String(text ?? '').slice(0, 24);
+        this.selectedBagIndex = 0;
+    }
+
+    /** True once after search typing ended with Enter/Escape, so that key does not also close the panel. */
+    ConsumeSearchRelease() {
+        const released = this.search.released;
+        this.search.released = false;
+        return released;
+    }
+
+    CycleBagSort(step = 1) {
+        const index = BagSorts.indexOf(this.bagSort);
+        this.bagSort = BagSorts[(index + step + BagSorts.length) % BagSorts.length];
+        this.selectedBagIndex = 0;
+    }
+
+    InBagTab(tab, name) {
+        return InBagFilter(tab, name);
+    }
+
+    /** World log: keeps the last `LogLimit` distinct messages, newest last. */
+    RecordLog(message) {
+        if (!message || message === this.lastLogged) return;
+        this.lastLogged = message;
+        this.log = [...(this.log ?? []), message].slice(-LogLimit);
+    }
+
+    /**
+     * Radar minimap: walkable tiles shaded by height, the hero, roaming patrols (red), vendors
+     * (gold) and portals (blue); in battle, every pawn by team.
+     */
+    DrawRadar(rect) {
+        const l = this.level, grid = l.grid, c = this.screen.Context;
+        if (!grid?.cols || !grid?.rows) return;
+        const scale = Math.min(rect.width / grid.cols, rect.height / grid.rows);
+        const ox = rect.x + (rect.width - grid.cols * scale) / 2, oy = rect.y + (rect.height - grid.rows * scale) / 2;
+        c.save();
+        c.fillStyle = 'rgba(4,9,14,.85)';
+        c.fillRect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);
+        for (let row = 0; row < grid.rows; row++)
+            for (let col = 0; col < grid.cols; col++) {
+                const tile = grid.Get(col, row);
+                if (!tile) continue;
+                const shade = Math.max(0, Math.min(1, (tile.h ?? 0) / 4));
+                c.fillStyle = `rgba(${Math.round(70 + shade * 60)},${Math.round(96 + shade * 50)},${Math.round(74 + shade * 30)},.9)`;
+                c.fillRect(ox + col * scale, oy + row * scale, Math.ceil(scale), Math.ceil(scale));
+            }
+        const dot = (point, color, size = 1.6) => {
+            if (!point || !Number.isFinite(point.col) || !Number.isFinite(point.row)) return;
+            c.fillStyle = color;
+            c.beginPath();
+            c.arc(ox + (point.col + 0.5) * scale, oy + (point.row + 0.5) * scale, Math.max(1.5, scale * size / 2), 0, Math.PI * 2);
+            c.fill();
+        };
+        if (l.exploring === 'battle')
+            for (const pawn of l.pawns ?? []) { if (pawn.stats.hp > 0) dot(pawn.stats, pawn.stats.team === 'ally' ? '#72d4b0' : '#f06b5b', 1.8); }
+        else {
+            for (const portal of [l.zone?.portal, l.zone?.returnPortal]) dot(portal, '#6fb7ff', 1.8);
+            for (const vendor of l.vendors ?? []) dot(vendor.stats, '#e5c46d');
+            for (const group of l.GroupLeaders?.() ?? []) dot(group.stats, '#f06b5b', 1.8);
+            dot(l.player?.stats, '#ffffff', 2.2);
+        }
+        c.strokeStyle = 'rgba(201,174,105,.6)';
+        c.lineWidth = 1;
+        c.strokeRect(rect.x - 1.5, rect.y - 1.5, rect.width + 3, rect.height + 3);
+        c.restore();
     }
 
     /** Character panel: identity, derived stats, attribute allocation and AP/MP sources. */
@@ -275,12 +382,9 @@ export class TacticalHUD {
     TogglePanel(panel) {
         if (panel === 'shop') return this.level.InteractShopkeeper();
         if (panel === 'party' && !this.level.partyControlEnabled) return;
-        // E and I open one combined sheet; the other key moves focus between doll and backpack.
-        if (['bag', 'gear'].includes(panel) && ['bag', 'gear'].includes(this.panel) && this.panel !== panel) {
-            this.panel = panel;
-            return;
-        }
+        // I and E are separate panels; pressing the other key switches between them.
         this.panel = this.panel === panel ? null : panel;
+        if (this.panel !== 'bag' && this.search) this.search.active = false;
         if (this.panel === 'map')
             this.mapSelection = Math.max(0, WorldMapDisplay(this.level.zone.id).zones.findIndex(zone => zone.current));
         if (this.panel === 'skills') this.skillTreeSelection = 0;
@@ -361,7 +465,9 @@ export class TacticalHUD {
     }
 
     Update(dt) {
-        this.sheet?.Update(dt);
+        this.RecordLog(this.level.turn?.message);
+        this.inventory?.Update(dt);
+        this.equipmentPanel?.Update(dt);
         if (this.level.exploring === 'creation' && this.nameField?.Click?.())
             this.level.controls?.SuppressNextWorldClick();
         const command = this.level.exploring === 'battle' && this.level.turn.phase === 'command';
@@ -461,18 +567,24 @@ export class TacticalHUD {
         context.textBaseline = 'middle';
         context.fillText(hero.className[0], 44, 48);
         context.restore();
-        f.Text(hero.name, 75, 29, { size: 12, weight: 700, maxWidth: statusWidth - 85 });
+        const points = l.exploring === 'creation' ? 0 : l.campaign.attributePoints ?? 0;
+        if (points > 0)
+            f.Text(`+${points} ATTR [C]`, statusWidth, 29, { size: 9, weight: 700, align: 'right', color: '#9fe0a8' });
+        f.Text(hero.name, 75, 29, { size: 12, weight: 700, maxWidth: statusWidth - (points > 0 ? 150 : 85) });
         f.Text(`Lv ${hero.level} · ${hero.className}`, 75, 44, { size: 10, color: f.theme.gold, maxWidth: statusWidth - 85 });
-        f.Text(`HP ${hp}/${maxHp} · ${l.campaign.gold}G`, 75, 58, { size: 10, maxWidth: statusWidth - 85 });
+        f.Text(`HP ${hp}/${maxHp} · ${l.campaign.gold}G${compact ? '' : ` · AP ${hero.apMax ?? 6} · MP ${hero.mpMax ?? 3}`}`, 75, 58, { size: 10, maxWidth: statusWidth - 85 });
         f.Meter(hp / maxHp, { x: 75, y: 63, width: statusWidth - 86, height: 4 }, '#72d4b0');
         f.Meter(hero.xp / hero.nextXp, { x: 75, y: 72, width: statusWidth - 86, height: 4 }, f.theme.gold);
 
-        const mapWidth = narrow ? s.Width - 20 : compact ? Math.min(160, s.Width - statusWidth - 30) : 210;
+        const radar = !compact && l.exploring !== 'creation';
+        const mapWidth = narrow ? s.Width - 20 : compact ? Math.min(160, s.Width - statusWidth - 30) : radar ? 290 : 210;
         const mapX = narrow ? 10 : s.Width - mapWidth - 10;
         const mapY = narrow ? 92 : 10;
         f.Panel({ x: mapX, y: mapY, width: mapWidth, height: 76 });
-        f.Text(l.zone.name.toUpperCase(), mapX + 12, mapY + 28, { size: 13, weight: 700, color: f.theme.gold, maxWidth: mapWidth - 24 });
-        f.Text(l.zone.subtitle, mapX + 12, mapY + 50, { size: 10, maxWidth: mapWidth - 24 });
+        const textWidth = mapWidth - (radar ? 102 : 24);
+        f.Text(l.zone.name.toUpperCase(), mapX + 12, mapY + 28, { size: 13, weight: 700, color: f.theme.gold, maxWidth: textWidth });
+        f.Text(l.zone.subtitle, mapX + 12, mapY + 50, { size: 10, maxWidth: textWidth });
+        if (radar) this.DrawRadar({ x: mapX + mapWidth - 86, y: mapY + 7, width: 78, height: 62 });
 
         const tabsY = narrow ? 178 : 96;
         this.headerHeight = narrow ? (l.exploring === 'battle' ? 214 : 260) : 142;
@@ -581,9 +693,13 @@ export class TacticalHUD {
         this.DrawExploreRoute();
         if (this.panel) return;
         const layout = ExplorationBarLayout(s.Width, s.Height, this.barItems.length);
-        const width = Math.min(430, s.Width - 20), y = layout[0].y - 31;
-        f.Panel({ x: 10, y, width, height: 28 });
-        f.Text(l.turn.message, 22, y + 19, { size: 10, color: f.theme.gold, maxWidth: width - 24 });
+        const lines = (this.log?.length ? this.log : [l.turn.message]).slice(-LogLines);
+        const width = Math.min(430, s.Width - 20), height = 14 + lines.length * 14, y = layout[0].y - 3 - height;
+        f.Panel({ x: 10, y, width, height });
+        lines.forEach((line, index) => {
+            const newest = index === lines.length - 1;
+            f.Text(line, 22, y + 17 + index * 14, { size: 10, color: newest ? f.theme.gold : f.theme.muted, weight: newest ? 700 : 400, maxWidth: width - 24 });
+        });
         this.DrawExplorationBar(layout);
     }
 
@@ -592,7 +708,7 @@ export class TacticalHUD {
         const position = vendor.travel.position;
         const point = l.camera.Project(new Vector3D(position.x, position.y + 1.5, position.z), s.Width, s.Height);
         const width = 72, height = 28, x = point.x - width / 2, y = point.y - height;
-        const bottom = ExplorationBarLayout(s.Width, s.Height)[0].y - 31;
+        const bottom = ExplorationBarLayout(s.Width, s.Height)[0].y - 3 - (14 + LogLines * 14);
         if (!point.visible || !Number.isFinite(x) || !Number.isFinite(y)
             || x < 0 || x + width > s.Width || y < this.headerHeight || y + height > bottom) return;
         this.Place(this.talk, x, y, width, height);
@@ -897,12 +1013,22 @@ export class TacticalHUD {
     }
 
     /** Backpack contents (not what is worn), narrowed by the active filter. */
+    /** Backpack items on the current tab, matching the search, in the chosen sort order. */
     BagItems() {
-        const categories = BagFilters[this.inventoryCategory] ?? null;
-        return Object.entries(this.level.campaign.inventory)
+        const query = (this.search?.text ?? '').trim().toLowerCase();
+        const items = Object.entries(this.level.campaign.inventory)
             .filter(([name, count]) => count > 0 && Object.hasOwn(ItemInfo, name))
-            .filter(([name]) => !categories || categories.includes(ItemInfo[name].category))
+            .filter(([name]) => InBagFilter(this.inventoryCategory, name))
+            .filter(([name]) => !query || name.toLowerCase().includes(query) || ItemInfo[name].category.toLowerCase().includes(query))
             .map(([name, count]) => ({ name, count, equipped: false }));
+        const by = {
+            Type: (a, b) => CategoryOrder.indexOf(ItemInfo[a.name].category) - CategoryOrder.indexOf(ItemInfo[b.name].category) || a.name.localeCompare(b.name),
+            Rarity: (a, b) => RarityOrder[ItemInfo[a.name].rarity] - RarityOrder[ItemInfo[b.name].rarity] || a.name.localeCompare(b.name),
+            Name: (a, b) => a.name.localeCompare(b.name),
+            Value: (a, b) => ItemValue(b.name) - ItemValue(a.name) || a.name.localeCompare(b.name),
+            Weight: (a, b) => ItemWeight(b.name) * b.count - ItemWeight(a.name) * a.count || a.name.localeCompare(b.name),
+        }[this.bagSort ?? 'Newest'];
+        return by ? items.sort(by) : items;
     }
 
     SelectedBagItem() {
@@ -938,7 +1064,7 @@ export class TacticalHUD {
             return false;
         }
         const info = ItemInfo[item.name];
-        if (info.use) return this.level.UseItem(item.name);
+        if (info.use || info.permanent) return this.level.UseItem(item.name);
         if (!EquipmentSlot(item.name)) {
             this.level.turn.message = `${item.name} is a resource · sell it to the alchemist.`;
             return false;
@@ -1113,6 +1239,8 @@ export class TacticalHUD {
 
     ItemModifiers(name) {
         const item = EquipmentStats(name);
+        const permanent = ItemInfo[name]?.permanent;
+        if (permanent) return Object.entries(permanent).map(([stat, value]) => `Permanent +${value} ${stat.toUpperCase()}`).join(' · ');
         if (!item) {
             const use = ItemInfo[name]?.use;
             if (!use) return ItemInfo[name]?.sell ? `Sells for ${ItemInfo[name].sell}G` : 'No bonuses';
@@ -1260,11 +1388,11 @@ export class TacticalHUD {
         const { level: l, screen: s, frame: f } = this;
         const hero = l.campaign.hero, panel = this.panel;
         const sheet = panel === 'bag' || panel === 'gear';
-        const width = Math.min(panel === 'map' ? 680 : sheet ? 660 : 300, s.Width - 20);
-        const x = panel === 'map' || sheet ? (s.Width - width) / 2 : 10;
-        const sheetHeight = sheet ? SheetLayout(0, 0, width).height + 8 : 0;
+        const width = Math.min(panel === 'map' ? 680 : sheet ? 720 : panel === 'settings' ? 380 : 300, s.Width - 20);
+        const x = panel === 'map' || sheet || panel === 'settings' ? (s.Width - width) / 2 : 10;
+        const sheetHeight = panel === 'bag' ? InventoryLayout(0, 0, width).height + 8 : panel === 'gear' ? EquipmentLayout(0, 0, width).height + 8 : 0;
         const y = sheet ? Math.max(10, Math.min(this.headerHeight + 16, s.Height - sheetHeight - 10)) : this.headerHeight + 16;
-        const heading = { hero: 'CHARACTER · ATTRIBUTES', bag: 'CHARACTER SHEET · BACKPACK', gear: 'CHARACTER SHEET · EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
+        const heading = { hero: 'CHARACTER · ATTRIBUTES', bag: 'INVENTORY', gear: 'EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
         const height = panel === 'shop' ? 276
             : panel === 'settings' ? (l.controlSettings.mode === 'Personalizado' ? 340 : 212)
             : panel === 'skills' ? 290
@@ -1295,9 +1423,10 @@ export class TacticalHUD {
         }
         else if (panel === 'hero')
             this.DrawCharacterPanel(x, y, width, hero);
-        else if (sheet) {
-            this.sheet.Draw(x, y, width);
-        }
+        else if (panel === 'bag')
+            this.inventory.Draw(x, y, width);
+        else if (panel === 'gear')
+            this.equipmentPanel.Draw(x, y, width);
         else if (panel === 'map')
             this.DrawWorldMap(x, y, width, height, hero);
         else if (panel === 'party') {

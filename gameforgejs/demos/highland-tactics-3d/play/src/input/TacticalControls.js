@@ -29,7 +29,7 @@ export class TacticalControls {
         const l = this.level, t = l.turn;
         if (l.exploring === 'creation' && l.hud.nameField?.isActive) return;
         // Typing in the inventory search box (and the key that ends it) never reaches the game.
-        if (l.hud.search?.active || l.hud.ConsumeSearchRelease?.()) return;
+        if (l.hud.search?.active || l.hud.chat?.active || l.hud.ConsumeSearchRelease?.()) return;
         if (ActionManager.IsActionDown('HELP'))
             l.hud.help.Toggle();
         if (l.hud.help.visible) return;
@@ -110,7 +110,7 @@ export class TacticalControls {
             }
             return;
         }
-        if (l.exploring === 'battle' && ActionManager.IsActionDown('RESET'))
+        if (l.exploring === 'battle' && !l.remote && ActionManager.IsActionDown('RESET'))
             l.ResetBattle();
         if (ActionManager.IsActionDown('ORBIT_LEFT'))
             l.cameraStep--;

@@ -134,6 +134,8 @@ export class HighlandLevel extends Level3D {
             hp: hero.hp,
             color: hero.color,
             team: 'ally',
+            heroWeapon: true,
+            visualWeapon: this.campaign.equipment.weapon,
             unlockedSkills: [...this.campaign.unlockedSkills],
         };
     }
@@ -666,6 +668,7 @@ export class HighlandLevel extends Level3D {
         if (!this.player || !this.campaign.hero) return;
         for (const stat of ['attack', 'magic', 'defense', 'speed', 'maxHp', 'hp', 'energyMax'])
             this.player.stats[stat] = this.campaign.hero[stat];
+        this.player.stats.visualWeapon = this.campaign.equipment.weapon;
         this.player.stats.energy = Math.min(this.player.stats.energy, this.player.stats.energyMax);
     }
 

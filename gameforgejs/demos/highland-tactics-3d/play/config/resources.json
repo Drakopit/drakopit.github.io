@@ -1,5 +1,15 @@
 {
   "schemaVersion": 1,
+  "models": [
+    {
+      "name": "highland-sword",
+      "path": "../assets/kaykit-weapons/sword_A.gltf"
+    },
+    {
+      "name": "highland-staff",
+      "path": "../assets/kaykit-weapons/staff_A.gltf"
+    }
+  ],
   "jsons": [
     {
       "name": "hearthvale",

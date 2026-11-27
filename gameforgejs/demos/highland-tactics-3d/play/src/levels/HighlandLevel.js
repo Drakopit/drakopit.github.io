@@ -719,6 +719,7 @@ export class HighlandLevel extends Level3D {
         if (!this.player || !this.campaign.hero) return;
         for (const stat of ['attack', 'magic', 'defense', 'speed', 'maxHp', 'hp', 'apMax', 'mpMax'])
             this.player.stats[stat] = this.campaign.hero[stat];
+        this.player.stats.resist = { ...(this.campaign.hero.resist ?? {}) };
         this.player.stats.visualWeapon = this.campaign.equipment.weapon;
         this.player.stats.visualOffhand = this.campaign.equipment.offhand;
         this.player.stats.ap = Math.min(this.player.stats.ap ?? this.player.stats.apMax, this.player.stats.apMax);

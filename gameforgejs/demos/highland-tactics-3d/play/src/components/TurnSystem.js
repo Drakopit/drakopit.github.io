@@ -35,8 +35,10 @@ export class TurnSystem extends Component {
         }
         stats.exposed = Math.max(0, stats.exposed - 1);
         stats.haste = Math.max(0, (stats.haste ?? 0) - 1);
-        for (const [status, damage, label, effect] of [['burn', 4, 'BURN', undefined], ['poison', 3, 'POISON', 'poison']]) {
+        for (const [status, base, label, effect, resist] of [['burn', 4, 'BURN', undefined, 'fire'], ['poison', 3, 'POISON', 'poison', 'poison']]) {
             if (!(stats[status] > 0)) continue;
+            // Fire / Poison resistance (percent, at most 50) softens the tick; it never drops below 1.
+            const damage = Math.max(1, Math.round(base * (1 - Math.min(50, Math.max(0, stats.resist?.[resist] ?? 0)) / 100)));
             stats.hp = Math.max(0, stats.hp - damage);
             stats[status]--;
             this.feedback.push({ pawn: actor, text: `-${damage} ${label}`, life: 1.7, effect });

@@ -31,6 +31,22 @@ export const PermanentCaps = Object.freeze({ ap: 1, mp: 1 });
 export const BudgetCaps = Object.freeze({ ap: 12, mp: 6 });
 const EmptyAttributes = () => Object.fromEntries(Object.keys(Attributes).map(id => [id, 0]));
 
+/**
+ * Elemental resistances from gear, in percent (each capped at `ResistCap`). Fire softens burn
+ * damage, Poison softens poison damage and Arcane softens magic damage taken.
+ */
+export const Resistances = Object.freeze({
+    fire: { label: 'Fire', short: 'FIR', color: '#f08a4b', description: 'Reduces burn damage.' },
+    poison: { label: 'Poison', short: 'PSN', color: '#8fd06a', description: 'Reduces poison damage.' },
+    arcane: { label: 'Arcane', short: 'ARC', color: '#a993d4', description: 'Reduces magic damage taken.' },
+});
+export const ResistCap = 50;
+
+/** Applies a resistance percentage to a damage amount (at least 0, rounded). */
+export function Resisted(amount, percent = 0) {
+    return Math.max(0, Math.round(amount * (1 - Math.min(ResistCap, Math.max(0, percent)) / 100)));
+}
+
 /** Gear: `slot` is the kind of slot an item fits (rings fit either ring slot). */
 export const Equipment = Object.freeze({
     weapons: {
@@ -40,22 +56,22 @@ export const Equipment = Object.freeze({
     },
     armor: {
         'Wool Coat': { defense: 0, price: 0 },
-        'Ranger Leathers': { defense: 3, price: 40 },
-        'Iron Kilt': { defense: 5, price: 55 },
+        'Ranger Leathers': { defense: 3, resist: { poison: 10 }, price: 40 },
+        'Iron Kilt': { defense: 5, resist: { fire: 10 }, price: 55 },
         'Scout Helm': { slot: 'helm', defense: 1, price: 20 },
         'Travel Belt': { slot: 'belt', hp: 6, price: 20 },
         'Leather Gloves': { slot: 'gloves', attack: 1, price: 20 },
         'Trail Boots': { slot: 'boots', speed: 2, price: 25 },
         'Swiftstride Boots': { slot: 'boots', mp: 1, speed: 1, price: 180 },
-        'Oak Shield': { slot: 'offhand', defense: 2, price: 30 },
+        'Oak Shield': { slot: 'offhand', defense: 2, resist: { fire: 5, arcane: 5 }, price: 30 },
         'Focus Ring': { slot: 'ring', ap: 1, price: 140 },
-        'Iron Band': { slot: 'ring', defense: 1, price: 18 },
+        'Iron Band': { slot: 'ring', defense: 1, resist: { poison: 5 }, price: 18 },
         'Tactician Signet': { slot: 'ring', ap: 1, speed: 2, price: 260 },
-        'Amber Amulet': { slot: 'amulet', magic: 2, price: 28 },
+        'Amber Amulet': { slot: 'amulet', magic: 2, resist: { arcane: 10 }, price: 28 },
         'Wayfarer Charm': { slot: 'amulet', mp: 1, price: 160 },
-        'Wool Cloak': { slot: 'cloak', defense: 1, price: 18 },
-        'Shadow Cape': { slot: 'cloak', speed: 3, price: 45 },
-        'Tempest Mantle': { slot: 'cloak', ap: 1, defense: 1, price: 240 },
+        'Wool Cloak': { slot: 'cloak', defense: 1, resist: { fire: 10 }, price: 18 },
+        'Shadow Cape': { slot: 'cloak', speed: 3, resist: { poison: 15 }, price: 45 },
+        'Tempest Mantle': { slot: 'cloak', ap: 1, defense: 1, resist: { arcane: 15 }, price: 240 },
     },
 });
 
@@ -107,9 +123,9 @@ export const ItemInfo = Object.freeze({
     Antidote: { category: 'Consumables', rarity: 'common', description: 'Cures poison, burn and slow in battle.', icon: 'antidote', price: 12, sell: 4, use: { ap: 1, cleanse: true } },
     'Scroll of Focus': { category: 'Special', rarity: 'epic', description: 'Read outside battle: permanently +1 maximum AP (once per hero).', icon: 'scroll', price: 600, sell: 150, permanent: { ap: 1 } },
     'Scroll of Stride': { category: 'Special', rarity: 'epic', description: 'Read outside battle: permanently +1 maximum MP (once per hero).', icon: 'scroll', price: 600, sell: 150, permanent: { mp: 1 } },
-    'Ash Shard': { category: 'Resources', rarity: 'uncommon', description: 'A warm shard from the Ashen Ridge. Alchemists buy it.', icon: 'shard', sell: 6 },
-    'Hound Pelt': { category: 'Resources', rarity: 'common', description: 'A rough pelt from a shadow hound.', icon: 'pelt', sell: 4 },
-    'Mist Herb': { category: 'Resources', rarity: 'common', description: 'A pale herb that grows in the Mistfell fog.', icon: 'herb', sell: 3 },
+    'Ash Shard': { category: 'Materials', rarity: 'uncommon', description: 'A warm shard from the Ashen Ridge. Alchemists buy it.', icon: 'shard', sell: 6 },
+    'Hound Pelt': { category: 'Materials', rarity: 'common', description: 'A rough pelt from a shadow hound.', icon: 'pelt', sell: 4 },
+    'Mist Herb': { category: 'Materials', rarity: 'common', description: 'A pale herb that grows in the Mistfell fog.', icon: 'herb', sell: 3 },
     'Training Blade': { category: 'Weapons', rarity: 'common', description: 'A balanced starter blade.', icon: 'blade' },
     'Highland Edge': { category: 'Weapons', rarity: 'rare', description: 'A keen highland steel blade.', icon: 'blade' },
     'Runed Staff': { category: 'Weapons', rarity: 'rare', description: 'A staff etched to steady arcane energy.', icon: 'staff' },
@@ -133,13 +149,38 @@ export const ItemInfo = Object.freeze({
 });
 
 /** Backpack filters: each lists the item categories it shows. */
+/**
+ * Inventory tabs. `categories` lists the item categories a tab shows (null: every item);
+ * the Special tab also lists any gear that raises AP or MP.
+ */
 export const BagFilters = Object.freeze({
-    All: null,
-    Gear: ['Weapons', 'Armor', 'Accessories'],
-    Consumables: ['Consumables'],
-    Special: ['Special'],
-    Resources: ['Resources'],
+    All: { label: 'All', categories: null },
+    Gear: { label: 'Weapons & Armor', categories: ['Weapons', 'Armor', 'Accessories'] },
+    Consumables: { label: 'Consumables', categories: ['Consumables'] },
+    Special: { label: 'Special AP/MP', categories: ['Special'], budgetGear: true },
+    Materials: { label: 'Materials', categories: ['Materials'] },
 });
+
+/** Whether an item belongs on an inventory tab. */
+export function InBagFilter(filter, item) {
+    const tab = BagFilters[filter], info = ItemInfo[item];
+    if (!tab || !info) return false;
+    if (!tab.categories || tab.categories.includes(info.category)) return true;
+    const gear = EquipmentStats(item);
+    return Boolean(tab.budgetGear && gear && ((gear.ap ?? 0) > 0 || (gear.mp ?? 0) > 0));
+}
+
+/** Carry weight per item, by slot kind for gear and by category otherwise. */
+const SlotWeight = Object.freeze({ weapon: 4, armor: 6, helm: 2, cloak: 2, belt: 1, gloves: 1, boots: 2, offhand: 5, ring: 0.1, amulet: 0.2 });
+const CategoryWeight = Object.freeze({ Consumables: 0.5, Special: 0.2, Materials: 0.5 });
+export function ItemWeight(item) {
+    const slot = EquipmentSlot(item);
+    return slot ? SlotWeight[slot] : CategoryWeight[ItemInfo[item]?.category] ?? 1;
+}
+/** Backpack capacity: a base load plus 2 per Strength point. Grid slots are separate (40 stacks). */
+export const CarryBase = 40;
+export const CarryPerStrength = 2;
+export const BackpackSlots = 40;
 
 const EmptyEquipment = () => Object.fromEntries(EquipmentSlots.map(slot => [slot.id, null]));
 
@@ -299,22 +340,66 @@ export class HighlandCampaign {
         return true;
     }
 
-    ApplyEquipment() {
-        if (!this.hero) return;
+    /**
+     * Where each stat comes from: base (class, plus levels for HP), trained attribute points,
+     * equipped gear and passive skills. AP and MP list base, gear and scrolls, then the capped total.
+     */
+    StatBreakdown() {
+        if (!this.hero) return null;
         const gear = Object.values(this.equipment).map(EquipmentStats).filter(Boolean);
         const total = stat => gear.reduce((sum, item) => sum + (item[stat] ?? 0), 0);
         const passive = stat => this.unlockedSkills.reduce((sum, id) => sum + (GetSkill(this.hero.archetype, id)?.[stat] ?? 0), 0);
-        // Allocated attribute points, by the stat each one raises.
         const trained = stat => Object.entries(Attributes)
             .reduce((sum, [id, attribute]) => sum + (attribute.stat === stat ? (this.attributes[id] ?? 0) * attribute.per : 0), 0);
-        this.hero.attack = this.hero.baseAttack + trained('attack') + total('attack') + passive('attack');
-        this.hero.magic = this.hero.baseMagic + trained('magic') + total('magic') + passive('magic');
-        this.hero.defense = this.hero.baseDefense + trained('defense') + total('defense') + passive('defense');
-        this.hero.speed = this.hero.baseSpeed + trained('speed') + total('speed');
+        const row = (base, stat, gearStat = stat, withPassive = true) => {
+            const entry = { base, trained: trained(stat), gear: total(gearStat), passive: withPassive ? passive(stat) : 0 };
+            return { ...entry, total: entry.base + entry.trained + entry.gear + entry.passive };
+        };
+        const budget = (id) => {
+            const entry = { base: TurnBudget[id], gear: total(id), scrolls: this.permanent[id], cap: BudgetCaps[id] };
+            return { ...entry, total: Math.min(entry.cap, entry.base + entry.gear + entry.scrolls) };
+        };
+        const resist = Object.fromEntries(Object.keys(Resistances).map(id => {
+            const raw = gear.reduce((sum, item) => sum + (item.resist?.[id] ?? 0), 0);
+            return [id, { gear: raw, total: Math.min(ResistCap, raw) }];
+        }));
+        return {
+            attack: row(this.hero.baseAttack, 'attack'),
+            magic: row(this.hero.baseMagic, 'magic'),
+            defense: row(this.hero.baseDefense, 'defense'),
+            speed: row(this.hero.baseSpeed, 'speed', 'speed', false),
+            maxHp: row(this.hero.baseHp + (this.hero.level - 1) * 6, 'maxHp', 'hp', false),
+            ap: budget('ap'), mp: budget('mp'), resist,
+        };
+    }
+
+    /** Total weight of the backpack (worn gear does not count). */
+    CarryWeight() {
+        const weight = Object.entries(this.inventory).reduce((sum, [item, count]) => sum + (count > 0 ? ItemWeight(item) * count : 0), 0);
+        return Math.round(weight * 10) / 10;
+    }
+
+    CarryCapacity() {
+        return CarryBase + CarryPerStrength * (this.attributes?.strength ?? 0);
+    }
+
+    /** Distinct stacks in the backpack, against the 40-slot grid. */
+    UsedSlots() {
+        return Object.entries(this.inventory).filter(([item, count]) => count > 0 && Object.hasOwn(ItemInfo, item)).length;
+    }
+
+    ApplyEquipment() {
+        if (!this.hero) return;
+        const stats = this.StatBreakdown();
+        this.hero.attack = stats.attack.total;
+        this.hero.magic = stats.magic.total;
+        this.hero.defense = stats.defense.total;
+        this.hero.speed = stats.speed.total;
         // AP / MP: base budget, rare gear and permanent scrolls only, never levels or attributes.
-        this.hero.apMax = Math.min(BudgetCaps.ap, TurnBudget.ap + total('ap') + this.permanent.ap);
-        this.hero.mpMax = Math.min(BudgetCaps.mp, TurnBudget.mp + total('mp') + this.permanent.mp);
-        this.hero.maxHp = this.hero.baseHp + (this.hero.level - 1) * 6 + trained('maxHp') + total('hp');
+        this.hero.apMax = stats.ap.total;
+        this.hero.mpMax = stats.mp.total;
+        this.hero.maxHp = stats.maxHp.total;
+        this.hero.resist = Object.fromEntries(Object.entries(stats.resist).map(([id, entry]) => [id, entry.total]));
         this.hero.attributes = { ...this.attributes };
         this.hero.attributePoints = this.attributePoints;
         this.hero.hp = Math.min(this.hero.hp, this.hero.maxHp);

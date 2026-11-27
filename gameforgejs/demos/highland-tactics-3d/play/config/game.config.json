@@ -3,6 +3,9 @@
   "project": {
     "name": "Highland Tactics 3D"
   },
+  "gameplay": {
+    "partyControlEnabled": false
+  },
   "window": {
     "title": "Highland Tactics — GameForgeJS"
   },

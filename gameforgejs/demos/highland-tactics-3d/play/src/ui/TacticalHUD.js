@@ -1,6 +1,6 @@
 import { Input, Vector3D } from 'gameforgejs/core';
 import { Draw, HUDFrame, InputHelpPanel, Button, Rectangle, TextBox, Touch } from 'gameforgejs/2d';
-import { BagFilters, Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo, SlotFor } from '../data/HighlandCampaign.js';
+import { BagFilters, Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo, SlotFor, Attributes } from '../data/HighlandCampaign.js';
 import { WorldMapDisplay } from '../data/WorldMaps.js';
 import { BattleRules, Commands, Facings, GetAbilityProfile } from '../data/BattleRules.js';
 import { ActiveSkills, SkillTrees } from '../data/ClassSkills.js';
@@ -16,8 +16,8 @@ export { DockLayout, SheetLayout };
 export const VendorStock = Object.freeze({
     weapon: ['Highland Edge', 'Runed Staff'],
     armor: ['Ranger Leathers', 'Iron Kilt', 'Scout Helm', 'Travel Belt', 'Leather Gloves', 'Trail Boots', 'Oak Shield',
-        'Wool Cloak', 'Shadow Cape', 'Amber Amulet', 'Iron Band', 'Focus Ring'],
-    consumable: ['Potion', 'Ether', 'Antidote'],
+        'Wool Cloak', 'Shadow Cape', 'Amber Amulet', 'Iron Band', 'Focus Ring', 'Swiftstride Boots', 'Tempest Mantle'],
+    consumable: ['Potion', 'Ether', 'Antidote', 'Scroll of Focus', 'Scroll of Stride'],
 });
 
 export function RadialMenuLayout(width, height, count, progress, center, bounds = { top: 0, bottom: height }) {
@@ -43,12 +43,12 @@ export function RadialMenuLayout(width, height, count, progress, center, bounds 
     };
 }
 
-export function ExplorationBarLayout(width, height) {
-    const columns = width < 640 ? 4 : 8, rows = 8 / columns;
+export function ExplorationBarLayout(width, height, count = 8) {
+    const columns = width < 640 ? 4 : 8, rows = Math.ceil(count / columns);
     const gap = 3, totalWidth = Math.min(width - 20, 880), x = (width - totalWidth) / 2;
     const buttonWidth = (totalWidth - gap * (columns - 1)) / columns, buttonHeight = 42;
     const y = height - 10 - rows * buttonHeight - (rows - 1) * gap;
-    return Array.from({ length: 8 }, (_, index) => ({
+    return Array.from({ length: count }, (_, index) => ({
         x: x + (index % columns) * (buttonWidth + gap),
         y: y + Math.floor(index / columns) * (buttonHeight + gap),
         width: buttonWidth, height: buttonHeight,
@@ -92,7 +92,7 @@ export class TacticalHUD {
         this.frame = new HUDFrame(level.ui.Draw);
         this.help = new InputHelpPanel(new Draw(this.screen), {
             title: 'Highland Tactics / Controls',
-            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character · K skills · M map · P party · F vendor · H help', 'Character sheet (E / I): double-click or drag to equip · [ / ] filter · Enter equip/use.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
+            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character & attributes · K skills · M map · F vendor · H help', 'Character sheet (E / I): double-click or drag to equip · [ / ] filter · Enter equip/use.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
         });
         this.panel = null;
         this.selectedArchetype = 'vanguard';
@@ -129,7 +129,7 @@ export class TacticalHUD {
             { label: 'Equipment', shortcut: 'E', panel: 'gear', icon: 'gear' },
             { label: 'Map', shortcut: 'M', panel: 'map', icon: 'map' },
             { label: 'Shop', shortcut: 'F', icon: 'shop' },
-            { label: 'Party', shortcut: 'P', panel: 'party', icon: 'party' },
+            ...(level.partyControlEnabled ? [{ label: 'Party', shortcut: 'P', panel: 'party', icon: 'party' }] : []),
             { label: 'Settings', shortcut: 'B', panel: 'settings', icon: 'help' },
         ].map(item => ({ ...item, button: this.Button('', () => this.ActivateBar(item)).button }));
         this.bagCategories = Object.keys(BagFilters).map(category => ({
@@ -186,6 +186,11 @@ export class TacticalHUD {
             return: this.Button('RETURN TO EXPLORATION', () => level.ReturnToExplore()),
             close: this.Button('×', () => { this.panel = null; }),
         };
+        this.attributeSelection = 0;
+        this.attributeButtons = Object.keys(Attributes).map((id, index) => this.Button('+', () => {
+            this.attributeSelection = index;
+            level.AllocateAttribute(id);
+        }));
         this.talk = this.Button('', () => level.InteractShopkeeper());
         this.mapZones = WorldMapDisplay('').zones.map((zone, index) =>
             this.Button('', () => { this.mapSelection = index; }));
@@ -229,8 +234,47 @@ export class TacticalHUD {
         return false;
     }
 
+    /** Character panel: identity, derived stats, attribute allocation and AP/MP sources. */
+    DrawCharacterPanel(x, y, width, hero) {
+        const { level: l, frame: f } = this;
+        const campaign = l.campaign, points = campaign.attributePoints;
+        f.Text(`${hero.name} · ${hero.className} · Level ${hero.level}`, x + 14, y + 46, { size: 12, weight: 700, maxWidth: width - 28 });
+        f.Text(`XP ${hero.xp}/${hero.nextXp} · HP ${hero.hp}/${hero.maxHp} · SPD ${hero.speed}`, x + 14, y + 64, { size: 10, maxWidth: width - 28 });
+        f.Text(`ATK ${hero.attack} · MAG ${hero.magic} · DEF ${hero.defense}`, x + 14, y + 80, { size: 10, maxWidth: width - 28 });
+        f.Text(points ? `${points} ATTRIBUTE POINT${points === 1 ? '' : 'S'} TO SPEND` : 'No unspent attribute points', x + 14, y + 102,
+            { size: 10, weight: 700, color: points ? f.theme.gold : f.theme.muted });
+        Object.entries(Attributes).forEach(([id, attribute], index) => {
+            const rowY = y + 112 + index * 30, selected = this.attributeSelection === index;
+            const c = this.screen.Context;
+            c.save();
+            c.fillStyle = selected ? 'rgba(249,203,91,0.12)' : 'rgba(255,255,255,0.03)';
+            c.fillRect(x + 10, rowY, width - 20, 26);
+            c.restore();
+            f.Text(`${attribute.short}  ${attribute.label}`, x + 16, rowY + 11, { size: 10, weight: 700, color: selected ? f.theme.gold : f.theme.text });
+            f.Text(`${campaign.attributes[id]} · ${attribute.description}`, x + 16, rowY + 22, { size: 8, color: f.theme.muted, maxWidth: width - 74 });
+            this.Place(this.attributeButtons[index], x + width - 44, rowY + 2, 32, 22, points > 0, selected);
+        });
+        const gearAp = hero.apMax - 6 - campaign.permanent.ap, gearMp = hero.mpMax - 3 - campaign.permanent.mp;
+        f.Text(`AP ${hero.apMax} · MP ${hero.mpMax}`, x + 14, y + 274, { size: 11, weight: 700, color: f.theme.gold });
+        f.Text(`Base 6 / 3 · gear +${gearAp} / +${gearMp} · scrolls +${campaign.permanent.ap} / +${campaign.permanent.mp}`, x + 14, y + 290, { size: 8, color: f.theme.muted, maxWidth: width - 28 });
+        f.Text('AP/MP never rise with levels: find rare gear or scrolls.', x + 14, y + 302, { size: 8, color: f.theme.muted, maxWidth: width - 28 });
+        const half = (width - 30) / 2;
+        this.Place(this.panelButtons.save, x + 12, y + 316, half, 30, true);
+        this.Place(this.panelButtons.rest, x + 18 + half, y + 316, half, 30, l.zone.id === 'hearthvale');
+    }
+
+    MoveAttributeSelection(delta) {
+        const count = Object.keys(Attributes).length;
+        this.attributeSelection = (this.attributeSelection + delta + count) % count;
+    }
+
+    ActivateAttributeSelection() {
+        return this.level.AllocateAttribute(Object.keys(Attributes)[this.attributeSelection]);
+    }
+
     TogglePanel(panel) {
         if (panel === 'shop') return this.level.InteractShopkeeper();
+        if (panel === 'party' && !this.level.partyControlEnabled) return;
         // E and I open one combined sheet; the other key moves focus between doll and backpack.
         if (['bag', 'gear'].includes(panel) && ['bag', 'gear'].includes(this.panel) && this.panel !== panel) {
             this.panel = panel;
@@ -536,7 +580,7 @@ export class TacticalHUD {
         const { level: l, screen: s, frame: f } = this;
         this.DrawExploreRoute();
         if (this.panel) return;
-        const layout = ExplorationBarLayout(s.Width, s.Height);
+        const layout = ExplorationBarLayout(s.Width, s.Height, this.barItems.length);
         const width = Math.min(430, s.Width - 20), y = layout[0].y - 31;
         f.Panel({ x: 10, y, width, height: 28 });
         f.Text(l.turn.message, 22, y + 19, { size: 10, color: f.theme.gold, maxWidth: width - 24 });
@@ -966,7 +1010,7 @@ export class TacticalHUD {
         }
         return (VendorStock[specialty] ?? []).map(name => ({
             name, button: this.stock?.find(item => item.name === name)?.button ?? null,
-            slot: ItemInfo[name].category === 'Consumables' ? 'potion' : EquipmentSlot(name),
+            slot: ['Consumables', 'Special'].includes(ItemInfo[name].category) ? 'potion' : EquipmentSlot(name),
             price: EquipmentStats(name)?.price ?? ItemInfo[name].price,
         }));
     }
@@ -1220,10 +1264,11 @@ export class TacticalHUD {
         const x = panel === 'map' || sheet ? (s.Width - width) / 2 : 10;
         const sheetHeight = sheet ? SheetLayout(0, 0, width).height + 8 : 0;
         const y = sheet ? Math.max(10, Math.min(this.headerHeight + 16, s.Height - sheetHeight - 10)) : this.headerHeight + 16;
-        const heading = { hero: 'CHARACTER', bag: 'CHARACTER SHEET · BACKPACK', gear: 'CHARACTER SHEET · EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
+        const heading = { hero: 'CHARACTER · ATTRIBUTES', bag: 'CHARACTER SHEET · BACKPACK', gear: 'CHARACTER SHEET · EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
         const height = panel === 'shop' ? 276
             : panel === 'settings' ? (l.controlSettings.mode === 'Personalizado' ? 340 : 212)
             : panel === 'skills' ? 290
+            : panel === 'hero' ? 366
                 : sheet ? sheetHeight
                     : panel === 'map' ? Math.min(410, Math.max(246, ExplorationBarLayout(s.Width, s.Height)[0].y - y - 10))
                     : 190;
@@ -1248,13 +1293,8 @@ export class TacticalHUD {
             this.Place(this.settingsHelp, x + 12, y + (custom ? 266 : 166), width - 24, 30, true,
                 this.settingsSelection === ControlModes.length + (custom ? CustomOptions.length : 0));
         }
-        else if (panel === 'hero') {
-            f.Text(`${hero.className} · Level ${hero.level}`, x + 14, y + 48, { size: 12 });
-            f.Text(`HP ${hero.hp}/${hero.maxHp} · ATK ${hero.attack} · MAG ${hero.magic} · DEF ${hero.defense}`, x + 14, y + 68, { size: 10, maxWidth: width - 28 });
-            f.Text(`XP ${hero.xp}/${hero.nextXp} · AP ${hero.apMax} · MP ${hero.mpMax} · SPD ${hero.speed}`, x + 14, y + 88, { size: 11, maxWidth: width - 28 });
-            this.Place(this.panelButtons.save, x + 12, y + 102, width - 24, 27, true);
-            this.Place(this.panelButtons.rest, x + 12, y + 134, width - 24, 32, l.zone.id === 'hearthvale');
-        }
+        else if (panel === 'hero')
+            this.DrawCharacterPanel(x, y, width, hero);
         else if (sheet) {
             this.sheet.Draw(x, y, width);
         }

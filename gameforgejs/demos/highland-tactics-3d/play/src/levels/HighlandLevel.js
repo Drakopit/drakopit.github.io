@@ -2,7 +2,7 @@ import { MathExt, SoundEffects, SceneDocument, GameViewport } from 'gameforgejs/
 import { GameObject } from 'gameforgejs/2d';
 import { Level3D, OrthographicCamera, HeightGrid, SceneManifest3D, SurfaceMaterial } from 'gameforgejs/3d';
 import { BattleFromScene } from '../data/BattleScene.js';
-import { Archetypes, HighlandCampaign, EquipmentSlot, ItemInfo } from '../data/HighlandCampaign.js';
+import { Archetypes, HighlandCampaign, EquipmentSlot, ItemInfo, Attributes, AttributePointsPerLevel } from '../data/HighlandCampaign.js';
 import { FindExplorePath as FindPath } from '../data/ExplorePathfinding.js';
 import { GetZone } from '../data/WorldMaps.js';
 import { TacticalPawn } from '../entities/TacticalPawn.js';
@@ -39,6 +39,9 @@ export class HighlandLevel extends Level3D {
             }
         }
         this.controlSettings = ControlSettings(settings.mode, settings);
+        // Single-hero MMORPG mode: companions/party control stay in the code behind this flag
+        // (config/game.config.json → gameplay.partyControlEnabled) for future party or mercenary support.
+        this.partyControlEnabled = this.context.config?.gameplay?.partyControlEnabled === true;
         const document = this.context.assets.jsons[this.sceneId];
         if (!document) throw new Error(`Highland scene "${this.sceneId}" is missing from resources.json.`);
         const prefabs = SceneDocument.LoadedPrefabs(this.context.assets);
@@ -525,7 +528,7 @@ export class HighlandLevel extends Level3D {
             role: unit.id === 'scout' ? 'flanker' : 'bruiser',
             basicAbility: unit.id === 'scout' ? 'quick-shot' : 'guard-bash',
         }));
-        const party = allyUnits.filter((unit, index) => index === 0 || this.campaign.companionDeployed).map((unit, index) => index === 0
+        const party = allyUnits.filter((unit, index) => index === 0 || (this.partyControlEnabled && this.campaign.companionDeployed)).map((unit, index) => index === 0
             ? { ...this.HeroDefinition(), col: unit.col, row: unit.row }
             : { ...unit, ...this.campaign.CompanionStats() });
         const extraEnemies = [
@@ -571,7 +574,7 @@ export class HighlandLevel extends Level3D {
             const { levels } = this.lootResult ?? this.actions.Loot();
             this.resultHandled = true;
             this.turn.message = levels
-                ? `VICTORY · Level ${this.campaign.hero.level}! Return to ${this.zone.name}.`
+                ? `VICTORY · Level ${this.campaign.hero.level}! +${levels * AttributePointsPerLevel} attribute points [C] · Return to ${this.zone.name}.`
                 : `VICTORY · +${this.encounterId === 'ashen-ridge' ? 90 : 60} XP · Return to ${this.zone.name}.`;
         }
         else {
@@ -589,7 +592,7 @@ export class HighlandLevel extends Level3D {
         if (this.exploring !== 'result') return;
         if (this.turn.result === 'DEFEAT') {
             this.campaign.hero.hp = Math.max(1, Math.ceil(this.campaign.hero.maxHp * 0.4));
-            if (this.campaign.companionDeployed)
+            if (this.partyControlEnabled && this.campaign.companionDeployed)
                 this.campaign.companion.hp = Math.max(1, Math.ceil(this.campaign.CompanionStats().maxHp * 0.4));
             this.campaign.zoneId = 'hearthvale';
             this.LoadZone('hearthvale');
@@ -602,7 +605,7 @@ export class HighlandLevel extends Level3D {
 
     /** Buys from the active vendor: consumables at the alchemist, gear into `slot` (or the first fitting one). */
     Buy(item, slot = null) {
-        const consumable = slot === 'potion' || ItemInfo[item]?.category === 'Consumables';
+        const consumable = slot === 'potion' || ['Consumables', 'Special'].includes(ItemInfo[item]?.category);
         const kind = consumable ? null : EquipmentSlot(item);
         const specialty = consumable ? 'consumable' : kind === 'weapon' ? 'weapon' : 'armor';
         if (this.zone.id !== 'hearthvale' || !this.activeVendor || !this.CanInteractShopkeeper(this.activeVendor)
@@ -621,7 +624,7 @@ export class HighlandLevel extends Level3D {
     }
 
     ToggleCompanion() {
-        if (this.exploring !== 'explore') return false;
+        if (this.exploring !== 'explore' || !this.partyControlEnabled) return false;
         this.campaign.companionDeployed = !this.campaign.companionDeployed;
         this.turn.message = this.campaign.companionDeployed ? 'Orin will join the next battle.' : 'Orin will remain in reserve.';
         this.sound.Play('select');
@@ -633,7 +636,7 @@ export class HighlandLevel extends Level3D {
         this.campaign.hero.hp = this.campaign.hero.maxHp;
         this.campaign.companion.hp = this.campaign.CompanionStats().maxHp;
         if (this.player) this.player.stats.hp = this.campaign.hero.hp;
-        this.turn.message = 'Rested at Hearthvale — your party is ready.';
+        this.turn.message = this.partyControlEnabled ? 'Rested at Hearthvale — your party is ready.' : 'Rested at Hearthvale — fully restored.';
         this.sound.Play('success');
     }
 
@@ -644,7 +647,37 @@ export class HighlandLevel extends Level3D {
     }
 
     /** Uses a backpack item outside battle (only Potions work there; the rest are battle items). */
+    /** Spends unspent attribute points (Character panel). */
+    AllocateAttribute(id, count = 1) {
+        if (this.exploring !== 'explore') {
+            this.turn.message = 'Train attributes outside battle.';
+            return false;
+        }
+        if (!this.campaign.AllocateAttribute(id, count)) {
+            this.turn.message = this.campaign.attributePoints ? 'That attribute cannot be raised.' : 'No attribute points left — level up to earn more.';
+            return false;
+        }
+        this.SyncEquipmentToPlayer();
+        this.turn.message = `${Attributes[id].label} raised · ${this.campaign.attributePoints} point(s) left.`;
+        this.sound.Play('select');
+        return true;
+    }
+
     UseItem(item) {
+        if (ItemInfo[item]?.permanent) {
+            if (this.exploring !== 'explore') {
+                this.turn.message = 'Read scrolls outside battle.';
+                return false;
+            }
+            if (!this.campaign.ReadScroll(item)) {
+                this.turn.message = this.campaign.inventory[item] > 0 ? `Your hero already knows the secret of the ${item}.` : `You have no ${item}.`;
+                return false;
+            }
+            this.SyncEquipmentToPlayer();
+            this.turn.message = `${item} read · AP ${this.campaign.hero.apMax} · MP ${this.campaign.hero.mpMax}.`;
+            this.sound.Play('success');
+            return true;
+        }
         if (item !== 'Potion') {
             this.turn.message = ItemInfo[item]?.use ? `${item} can only be used in battle.` : `${item} cannot be used.`;
             return false;

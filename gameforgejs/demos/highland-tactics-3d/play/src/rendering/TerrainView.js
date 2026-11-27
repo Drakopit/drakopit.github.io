@@ -33,18 +33,27 @@ export class TerrainView extends GameObject {
             }
     }
     World(tile) { return new Vector3D((tile.col - (this.grid.cols - 1) / 2) * MapScale.tile, MapScale.base + tile.h * MapScale.elevation, (tile.row - (this.grid.rows - 1) / 2) * MapScale.tile); }
-    Highlights(turn, exploreRoute = null) {
+    /**
+     * Paints the overlays. `preview` (PC dock, command phase) adds the move range (`area`), the
+     * path to the hovered tile (`path`) and the range/AoE of a hovered hotbar ability
+     * (`ability`, aimed at `tile` when one is hovered).
+     */
+    Highlights(turn, exploreRoute = null, preview = null) {
         const active = turn.active?.stats;
-        const previewSkill = turn.phase === 'skill-select' && active
-            ? ActiveSkills(active.archetype, active.unlockedSkills)[turn.skillCursor ?? 0] : null;
+        const previewSkill = active && preview?.ability ? { id: preview.ability }
+            : turn.phase === 'skill-select' && active ? ActiveSkills(active.archetype, active.unlockedSkills)[turn.skillCursor ?? 0] : null;
         const ability = previewSkill?.id ?? turn.ability;
-        const profile = (turn.phase === 'target' || previewSkill) && active ? GetAbilityProfile(active, ability) : null;
-        const previewTarget = previewSkill ? turn.Alive()
+        const aiming = turn.phase === 'target' || Boolean(preview?.ability);
+        const profile = (aiming || previewSkill) && active ? GetAbilityProfile(active, ability) : null;
+        const hoverTarget = preview?.tile && previewSkill
+            ? turn.Alive().find(pawn => pawn.stats.col === preview.tile.col && pawn.stats.row === preview.tile.row
+                && BattleRules.CanAttack(this.grid, active, pawn.stats, ability))?.stats : null;
+        const previewTarget = hoverTarget ?? (previewSkill ? turn.Alive()
             .filter(pawn => BattleRules.CanAttack(this.grid, active, pawn.stats, ability))
             .sort((a, b) => {
                 const distance = pawn => Math.abs(pawn.stats.col - active.col) + Math.abs(pawn.stats.row - active.row);
                 return distance(a) - distance(b) || String(a.stats.id).localeCompare(String(b.stats.id));
-            })[0]?.stats : null;
+            })[0]?.stats : null);
         const targetTile = previewTarget
             ? this.grid.Get(previewTarget.col, previewTarget.row)
             : turn.phase === 'target' && turn.cursor ? this.grid.Get(turn.cursor.col, turn.cursor.row) : null;
@@ -53,6 +62,7 @@ export class TerrainView extends GameObject {
         const routeKeys = new Set(exploreRoute?.path.map(point => this.grid.Key(point)) ?? []);
         const originKey = exploreRoute ? this.grid.Key(exploreRoute.origin) : null;
         const destinationKey = exploreRoute ? this.grid.Key(exploreRoute.destination) : null;
+        const pathKeys = new Set(preview?.path?.map(point => this.grid.Key(point)) ?? []);
         for (const entry of this.tiles) {
             const { tile, overlay } = entry;
             overlay.visible = false;
@@ -60,9 +70,13 @@ export class TerrainView extends GameObject {
                 overlay.visible = true;
                 overlay.material.albedoColor = [0.1, 0.65, 1, 0.45];
             }
+            if (preview?.area && !preview.ability && preview.area.get(this.grid.Key(tile))?.path.length) {
+                overlay.visible = true;
+                overlay.material.albedoColor = pathKeys.has(this.grid.Key(tile)) ? [0.35, 0.85, 1, 0.7] : [0.1, 0.65, 1, 0.24];
+            }
             const healing = profile && (profile.heal || profile.shield || profile.haste);
             const target = healing && turn.Alive().find(p => p.stats.col === tile.col && p.stats.row === tile.row)?.stats;
-            if (turn.phase === 'target' && BattleRules.CanAttack(this.grid, active, healing ? target ?? { ...tile, hp: 0 } : { ...tile, hp: 1, team: 'target' }, turn.ability)) {
+            if (aiming && BattleRules.CanAttack(this.grid, active, healing ? target ?? { ...tile, hp: 0 } : { ...tile, hp: 1, team: 'target' }, ability)) {
                 overlay.visible = true;
                 overlay.material.albedoColor = healing ? [0.2, 0.9, 0.65, 0.65] : [1, 0.35, 0.12, 0.4];
                 if (turn.Alive().some(p => p.stats.team !== active.team && p.stats.col === tile.col && p.stats.row === tile.row))
@@ -79,7 +93,7 @@ export class TerrainView extends GameObject {
                 overlay.visible = true;
                 overlay.material.albedoColor = profile.healSplash ? [0.2, 0.9, 0.65, 0.6] : [1, 0.48, 0.13, 0.6];
             }
-            if (turn.phase !== 'skill-select' && turn.cursor?.col === tile.col && turn.cursor?.row === tile.row) {
+            if (turn.phase !== 'skill-select' && !(turn.phase === 'command' && preview) && turn.cursor?.col === tile.col && turn.cursor?.row === tile.row) {
                 overlay.visible = true;
                 overlay.material.albedoColor = turn.phase === 'explore' ? [0.42, 1, 0.61, 0.65] : [1, 0.91, 0.45, 0.65];
             }

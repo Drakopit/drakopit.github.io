@@ -13062,27 +13062,22 @@
       "layer": "structures",
       "transform": {
         "position": [
-          -8.049999999999999,
-          1.58,
-          -8.049999999999999
+          -8.05,
+          1,
+          -8.05
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          0.92,
-          1.16,
-          0.92
+          0.85,
+          0.85,
+          0.85
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "weaponsmith",
@@ -13092,67 +13087,38 @@
             "col": 3,
             "row": 1,
             "blocking": true
-          }
+          },
+          "model": "hex-blacksmith",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_weaponsmith_1",
-      "name": "Weaponsmith",
+      "id": "structure_weaponsmith_prop_0",
+      "name": "Weaponsmith weaponrack",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -8.049999999999999,
-          2.25,
-          -8.049999999999999
+          -7.65,
+          1,
+          -7.63
+        ],
+        "rotation": [
+          0,
+          1.571,
+          0
         ],
         "scale": [
-          1.05,
-          0.2,
-          1.05
+          0.85,
+          0.85,
+          0.85
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#a4523f",
-          "scale": 2
-        }
-      }
-    },
-    {
-      "id": "structure_weaponsmith_2",
-      "name": "Weaponsmith",
-      "type": "MeshInstance3D",
-      "layer": "structures",
-      "transform": {
-        "position": [
-          -8.049999999999999,
-          1.3,
-          -7.579999999999999
-        ],
-        "scale": [
-          0.27,
-          0.6,
-          0.04
-        ]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4d3e35",
-          "scale": 2
+        "Data": {
+          "model": "prop-weaponrack",
+          "castShadow": true
         }
       }
     },
@@ -13189,7 +13155,8 @@
             "greeting": "Steel holds the line. Need a sharper edge?",
             "col": 3,
             "row": 2,
-            "specialty": "weapon"
+            "specialty": "weapon",
+            "model": "hero-barbarian"
           }
         }
       }
@@ -13202,26 +13169,21 @@
       "transform": {
         "position": [
           -4.6,
-          1.58,
-          -8.049999999999999
+          1,
+          -8.05
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          0.92,
-          1.16,
-          0.92
+          0.62,
+          0.62,
+          0.62
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "armorer",
@@ -13231,67 +13193,38 @@
             "col": 6,
             "row": 1,
             "blocking": true
-          }
+          },
+          "model": "hex-market",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_armorer_1",
-      "name": "Armorer",
+      "id": "structure_armorer_prop_0",
+      "name": "Armorer crate",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -4.6,
-          2.25,
-          -8.049999999999999
+          -5.02,
+          1,
+          -7.63
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          1.05,
-          0.2,
-          1.05
+          0.62,
+          0.62,
+          0.62
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#5e7786",
-          "scale": 2
-        }
-      }
-    },
-    {
-      "id": "structure_armorer_2",
-      "name": "Armorer",
-      "type": "MeshInstance3D",
-      "layer": "structures",
-      "transform": {
-        "position": [
-          -4.6,
-          1.3,
-          -7.579999999999999
-        ],
-        "scale": [
-          0.27,
-          0.6,
-          0.04
-        ]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4d3e35",
-          "scale": 2
+        "Data": {
+          "model": "prop-crate",
+          "castShadow": true
         }
       }
     },
@@ -13328,7 +13261,8 @@
             "greeting": "A good coat is worth more than a brave promise.",
             "col": 6,
             "row": 2,
-            "specialty": "armor"
+            "specialty": "armor",
+            "model": "hero-knight"
           }
         }
       }
@@ -13340,27 +13274,22 @@
       "layer": "structures",
       "transform": {
         "position": [
-          -8.049999999999999,
-          1.58,
+          -8.05,
+          1,
           -4.6
         ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
         "scale": [
-          0.92,
-          1.16,
-          0.92
+          0.95,
+          0.95,
+          0.95
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "alchemist",
@@ -13370,67 +13299,67 @@
             "col": 3,
             "row": 4,
             "blocking": true
-          }
+          },
+          "model": "hex-home",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_alchemist_1",
-      "name": "Alchemist",
+      "id": "structure_alchemist_prop_0",
+      "name": "Alchemist barrel",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -8.049999999999999,
-          2.25,
-          -4.6
+          -7.63,
+          1,
+          -4.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          1.05,
-          0.2,
-          1.05
+          0.95,
+          0.95,
+          0.95
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#5c8868",
-          "scale": 2
+        "Data": {
+          "model": "prop-barrel",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_alchemist_2",
-      "name": "Alchemist",
+      "id": "structure_alchemist_prop_1",
+      "name": "Alchemist sack",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -8.049999999999999,
-          1.3,
-          -4.13
+          -8.45,
+          1,
+          -4.16
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          0.27,
-          0.6,
-          0.04
+          0.95,
+          0.95,
+          0.95
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4d3e35",
-          "scale": 2
+        "Data": {
+          "model": "prop-sack",
+          "castShadow": true
         }
       }
     },
@@ -13467,7 +13396,8 @@
             "greeting": "A little tonic can turn a long march around.",
             "col": 3,
             "row": 5,
-            "specialty": "consumable"
+            "specialty": "consumable",
+            "model": "hero-mage"
           }
         }
       }
@@ -13480,26 +13410,21 @@
       "transform": {
         "position": [
           -4.6,
-          1.03,
+          0.45,
           -4.6
         ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
         "scale": [
-          0.92,
-          1.16,
-          0.92
+          0.8,
+          0.8,
+          0.8
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "training_hall",
@@ -13509,67 +13434,190 @@
             "col": 6,
             "row": 4,
             "blocking": true
-          }
+          },
+          "model": "hex-barracks",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_training_hall_1",
-      "name": "Training hall",
+      "id": "structure_training_hall_prop_0",
+      "name": "Training hall flag",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -4.6,
-          1.7,
-          -4.6
+          -4.15,
+          0.45,
+          -4.15
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          1.05,
-          0.2,
-          1.05
+          0.8,
+          0.8,
+          0.8
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#846995",
-          "scale": 2
+        "Data": {
+          "model": "prop-flag",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_training_hall_2",
-      "name": "Training hall",
+      "id": "structure_hearthvale_well_0",
+      "name": "Hearthvale well",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          -4.6,
-          0.75,
-          -4.13
+          11.5,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
         ],
         "scale": [
-          0.27,
+          0.9,
+          0.9,
+          0.9
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "hearthvale_well",
+            "name": "Hearthvale well",
+            "kind": "well",
+            "specialty": null,
+            "col": 20,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "hex-well",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_hearthvale_oak_west_0",
+      "name": "Hearthvale oak",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          -11.5,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
           0.6,
-          0.04
+          0
+        ],
+        "scale": [
+          0.32,
+          0.32,
+          0.32
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4d3e35",
-          "scale": 2
+        "Data": {
+          "structure": {
+            "id": "hearthvale_oak_west",
+            "name": "Hearthvale oak",
+            "kind": "tree",
+            "specialty": null,
+            "col": 0,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-a",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_hearthvale_oak_east_0",
+      "name": "Hearthvale oak",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          4.6,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          1.9,
+          0
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "hearthvale_oak_east",
+            "name": "Hearthvale oak",
+            "kind": "tree",
+            "specialty": null,
+            "col": 14,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-b",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_hearthvale_oak_south_0",
+      "name": "Hearthvale oak",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          -11.5,
+          0.45,
+          9.2
+        ],
+        "rotation": [
+          0,
+          2.6,
+          0
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "hearthvale_oak_south",
+            "name": "Hearthvale oak",
+            "kind": "tree",
+            "specialty": null,
+            "col": 0,
+            "row": 16,
+            "blocking": true
+          },
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
@@ -13606,7 +13654,8 @@
             "greeting": "Rest here, recruit. The trail will wait.",
             "col": 6,
             "row": 5,
-            "specialty": "rest"
+            "specialty": "rest",
+            "model": "hero-rogue-hooded"
           }
         }
       }

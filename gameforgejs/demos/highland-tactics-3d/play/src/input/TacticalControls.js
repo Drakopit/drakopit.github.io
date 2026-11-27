@@ -2,9 +2,16 @@ import { ActionManager, Input, Touch } from 'gameforgejs/core';
 import { Commands, Facings } from '../data/BattleRules.js';
 import { ActiveSkills } from '../data/ClassSkills.js';
 import { DefaultTarget } from './ControlModes.js';
-import { CommandAvailable, FaceNearestEnemy } from '../data/HighlandActions.js';
+import { CommandAvailable, FaceNearestEnemy, HotbarSlots } from '../data/HighlandActions.js';
 
-/** Shared command routing for keyboard, gamepad, native buttons, and world picking. */
+/** Phases in which the PC dock's hotbar keys apply. */
+const HotbarPhases = new Set(['command', 'move', 'target', 'skill-select', 'item']);
+
+/**
+ * Shared command routing for keyboard, gamepad, native buttons, and world picking. With the dock
+ * (PC, Tablet) keys 1-0 trigger hotbar slots, Space passes the turn, clicking a reachable tile
+ * walks there and clicking a foe aims the basic attack (a second click confirms).
+ */
 export class TacticalControls {
     constructor(level) {
         this.level = level;
@@ -28,7 +35,18 @@ export class TacticalControls {
             l.hud.ToggleRing();
             return;
         }
-        if (l.exploring === 'battle' && t.phase === 'command'
+        if (this.DockTurn() && HotbarPhases.has(t.phase)) {
+            for (let index = 0; index < 10; index++) {
+                if (!ActionManager.IsActionDown(`RADIAL_${index + 1}`)) continue;
+                this.ActivateSlot(index);
+                return;
+            }
+            if (t.phase === 'command' && ActionManager.IsActionDown('PASS_TURN')) {
+                l.actions.EndTurn();
+                return;
+            }
+        }
+        if (l.exploring === 'battle' && t.phase === 'command' && !l.controlSettings.dock
             && ['PC', 'Personalizado'].includes(l.controlSettings.mode)) {
             for (let index = 0; index < 9; index++) {
                 if (!ActionManager.IsActionDown(`RADIAL_${index + 1}`)) continue;
@@ -59,7 +77,7 @@ export class TacticalControls {
             l.hud.TogglePanel('map');
             return;
         }
-        if (l.exploring === 'explore' && l.hud.panel === 'bag') {
+        if (l.exploring === 'explore' && ['bag', 'gear'].includes(l.hud.panel)) {
             if (ActionManager.IsActionDown('PANEL_PREV')) { l.hud.CycleBagCategory(-1); return; }
             if (ActionManager.IsActionDown('PANEL_NEXT')) { l.hud.CycleBagCategory(1); return; }
         }
@@ -117,6 +135,8 @@ export class TacticalControls {
                 l.StepExplore(index);
             else if (l.exploring === 'explore' && l.hud.panel === 'bag')
                 l.hud.MoveBagSelection(direction);
+            else if (l.exploring === 'explore' && l.hud.panel === 'gear')
+                l.hud.MoveGearSelection(direction);
             else if (l.exploring === 'explore' && l.hud.panel === 'shop') {
                 if (direction === 'UP' || direction === 'DOWN')
                     l.hud.MoveShopSelection(direction === 'UP' ? -1 : 1);
@@ -169,6 +189,10 @@ export class TacticalControls {
                 l.hud.ActivateBagItem();
                 return;
             }
+            if (l.hud.panel === 'gear' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateGearSelection();
+                return;
+            }
             if (l.hud.panel === 'shop' && ActionManager.IsActionDown('CONFIRM')) {
                 l.hud.ActivateShopOffer();
                 return;
@@ -180,11 +204,15 @@ export class TacticalControls {
             this.PickExploreTile();
             return;
         }
-        if (ActionManager.IsActionDown('CANCEL')) {
+        if (ActionManager.IsActionDown('CANCEL') || (this.DockTurn() && Input.instance.mouse.buttonsDown[2])) {
             t.Cancel();
             return;
         }
         this.UpdateBattleHover();
+        if (this.DockTurn() && t.phase === 'command') {
+            this.PickCommandTile();
+            if (t.phase !== 'command') return;
+        }
         if (t.phase === 'face') {
             const point = Touch.ToScreen(Input.instance.mouse.position, l.ui.Screen);
             if (this.facingPointer && (point.x !== this.facingPointer.x || point.y !== this.facingPointer.y)) {
@@ -228,8 +256,8 @@ export class TacticalControls {
     UpdateBattleHover() {
         const l = this.level;
         const point = Touch.ToScreen(Input.instance.mouse.position, l.ui.Screen);
-        const tile = point.y >= l.hud.headerHeight && point.y <= l.ui.Screen.Height - 116
-            ? l.terrain.Pick(point, l.camera, l.ui.Screen) : null;
+        const tile = this.InWorld(point) ? l.terrain.Pick(point, l.camera, l.ui.Screen) : null;
+        l.hoveredTile = tile;
         l.hoveredPawn = tile ? l.turn.Alive().find(pawn =>
             pawn.stats.col === tile.col && pawn.stats.row === tile.row) ?? null : null;
     }
@@ -238,7 +266,7 @@ export class TacticalControls {
         const l = this.level, t = l.turn;
         for (const raw of this.Points()) {
             const point = Touch.ToScreen(raw, l.ui.Screen);
-            if (point.y < l.hud.headerHeight || point.y > l.ui.Screen.Height - 116)
+            if (!this.InWorld(point))
                 continue;
             const tile = l.terrain.Pick(point, l.camera, l.ui.Screen);
             if (tile) {
@@ -247,6 +275,70 @@ export class TacticalControls {
                 break;
             }
         }
+    }
+
+    /** Whether a screen point is over the battlefield rather than the header or the bottom bar. */
+    InWorld(point) {
+        const l = this.level;
+        return point.y >= l.hud.headerHeight && point.y <= l.ui.Screen.Height - (l.hud.BottomInset?.() ?? 116)
+            && !l.hud.PointOverHud?.(point);
+    }
+
+    /** The dock is up and an ally is acting: hotbar keys, Space and direct clicks apply. */
+    DockTurn() {
+        const l = this.level, t = l.turn;
+        return l.exploring === 'battle' && Boolean(l.controlSettings.dock) && !l.hud.ringOpen
+            && t.active?.stats.team === 'ally' && !t.result;
+    }
+
+    /** PC command phase: click a reachable tile to walk, or a foe to aim the basic attack at it. */
+    PickCommandTile() {
+        const l = this.level, t = l.turn;
+        for (const raw of this.Points()) {
+            const point = Touch.ToScreen(raw, l.ui.Screen);
+            if (!this.InWorld(point)) continue;
+            const tile = l.terrain.Pick(point, l.camera, l.ui.Screen);
+            if (!tile) continue;
+            t.cursor = { col: tile.col, row: tile.row };
+            const occupant = t.Alive().find(pawn => pawn.stats.col === tile.col && pawn.stats.row === tile.row);
+            if (occupant && occupant !== t.active) {
+                const basic = t.active.stats.basicAbility ?? 'strike';
+                if (t.SelectAbility(basic)) t.cursor = { col: tile.col, row: tile.row };
+                return;
+            }
+            if (!occupant && !l.actions.Move(tile))
+                t.message = t.active.stats.mp > 0 ? 'That tile is out of reach' : 'No movement points left';
+            return;
+        }
+    }
+
+    /** Uses hotbar slot `index` (0-9): aims an ability, or uses a consumable right away. */
+    ActivateSlot(index) {
+        const l = this.level, t = l.turn;
+        if (!this.DockTurn()) return false;
+        l.hud.CloseRing?.();
+        const slot = HotbarSlots(t, l.player, l.campaign)[index];
+        if (!slot || slot.kind === 'empty') {
+            t.message = 'That hotbar slot is empty.';
+            return false;
+        }
+        if (slot.kind === 'item') {
+            if (t.phase !== 'command') t.Cancel();
+            return l.actions.UseItem(slot.id);
+        }
+        if (slot.locked) {
+            t.message = 'Learn that skill in the skill tree [K] first.';
+            return false;
+        }
+        // Pressing the slot being aimed again puts it away.
+        if (t.phase === 'target' && t.ability === slot.id) {
+            t.Cancel();
+            return true;
+        }
+        if (t.phase === 'item' || t.phase === 'face') t.Cancel();
+        if (!t.SelectAbility(slot.id)) return false;
+        this.SelectDefaultTarget();
+        return true;
     }
 
     PickExploreTile() {

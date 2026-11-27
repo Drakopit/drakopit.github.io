@@ -1,0 +1,36 @@
+{
+  "author": "Kay Lousberg (KayKit)",
+  "license": "CC0 1.0 (see the copied License files)",
+  "files": [
+    {
+      "file": "Knight.glb",
+      "source": "KayKit_Adventurers_2.0_FREE/Characters/gltf/Knight.glb",
+      "sha256": "e484370733824a0740683e7f6040aae0d20e5efd4107dde1175d6a2ad7e2f199"
+    },
+    {
+      "file": "Ranger.glb",
+      "source": "KayKit_Adventurers_2.0_FREE/Characters/gltf/Ranger.glb",
+      "sha256": "3a0b0166b9d61d58dcaaa739c3cc0538be46e00d2928dd5cb513d9a41770d2e9"
+    },
+    {
+      "file": "Mage.glb",
+      "source": "KayKit_Adventurers_2.0_FREE/Characters/gltf/Mage.glb",
+      "sha256": "1f7d891bde50b879c70965f155b7b765b166dc3f8518e5abb86c0002f191a26e"
+    },
+    {
+      "file": "Rogue_Hooded.glb",
+      "source": "KayKit_Adventurers_2.0_FREE/Characters/gltf/Rogue_Hooded.glb",
+      "sha256": "e8f3233c6db190506fbef3ad855683e6cb8bd7350de637d923e14a08aef088dc"
+    },
+    {
+      "file": "Barbarian.glb",
+      "source": "KayKit_Adventurers_2.0_FREE/Characters/gltf/Barbarian.glb",
+      "sha256": "d37824a1d6e8e8af57ef9ae4a87e9271c3986210fbc432fb44670749a577ccac"
+    },
+    {
+      "file": "License.txt",
+      "source": "KayKit_Adventurers_2.0_FREE/License.txt",
+      "sha256": "d4adc31660d1db22eb60eba648e01db41577548f6fa1a3576cb4a6283dae0a58"
+    }
+  ]
+}

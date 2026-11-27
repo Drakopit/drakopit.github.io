@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 2,
+  "kind": "GameForgeJS.Workspace",
+  "id": "highland-tactics-3d",
+  "name": "Highland Tactics 3D",
+  "resources": "config/resources.json",
+  "sceneFormat": "gameforgejs.scene",
+  "play": "index.html",
+  "editing": "scene",
+  "shaders": "shader",
+  "scenes": [
+    {
+      "dimension": "3d",
+      "id": "hearthvale",
+      "label": "Hearthvale",
+      "format": "gameforgejs.scene",
+      "path": "scenes/hearthvale.gfscene.json",
+      "resourceName": "hearthvale"
+    },
+    {
+      "dimension": "3d",
+      "id": "mistfell",
+      "label": "Mistfell Pass",
+      "format": "gameforgejs.scene",
+      "path": "scenes/mistfell.gfscene.json",
+      "resourceName": "mistfell"
+    },
+    {
+      "dimension": "3d",
+      "id": "ashen-ridge",
+      "label": "Ashen Ridge",
+      "format": "gameforgejs.scene",
+      "path": "scenes/ashen-ridge.gfscene.json",
+      "resourceName": "ashen-ridge"
+    },
+    {
+      "dimension": "3d",
+      "id": "battlefield",
+      "label": "Highland battlefield",
+      "format": "gameforgejs.scene",
+      "path": "scenes/battlefield.gfscene.json",
+      "resourceName": "battlefield"
+    }
+  ]
+}

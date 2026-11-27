@@ -1,30 +1,24 @@
 import { Input, Vector3D } from 'gameforgejs/core';
 import { Draw, HUDFrame, InputHelpPanel, Button, Rectangle, TextBox, Touch } from 'gameforgejs/2d';
-import { Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo } from '../data/HighlandCampaign.js';
+import { BagFilters, Equipment, EquipmentSlots, EquipmentSlot, EquipmentStats, ItemInfo, SlotFor } from '../data/HighlandCampaign.js';
 import { WorldMapDisplay } from '../data/WorldMaps.js';
 import { BattleRules, Commands, Facings, GetAbilityProfile } from '../data/BattleRules.js';
 import { ActiveSkills, SkillTrees } from '../data/ClassSkills.js';
 import { ControlModes, ControlSettings } from '../input/ControlModes.js';
-import { CommandAvailable } from '../data/HighlandActions.js';
+import { BattleConsumables, CommandAvailable } from '../data/HighlandActions.js';
+import { CombatDock, DockLayout } from './CombatDock.js';
+import { BagColumns, CharacterSheet, CompareStats, SheetLayout } from './CharacterSheet.js';
+import { DrawItemIcon } from './ItemIcons.js';
 
-export function InventoryGridLayout(x, y, width, slotHeight) {
-    const gap = 2, inner = width - 24, slotWidth = (inner - 8) / 5;
-    return Array.from({ length: 30 }, (_, index) => ({
-        x: x + 12 + (index % 5) * (slotWidth + gap),
-        y: y + 108 + Math.floor(index / 5) * (slotHeight + gap),
-        width: slotWidth,
-        height: slotHeight,
-    }));
-}
+export { DockLayout, SheetLayout };
 
-export function EquipmentLayout(x, y, width) {
-    const left = ['helm', 'weapon', 'gloves', 'boots'];
-    const right = ['armor', 'offhand', 'belt', 'accessory'];
-    return [...left, ...right].map((slot, index) => ({
-        slot, x: index < 4 ? x + 12 : x + width - 94,
-        y: y + 42 + (index % 4) * 34, width: 82, height: 29,
-    }));
-}
+/** What each vendor stocks: gear by specialty, consumables at the alchemist. */
+export const VendorStock = Object.freeze({
+    weapon: ['Highland Edge', 'Runed Staff'],
+    armor: ['Ranger Leathers', 'Iron Kilt', 'Scout Helm', 'Travel Belt', 'Leather Gloves', 'Trail Boots', 'Oak Shield',
+        'Wool Cloak', 'Shadow Cape', 'Amber Amulet', 'Iron Band', 'Focus Ring'],
+    consumable: ['Potion', 'Ether', 'Antidote'],
+});
 
 export function RadialMenuLayout(width, height, count, progress, center, bounds = { top: 0, bottom: height }) {
     const radius = Math.max(30, Math.min(72, Math.min(width, height) * 0.16, (bounds.bottom - bounds.top) / 2 - 22));
@@ -87,6 +81,9 @@ export function RadialMenuHitTest(point, layout) {
     return closest;
 }
 
+/** Personalizado toggles, in settings order. */
+const CustomOptions = Object.freeze(['autoRadial', 'smartTarget', 'dock', 'largeTargets']);
+
 /** Compact status bars and optional side panels keep the 3D field visible. */
 export class TacticalHUD {
     constructor(level) {
@@ -95,7 +92,7 @@ export class TacticalHUD {
         this.frame = new HUDFrame(level.ui.Draw);
         this.help = new InputHelpPanel(new Draw(this.screen), {
             title: 'Highland Tactics / Controls',
-            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character · K skills · M map · P party · F vendor · H help', 'Inventory: arrows select · [ / ] category · Enter use/equip.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1–5 commands · 6–9 skills · V toggles tactical ring.'],
+            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character · K skills · M map · P party · F vendor · H help', 'Character sheet (E / I): double-click or drag to equip · [ / ] filter · Enter equip/use.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
         });
         this.panel = null;
         this.selectedArchetype = 'vanguard';
@@ -135,31 +132,16 @@ export class TacticalHUD {
             { label: 'Party', shortcut: 'P', panel: 'party', icon: 'party' },
             { label: 'Settings', shortcut: 'B', panel: 'settings', icon: 'help' },
         ].map(item => ({ ...item, button: this.Button('', () => this.ActivateBar(item)).button }));
-        this.bagCategories = ['All', 'Weapons', 'Armor', 'Consumables'].map(category => ({
+        this.bagCategories = Object.keys(BagFilters).map(category => ({
             ...this.Button(category.toUpperCase(), () => this.SelectBagCategory(category)),
             category,
         }));
-        this.bagSlots = Array.from({ length: 30 }, (_, index) =>
-            this.Button('', () => { this.selectedBagIndex = index; }));
-        this.gearSlots = EquipmentSlots.map(slot => ({
-            ...this.Button('', () => this.SelectGearSlot(slot.id)),
-            slot: slot.id,
-            slotLabel: slot.label,
-        }));
-        this.gearPrevious = this.Button('‹', () => this.CycleGear(-1));
-        this.gearNext = this.Button('›', () => this.CycleGear(1));
-        this.gearEquip = this.Button('EQUIP', () => {
-            const item = this.GearCandidates()[this.selectedGearIndex];
-            if (item) level.EquipItem(item);
-            this.selectedGearIndex = 0;
-        });
-        this.extraStock = ['Scout Helm', 'Travel Belt', 'Leather Gloves', 'Trail Boots', 'Oak Shield', 'Focus Ring'].map(name => ({
-            name, button: this.Button(`BUY ${name.toUpperCase()} · ${EquipmentStats(name).price}G`, () => level.Buy(name, EquipmentSlot(name))),
-        }));
+        this.stock = Object.values(VendorStock).flat().map(name => ({ name, button: this.Button('', () => level.Buy(name)) }));
         this.sellSlots = EquipmentSlots.map(slot => ({
             slot: slot.id, button: this.Button(`SELL ${slot.label}`, () => level.SellEquipment(slot.id)),
         }));
-        this.sellInventory = [...Object.keys(Equipment.weapons), ...Object.keys(Equipment.armor)].map(name => ({
+        this.sellInventory = [...Object.keys(Equipment.weapons), ...Object.keys(Equipment.armor),
+            ...Object.keys(ItemInfo).filter(name => ItemInfo[name].sell)].map(name => ({
             name, button: this.Button('', () => level.SellOwned(name)),
         }));
         this.shopPrevious = this.Button('‹', () => this.SelectShopPage(this.shopPage - 1));
@@ -187,7 +169,7 @@ export class TacticalHUD {
             }));
         this.facings = Facings.map((direction, index) => this.Button(direction.name, () => { level.turn.active.stats.facing = index; }));
         this.wait = this.Button('CONFIRM WAIT', () => level.actions.EndTurn());
-        this.battlePotion = this.Button('USE POTION', () => level.UseBattlePotion());
+        this.battleItems = BattleConsumables.map(item => ({ ...this.Button(item.toUpperCase(), () => level.actions.UseItem(item)), item }));
         this.begin = this.Button('BEGIN ADVENTURE', () => level.CreateCharacter(this.selectedArchetype, this.nameField.GetText()));
         this.continue = this.Button('CONTINUE', () => level.ContinueGame());
         this.classButtons = [
@@ -198,16 +180,6 @@ export class TacticalHUD {
         ];
         this.panelButtons = {
             potionUse: this.Button('USE POTION', () => level.UsePotion()),
-            potionSell: this.Button('SELL POTION · 5G', () => level.SellPotion()),
-            buyPotion: this.Button('BUY POTION · 15G', () => level.Buy('Potion', 'potion')),
-            buyBlade: this.Button('BUY HIGHLAND EDGE · 45G', () => level.Buy('Highland Edge', 'weapon')),
-            buyStaff: this.Button('BUY RUNED STAFF · 55G', () => level.Buy('Runed Staff', 'weapon')),
-            buyLeathers: this.Button('BUY RANGER LEATHERS · 40G', () => level.Buy('Ranger Leathers', 'armor')),
-            buyKilt: this.Button('BUY IRON KILT · 55G', () => level.Buy('Iron Kilt', 'armor')),
-            sellWeapon: this.Button('SELL WEAPON', () => level.SellEquipment('weapon')),
-            sellArmor: this.Button('SELL ARMOR', () => level.SellEquipment('armor')),
-            equipItem: this.Button('EQUIP ITEM', () => this.SelectedBagItem() && level.EquipItem(this.SelectedBagItem().name)),
-            useItem: this.Button('USE ITEM', () => this.SelectedBagItem() && level.UseItem(this.SelectedBagItem().name)),
             rest: this.Button('REST · RESTORE HP', () => level.Rest()),
             save: this.Button('SAVE ADVENTURE', () => level.SaveGame()),
             companion: this.Button('TOGGLE ORIN', () => level.ToggleCompanion()),
@@ -220,6 +192,10 @@ export class TacticalHUD {
         this.modeButtons = ControlModes.map(mode => this.Button(mode.toUpperCase(), () => this.SetControlMode(mode)));
         this.customRadial = this.Button('', () => this.SetCustomOption('autoRadial'));
         this.customTarget = this.Button('', () => this.SetCustomOption('smartTarget'));
+        this.customDock = this.Button('', () => this.SetCustomOption('dock'));
+        this.customLarge = this.Button('', () => this.SetCustomOption('largeTargets'));
+        this.dock = new CombatDock(this);
+        this.sheet = new CharacterSheet(this);
         this.settingsHelp = this.Button('HELP [H]', () => this.help.Toggle());
         this.nameField = new TextBox(this.screen);
         this.nameField.SetPlaceholder('Character name');
@@ -255,6 +231,11 @@ export class TacticalHUD {
 
     TogglePanel(panel) {
         if (panel === 'shop') return this.level.InteractShopkeeper();
+        // E and I open one combined sheet; the other key moves focus between doll and backpack.
+        if (['bag', 'gear'].includes(panel) && ['bag', 'gear'].includes(this.panel) && this.panel !== panel) {
+            this.panel = panel;
+            return;
+        }
         this.panel = this.panel === panel ? null : panel;
         if (this.panel === 'map')
             this.mapSelection = Math.max(0, WorldMapDisplay(this.level.zone.id).zones.findIndex(zone => zone.current));
@@ -315,19 +296,19 @@ export class TacticalHUD {
         const settings = this.level.controlSettings;
         if (settings.mode !== 'Personalizado') return;
         this.level.SetControlSettings(ControlSettings('Personalizado', { ...settings, [option]: !settings[option] }));
-        this.settingsSelection = option === 'autoRadial' ? 4 : 5;
+        this.settingsSelection = ControlModes.length + CustomOptions.indexOf(option);
     }
 
     MoveSettingsSelection(step) {
-        const count = this.level.controlSettings.mode === 'Personalizado' ? 7 : 5;
+        const count = ControlModes.length + (this.level.controlSettings.mode === 'Personalizado' ? CustomOptions.length : 0) + 1;
         this.settingsSelection = (this.settingsSelection + step + count) % count;
     }
 
     ActivateSettingsSelection() {
-        const selection = this.settingsSelection;
+        const selection = this.settingsSelection, custom = selection - ControlModes.length;
         if (selection < ControlModes.length) this.SetControlMode(ControlModes[selection]);
-        else if (this.level.controlSettings.mode === 'Personalizado' && selection < 6)
-            this.SetCustomOption(selection === 4 ? 'autoRadial' : 'smartTarget');
+        else if (this.level.controlSettings.mode === 'Personalizado' && custom < CustomOptions.length)
+            this.SetCustomOption(CustomOptions[custom]);
         else this.help.Toggle();
     }
 
@@ -336,6 +317,7 @@ export class TacticalHUD {
     }
 
     Update(dt) {
+        this.sheet?.Update(dt);
         if (this.level.exploring === 'creation' && this.nameField?.Click?.())
             this.level.controls?.SuppressNextWorldClick();
         const command = this.level.exploring === 'battle' && this.level.turn.phase === 'command';
@@ -667,33 +649,70 @@ export class TacticalHUD {
         c.restore();
     }
 
+    /** Height reserved at the bottom of the screen for battle or exploration controls. */
+    BottomInset() {
+        const l = this.level;
+        if (l.exploring === 'battle' && l.controlSettings?.dock)
+            return this.screen.Height - DockLayout(this.screen.Width, this.screen.Height, Boolean(l.controlSettings.largeTargets)).top;
+        return 116;
+    }
+
+    /** Whether a point is over a HUD panel drawn on top of the battlefield. */
+    PointOverHud(point) {
+        const rect = this.inspectionRect;
+        return Boolean(rect && point.x >= rect.x && point.x <= rect.x + rect.width && point.y >= rect.y && point.y <= rect.y + rect.height);
+    }
+
+    /** The PC dock's hovered hotbar slot (its range is previewed on the grid), or null. */
+    HoveredSlot() {
+        return this.level.exploring === 'battle' && this.level.controlSettings?.dock ? this.dock.HoveredSlot() : null;
+    }
+
+    StatusText(stats) {
+        return [
+            stats.burn > 0 ? 'BURN' : null,
+            stats.poison > 0 ? 'POISON' : null,
+            stats.shield > 0 ? `SHIELD ${stats.shield}` : null,
+            stats.haste > 0 ? 'HASTE' : null,
+            stats.stunned > 0 ? 'STUN' : null,
+            stats.exposed > 0 ? 'EXPOSED' : null,
+            stats.slowed > 0 ? 'SLOW' : null,
+            stats.guarded ? 'GUARD' : null,
+        ].filter(Boolean).join('/');
+    }
+
+    BudgetText(stats) {
+        return stats.apMax !== undefined ? `AP ${stats.ap ?? stats.apMax}/${stats.apMax} · MP ${stats.mp ?? stats.mpMax}/${stats.mpMax}` : '';
+    }
+
     DrawBattle() {
-        const { level: l, screen: s, frame: f } = this, t = l.turn;
-        const y = s.Height - 108, width = s.Width - 20;
-        f.Panel({ x: 10, y, width, height: 98 });
-        const active = t.active?.stats, tile = t.cursor ? l.grid.Get(t.cursor.col, t.cursor.row) : null;
-        const description = active
-            ? `${active.name}${active.role ? ` · ${active.role.toUpperCase()}` : ''} · HP ${active.hp}/${active.maxHp} · DEF ${active.defense} · EN ${active.energy}/${active.energyMax ?? 2}`
-            : `${l.zone.name} patrol · CT advances by speed`;
-        f.Text(description, 21, y + 20, { size: 12, weight: 700, maxWidth: width - 22 });
+        const { level: l } = this, t = l.turn;
+        this.inspectionRect = null;
         const inspected = l.hoveredPawn ?? (t.phase === 'target' && t.cursor
             ? t.pawns.find(pawn => pawn.stats.col === t.cursor.col && pawn.stats.row === t.cursor.row)
             : null);
         const preview = inspected && t.active && t.phase === 'target' && BattleRules.CanAttack(l.grid, t.active.stats, inspected.stats, t.ability)
             ? BattleRules.Preview(l.grid, t.active.stats, inspected.stats, t.ability)
             : null;
-        const statuses = inspected ? [
-            inspected.stats.burn > 0 ? 'BURN' : null,
-            inspected.stats.poison > 0 ? 'POISON' : null,
-            inspected.stats.shield > 0 ? `SHIELD ${inspected.stats.shield}` : null,
-            inspected.stats.haste > 0 ? 'HASTE' : null,
-            inspected.stats.stunned > 0 ? 'STUN' : null,
-            inspected.stats.exposed > 0 ? 'EXPOSED' : null,
-            inspected.stats.slowed > 0 ? 'SLOW' : null,
-            inspected.stats.guarded ? 'GUARD' : null,
-        ].filter(Boolean).join('/') : '';
+        const statuses = inspected ? this.StatusText(inspected.stats) : '';
+        if (l.controlSettings?.dock) this.dock.Draw();
+        else this.DrawBattleBar(inspected, preview, statuses);
+        if (inspected && !this.ringOpen) this.DrawBattleInspection(inspected, preview, statuses);
+        this.DrawBattleOverlays();
+    }
+
+    /** The radial-first bottom bar (Console, Mobile): phase buttons, message and turn queue. */
+    DrawBattleBar(inspected, preview, statuses) {
+        const { level: l, screen: s, frame: f } = this, t = l.turn;
+        const y = s.Height - 108, width = s.Width - 20;
+        f.Panel({ x: 10, y, width, height: 98 });
+        const active = t.active?.stats, tile = t.cursor ? l.grid.Get(t.cursor.col, t.cursor.row) : null;
+        const description = active
+            ? `${active.name}${active.role ? ` · ${active.role.toUpperCase()}` : ''} · HP ${active.hp}/${active.maxHp} · DEF ${active.defense} · ${this.BudgetText(active)}`
+            : `${l.zone.name} patrol · CT advances by speed`;
+        f.Text(description, 21, y + 20, { size: 12, weight: 700, maxWidth: width - 22 });
         const inspection = inspected
-            ? `${inspected.stats.name} · ${inspected.stats.role ?? inspected.stats.team} · Lv ${inspected.stats.level ?? 1} · HP ${inspected.stats.hp}/${inspected.stats.maxHp} · EN ${inspected.stats.energy ?? 0}/${inspected.stats.energyMax ?? 2}${statuses ? ` · ${statuses}` : ''}${preview ? preview.heal !== undefined ? ` · +${preview.heal} HP` : preview.shield !== undefined ? ` · ${preview.shield} SHIELD` : preview.haste !== undefined ? ` · HASTE ${preview.haste} turns` : ` · ${preview.chance}% / ${preview.damage} dmg` : ''} · ${GetAbilityProfile(inspected.stats, inspected.stats.basicAbility).name}`
+            ? `${inspected.stats.name} · ${inspected.stats.role ?? inspected.stats.team} · Lv ${inspected.stats.level ?? 1} · HP ${inspected.stats.hp}/${inspected.stats.maxHp}${statuses ? ` · ${statuses}` : ''}${preview ? preview.heal !== undefined ? ` · +${preview.heal} HP` : preview.shield !== undefined ? ` · ${preview.shield} SHIELD` : preview.haste !== undefined ? ` · HASTE ${preview.haste} turns` : ` · ${preview.chance}% / ${preview.damage} dmg` : ''} · ${GetAbilityProfile(inspected.stats, inspected.stats.basicAbility).name}`
             : null;
         const gap = 5, buttonWidth = Math.max(54, (width - 20 - gap * (this.commands.length - 1)) / this.commands.length);
         if (t.phase === 'skill-select') {
@@ -704,12 +723,11 @@ export class TacticalHUD {
             ? ActiveSkills(t.active.stats.archetype, t.active.stats.unlockedSkills)[t.skillCursor ?? 0]
             : null;
         const skillHint = selectedSkill
-            ? `${selectedSkill.name} · ${GetAbilityProfile(t.active.stats, selectedSkill.id).energy} EN · ${selectedSkill.description} · Preview: nearest valid target`
+            ? `${selectedSkill.name} · ${GetAbilityProfile(t.active.stats, selectedSkill.id).ap} AP · ${selectedSkill.description} · Preview: nearest valid target`
             : null;
         f.Text(skillHint ?? inspection ?? (tile ? `Tile ${tile.col},${tile.row} · H ${tile.h} · ${t.message}` : t.message), 21, y + 40, {
             size: 10, color: f.theme.gold, maxWidth: width - 22,
         });
-        if (inspected && !this.ringOpen) this.DrawBattleInspection(inspected, preview, statuses);
         if (t.phase === 'skill-select') {
             const choices = ActiveSkills(t.active?.stats.archetype, t.active?.stats.unlockedSkills);
             choices.forEach((skill, index) => {
@@ -717,8 +735,13 @@ export class TacticalHUD {
                 if (item) this.Place(item, 15 + index * (buttonWidth + gap), y + 53, buttonWidth, 34, true, t.skillCursor === index);
             });
         }
-        else if (t.phase === 'item')
-            this.Place(this.battlePotion, 15, y + 53, Math.min(150, width - 20), 34, true);
+        else if (t.phase === 'item') {
+            const itemWidth = Math.min(150, (width - 20 - gap * 2) / 3);
+            this.battleItems.forEach((entry, index) => {
+                entry.label = `${entry.item.toUpperCase()} ×${l.campaign.inventory[entry.item] ?? 0}`;
+                this.Place(entry, 15 + index * (itemWidth + gap), y + 53, itemWidth, 34, true);
+            });
+        }
         else if (t.phase === 'command') {
             this.Place(this.menuTrigger, 15, y + 53, Math.min(150, width - 20), 34, true, this.ringOpen);
             if (l.controlSettings?.mode === 'PC' || l.controlSettings?.mode === 'Personalizado')
@@ -730,19 +753,20 @@ export class TacticalHUD {
             this.facings.forEach((item, index) => this.Place(item, 13 + index * (faceWidth + 3), y + 53, faceWidth, 34, true, active?.facing === index));
             this.Place(this.wait, 13 + 4 * (faceWidth + 3), y + 53, faceWidth, 34, true);
         }
-        const queue = t.Alive().slice().sort((a, b) => {
-            if (a === t.active) return -1;
-            if (b === t.active) return 1;
-            return (100 - a.stats.ct) / a.stats.speed - (100 - b.stats.ct) / b.stats.speed;
-        }).slice(0, 4);
+        const queue = this.dock.Order().slice(0, 4);
         queue.forEach((pawn, index) => {
             const cx = 27 + index * Math.min(95, (width - 30) / 4), cy = y - 24, context = s.Context;
             this.DrawUnitPortrait(context, cx, cy, pawn.stats, pawn === t.active);
             f.Text(`${Math.floor(pawn.stats.ct)}`, cx + 17, cy + 3, { size: 8, color: f.theme.gold });
         });
+    }
+
+    /** HP bars, the active marker and floating combat text over the battlefield. */
+    DrawBattleOverlays() {
+        const { level: l, screen: s, frame: f } = this, t = l.turn;
         for (const pawn of t.Alive()) {
             const position = pawn.travel.position;
-            const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.15, position.z), s.Width, s.Height);
+            const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.25, position.z), s.Width, s.Height);
             if (!projected.visible) continue;
             f.Meter(pawn.stats.hp / pawn.stats.maxHp, { x: projected.x - 18, y: projected.y, width: 36, height: 4 },
                 pawn.stats.team === 'ally' ? '#7cddc5' : '#ed9c91');
@@ -751,7 +775,7 @@ export class TacticalHUD {
         }
         for (const feedback of t.feedback) {
             const position = feedback.pawn.travel.position;
-            const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.5, position.z), s.Width, s.Height);
+            const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.6, position.z), s.Width, s.Height);
             if (feedback.effect && feedback.life > 1.1) {
                 const context = s.Context;
                 context.save();
@@ -769,19 +793,20 @@ export class TacticalHUD {
         }
     }
 
-    DrawUnitPortrait(context, x, y, stats, active) {
+    DrawUnitPortrait(context, x, y, stats, active, radius = 13) {
+        const k = radius / 13;
         context.save();
-        context.beginPath(); context.arc(x, y, 13, 0, Math.PI * 2); context.clip();
+        context.beginPath(); context.arc(x, y, radius, 0, Math.PI * 2); context.clip();
         context.fillStyle = stats.team === 'ally' ? '#365a5b' : '#693e40';
-        context.fillRect(x - 13, y - 13, 26, 26);
+        context.fillRect(x - radius, y - radius, radius * 2, radius * 2);
         context.fillStyle = stats.color ?? '#b7c8ca';
-        context.beginPath(); context.ellipse(x, y + 13, 10, 9, 0, 0, Math.PI * 2); context.fill();
-        context.fillStyle = '#e3b58f';
-        context.beginPath(); context.ellipse(x, y - 2, 6, 8, 0, 0, Math.PI * 2); context.fill();
+        context.beginPath(); context.ellipse(x, y + 13 * k, 10 * k, 9 * k, 0, 0, Math.PI * 2); context.fill();
+        context.fillStyle = String(stats.model ?? '').startsWith('skeleton') ? '#e6e1cf' : '#e3b58f';
+        context.beginPath(); context.ellipse(x, y - 2 * k, 6 * k, 8 * k, 0, 0, Math.PI * 2); context.fill();
         context.fillStyle = stats.role === 'caster' ? '#a58dc5' : '#37424b';
-        context.beginPath(); context.arc(x, y - 6, 7, Math.PI, 0); context.lineTo(x + 7, y - 3); context.lineTo(x - 7, y - 3); context.fill();
+        context.beginPath(); context.arc(x, y - 6 * k, 7 * k, Math.PI, 0); context.lineTo(x + 7 * k, y - 3 * k); context.lineTo(x - 7 * k, y - 3 * k); context.fill();
         context.restore();
-        context.save(); context.beginPath(); context.arc(x, y, 13, 0, Math.PI * 2);
+        context.save(); context.beginPath(); context.arc(x, y, radius, 0, Math.PI * 2);
         context.strokeStyle = active ? this.frame.theme.gold : '#a8b7b7';
         context.lineWidth = active ? 2 : 1; context.stroke(); context.restore();
     }
@@ -789,11 +814,12 @@ export class TacticalHUD {
     DrawBattleInspection(pawn, preview, statuses) {
         const { frame: f, screen: s } = this, stats = pawn.stats;
         const width = Math.min(250, s.Width - 20), x = s.Width - width - 10, y = this.headerHeight + 8;
+        this.inspectionRect = { x, y, width, height: 106 };
         f.Panel({ x, y, width, height: 106 });
         f.Text(`${stats.name} · Lv ${stats.level ?? 1} · ${(stats.role ?? stats.team).toUpperCase()}`, x + 10, y + 18, { size: 10, weight: 700, color: f.theme.gold, maxWidth: width - 20 });
-        f.Text(`HP ${stats.hp}/${stats.maxHp} · EN ${stats.energy ?? 0}/${stats.energyMax ?? 2}${statuses ? ` · ${statuses}` : ''}`, x + 10, y + 36, { size: 10, maxWidth: width - 20 });
+        f.Text(`HP ${stats.hp}/${stats.maxHp} · ${this.BudgetText(stats)}${statuses ? ` · ${statuses}` : ''}`, x + 10, y + 36, { size: 10, maxWidth: width - 20 });
         const ability = GetAbilityProfile(stats, stats.basicAbility);
-        f.Text(`${ability.name} · range ${ability.range} · ${ability.energy} EN`, x + 10, y + 54, { size: 10, maxWidth: width - 20 });
+        f.Text(`${ability.name} · range ${ability.range} · ${ability.ap} AP`, x + 10, y + 54, { size: 10, maxWidth: width - 20 });
         const detail = preview ? preview.heal !== undefined ? `Heal +${preview.heal} HP` : preview.shield !== undefined ? `Shield ${preview.shield} damage` : preview.haste !== undefined ? `Haste ${preview.haste} turns` : `${preview.chance}% hit · ${preview.damage} damage${preview.blocked ? ` · ${preview.blocked} blocked` : ''}`
             : `ATK ${stats.attack} · MAG ${stats.magic ?? stats.attack} · DEF ${stats.defense}`;
         f.Text(detail, x + 10, y + 72, { size: 10, maxWidth: width - 20 });
@@ -826,11 +852,13 @@ export class TacticalHUD {
         this.Place(this.continue, x + 22 + (width - 38) / 2, y + 226, (width - 38) / 2, 48, true);
     }
 
+    /** Backpack contents (not what is worn), narrowed by the active filter. */
     BagItems() {
-        const all = this.level.campaign.BagItems();
-        return this.inventoryCategory === 'All'
-            ? all
-            : all.filter(item => ItemInfo[item.name]?.category === this.inventoryCategory);
+        const categories = BagFilters[this.inventoryCategory] ?? null;
+        return Object.entries(this.level.campaign.inventory)
+            .filter(([name, count]) => count > 0 && Object.hasOwn(ItemInfo, name))
+            .filter(([name]) => !categories || categories.includes(ItemInfo[name].category))
+            .map(([name, count]) => ({ name, count, equipped: false }));
     }
 
     SelectedBagItem() {
@@ -838,12 +866,13 @@ export class TacticalHUD {
     }
 
     SelectBagCategory(category) {
+        if (!Object.hasOwn(BagFilters, category)) return;
         this.inventoryCategory = category;
         this.selectedBagIndex = 0;
     }
 
     CycleBagCategory(step) {
-        const categories = this.bagCategories.map(entry => entry.category);
+        const categories = Object.keys(BagFilters);
         const index = categories.indexOf(this.inventoryCategory);
         this.SelectBagCategory(categories[(index + step + categories.length) % categories.length]);
     }
@@ -852,24 +881,41 @@ export class TacticalHUD {
         const count = this.BagItems().length;
         if (!count) return;
         const current = Math.min(this.selectedBagIndex, count - 1);
-        const step = { UP: -5, RIGHT: 1, DOWN: 5, LEFT: -1 }[direction];
+        const step = { UP: -BagColumns, RIGHT: 1, DOWN: BagColumns, LEFT: -1 }[direction];
         if (step === undefined) return;
         this.selectedBagIndex = Math.max(0, Math.min(count - 1, current + step));
     }
 
+    /** Uses a Potion, equips gear into its first fitting slot, or explains why neither applies. */
     ActivateBagItem() {
         const item = this.SelectedBagItem();
         if (!item) {
             this.level.turn.message = 'Select an item first.';
             return false;
         }
-        if (item.name === 'Potion') return this.level.UseItem(item.name);
-        const slot = EquipmentSlot(item.name);
-        if (!slot || !(this.level.campaign.inventory[item.name] > 0) || this.level.campaign.equipment[slot] === item.name) {
-            this.level.turn.message = 'That item is already equipped.';
+        const info = ItemInfo[item.name];
+        if (info.use) return this.level.UseItem(item.name);
+        if (!EquipmentSlot(item.name)) {
+            this.level.turn.message = `${item.name} is a resource · sell it to the alchemist.`;
             return false;
         }
         return this.level.EquipItem(item.name);
+    }
+
+    /** Paper-doll focus (E): left/right pick a slot, up/down cycle owned items for it. */
+    MoveGearSelection(direction) {
+        const order = EquipmentSlots.map(slot => slot.id), index = order.indexOf(this.selectedGearSlot);
+        if (direction === 'LEFT' || direction === 'RIGHT')
+            this.SelectGearSlot(order[(index + (direction === 'RIGHT' ? 1 : -1) + order.length) % order.length]);
+        else this.CycleGear(direction === 'DOWN' ? 1 : -1);
+    }
+
+    ActivateGearSelection() {
+        const candidate = this.GearCandidates()[this.selectedGearIndex];
+        if (candidate) return this.level.EquipItem(candidate, this.selectedGearSlot);
+        if (this.level.campaign.equipment[this.selectedGearSlot]) return this.level.UnequipItem(this.selectedGearSlot);
+        this.level.turn.message = 'No owned item fits that slot.';
+        return false;
     }
 
     PointerMoved(point) {
@@ -900,33 +946,29 @@ export class TacticalHUD {
     ShopOffers() {
         const { campaign, activeVendor } = this.level;
         const specialty = activeVendor?.stats.specialty;
+        const entry = name => this.sellInventory.find(item => item.name === name);
         if (this.shopTab === 'sell') {
             if (specialty === 'consumable')
-                return (campaign.inventory.Potion ?? 0) > 0
-                    ? [{ name: 'Potion', slot: 'potion', source: 'bag', price: 5, button: this.panelButtons.potionSell }] : [];
+                return Object.entries(campaign.inventory)
+                    .filter(([name, count]) => count > 0 && ItemInfo[name]?.sell && !EquipmentStats(name))
+                    .map(([name]) => ({ ...entry(name), name, slot: null, source: 'bag', price: ItemInfo[name].sell }));
             if (specialty !== 'weapon' && specialty !== 'armor') return [];
-            const equipped = this.sellSlots.filter(entry => {
-                const name = campaign.equipment[entry.slot];
-                return (entry.slot === 'weapon' ? 'weapon' : 'armor') === specialty
+            const equipped = this.sellSlots.filter(item => {
+                const name = campaign.equipment[item.slot];
+                return name && (item.slot === 'weapon' ? 'weapon' : 'armor') === specialty
                     && (EquipmentStats(name)?.price ?? 0) > 0;
-            }).map(entry => ({ ...entry, name: campaign.equipment[entry.slot], source: 'equipped' }));
-            const bag = this.sellInventory.filter(entry => (campaign.inventory[entry.name] ?? 0) > 0
-                && EquipmentStats(entry.name).price > 0
-                && (EquipmentSlot(entry.name) === 'weapon' ? 'weapon' : 'armor') === specialty)
-                .map(entry => ({ ...entry, slot: EquipmentSlot(entry.name), source: 'bag' }));
+            }).map(item => ({ ...item, name: campaign.equipment[item.slot], source: 'equipped' }));
+            const bag = this.sellInventory.filter(item => (campaign.inventory[item.name] ?? 0) > 0
+                && (EquipmentStats(item.name)?.price ?? 0) > 0
+                && (EquipmentSlot(item.name) === 'weapon' ? 'weapon' : 'armor') === specialty)
+                .map(item => ({ ...item, slot: EquipmentSlot(item.name), source: 'bag' }));
             return [...equipped, ...bag].map(offer => ({ ...offer, price: Math.floor(EquipmentStats(offer.name).price / 2) }));
         }
-        if (specialty === 'weapon') return [
-            { name: 'Highland Edge', button: this.panelButtons.buyBlade, slot: 'weapon' },
-            { name: 'Runed Staff', button: this.panelButtons.buyStaff, slot: 'weapon' },
-        ].map(offer => ({ ...offer, price: EquipmentStats(offer.name).price }));
-        if (specialty === 'armor') return [
-            { name: 'Ranger Leathers', button: this.panelButtons.buyLeathers, slot: 'armor' },
-            { name: 'Iron Kilt', button: this.panelButtons.buyKilt, slot: 'armor' },
-            ...this.extraStock.map(entry => ({ ...entry, slot: EquipmentSlot(entry.name) })),
-        ].map(offer => ({ ...offer, price: EquipmentStats(offer.name).price }));
-        if (specialty === 'consumable') return [{ name: 'Potion', button: this.panelButtons.buyPotion, slot: 'potion', price: 15 }];
-        return [];
+        return (VendorStock[specialty] ?? []).map(name => ({
+            name, button: this.stock?.find(item => item.name === name)?.button ?? null,
+            slot: ItemInfo[name].category === 'Consumables' ? 'potion' : EquipmentSlot(name),
+            price: EquipmentStats(name)?.price ?? ItemInfo[name].price,
+        }));
     }
 
     ActivateShopOffer() {
@@ -936,9 +978,9 @@ export class TacticalHUD {
             else this.level.turn.message = 'There is nothing to trade here.';
             return;
         }
-        if (this.shopTab === 'buy') this.level.Buy(offer.name, offer.slot);
-        else if (offer.slot === 'potion') this.level.SellPotion();
+        if (this.shopTab === 'buy') this.level.Buy(offer.name, offer.slot === 'potion' ? 'potion' : null);
         else if (offer.source === 'equipped') this.level.SellEquipment(offer.slot);
+        else if (!EquipmentStats(offer.name)) this.level.SellItem(offer.name);
         else this.level.SellOwned(offer.name);
         const count = this.ShopOffers().length;
         this.shopSelection = Math.max(0, Math.min(this.shopSelection, count - 1));
@@ -946,59 +988,7 @@ export class TacticalHUD {
     }
 
     DrawBagIcon(item, rect) {
-        const c = this.screen.Context, x = rect.x + rect.width / 2, y = rect.y + rect.height / 2;
-        const icon = ItemInfo[item.name]?.icon;
-        c.save();
-        c.lineWidth = 2;
-        c.strokeStyle = item.equipped ? '#e5c46d' : '#c8d0d2';
-        c.fillStyle = item.name === 'Potion' ? '#b65372' : item.equipped ? '#b38b4e' : '#7294a3';
-        c.beginPath();
-        if (icon === 'potion') {
-            c.moveTo(x - 4, y - 7); c.lineTo(x + 4, y - 7); c.lineTo(x + 3, y - 2);
-            c.lineTo(x + 7, y + 3); c.lineTo(x + 6, y + 7); c.lineTo(x - 6, y + 7);
-            c.lineTo(x - 7, y + 3); c.lineTo(x - 3, y - 2); c.closePath();
-            c.fill(); c.stroke();
-        }
-        else if (icon === 'blade') {
-            c.moveTo(x + 6, y - 8); c.lineTo(x + 1, y + 3); c.lineTo(x - 2, y + 6);
-            c.stroke(); c.beginPath(); c.moveTo(x - 6, y + 2); c.lineTo(x + 2, y + 4); c.stroke();
-        }
-        else if (icon === 'staff') {
-            c.moveTo(x - 4, y + 8); c.lineTo(x + 4, y - 5); c.stroke();
-            c.beginPath(); c.arc(x + 4, y - 6, 3, 0, Math.PI * 2); c.fill(); c.stroke();
-        }
-        else if (icon === 'ring') {
-            c.arc(x, y + 2, 5, 0, Math.PI * 2); c.stroke();
-            c.beginPath(); c.moveTo(x - 3, y - 4); c.lineTo(x, y - 8); c.lineTo(x + 3, y - 4); c.closePath(); c.fill(); c.stroke();
-        }
-        else if (icon === 'belt') {
-            c.rect(x - 8, y - 3, 16, 6); c.fill(); c.stroke();
-            c.beginPath(); c.rect(x - 2, y - 3, 4, 6); c.stroke();
-        }
-        else if (icon === 'boots') {
-            c.moveTo(x - 5, y - 8); c.lineTo(x + 2, y - 8); c.lineTo(x + 2, y + 2);
-            c.lineTo(x + 7, y + 4); c.lineTo(x + 7, y + 7); c.lineTo(x - 5, y + 7); c.closePath(); c.fill(); c.stroke();
-        }
-        else if (icon === 'gloves') {
-            c.moveTo(x - 5, y + 8); c.lineTo(x - 6, y - 3); c.lineTo(x - 3, y - 3);
-            c.lineTo(x - 3, y - 8); c.lineTo(x + 3, y - 8); c.lineTo(x + 4, y - 2);
-            c.lineTo(x + 7, y - 3); c.lineTo(x + 5, y + 4); c.lineTo(x + 3, y + 8); c.closePath(); c.fill(); c.stroke();
-        }
-        else if (icon === 'helm') {
-            c.moveTo(x - 7, y + 6); c.lineTo(x - 7, y - 3); c.lineTo(x - 4, y - 8);
-            c.lineTo(x + 4, y - 8); c.lineTo(x + 7, y - 3); c.lineTo(x + 7, y + 6);
-            c.lineTo(x + 3, y + 6); c.lineTo(x + 3, y); c.lineTo(x - 3, y);
-            c.lineTo(x - 3, y + 6); c.closePath(); c.fill(); c.stroke();
-        }
-        else {
-            c.moveTo(x, y - 8); c.lineTo(x + 8, y - 4); c.lineTo(x + 6, y + 7);
-            c.lineTo(x, y + 9); c.lineTo(x - 6, y + 7); c.lineTo(x - 8, y - 4);
-            c.closePath(); c.fill(); c.stroke();
-        }
-        c.strokeStyle = ({ common: '#69777d', uncommon: '#67b68c', rare: '#68a6dc', epic: '#bd82d6' })[ItemInfo[item.name]?.rarity] ?? '#69777d';
-        c.lineWidth = 1;
-        c.strokeRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
-        c.restore();
+        DrawItemIcon(this.screen.Context, item.name, rect, { equipped: item.equipped });
     }
 
     DrawVendorPortrait(context, x, y, vendor) {
@@ -1048,68 +1038,6 @@ export class TacticalHUD {
         context.stroke();
     }
 
-    DrawBag(x, y, width, hero) {
-        const { frame: f, screen: s } = this, items = this.BagItems();
-        const categories = this.bagCategories, inner = width - 24;
-        const catGap = 2, catWidth = (inner - catGap * (categories.length - 1)) / categories.length;
-        categories.forEach((entry, index) => this.Place(
-            entry, x + 12 + index * (catWidth + catGap), y + 33, catWidth, 22, true, this.inventoryCategory === entry.category,
-        ));
-
-        const pointer = Touch.ToScreen(Input.instance.mouse.position, s);
-        const slotHeight = width < 400 ? 20 : 25;
-        const gridY = y + 108;
-        this.slotRects = InventoryGridLayout(x, y, width, slotHeight);
-        const hoverIndex = this.slotRects.findIndex(rect =>
-            pointer.x >= rect.x && pointer.x <= rect.x + rect.width && pointer.y >= rect.y && pointer.y <= rect.y + rect.height);
-        if (this.PointerMoved(pointer) && hoverIndex >= 0 && items[hoverIndex]) this.selectedBagIndex = hoverIndex;
-        this.selectedBagIndex = Math.max(0, Math.min(this.selectedBagIndex, items.length - 1));
-        const selectedIndex = this.selectedBagIndex;
-        const selected = items[selectedIndex] ?? null;
-        if (selected) this.selectedBagIndex = selectedIndex;
-
-        for (let index = 0; index < this.bagSlots.length; index++) {
-            const rect = this.slotRects[index], item = items[index];
-            if (!item) {
-                this.bagSlots[index].button.enabled = false;
-                f.Panel(rect);
-                continue;
-            }
-
-            this.bagSlots[index].label = '';
-            this.Place(this.bagSlots[index], rect.x, rect.y, rect.width, rect.height, true, index === selectedIndex);
-            this.DrawBagIcon(item, rect);
-            f.Text(item.count > 1 ? `${item.count}` : '1', rect.x + rect.width - 6, rect.y + rect.height - 2, {
-                size: 8, align: 'right', weight: 700, color: item.equipped ? f.theme.gold : f.theme.text,
-            });
-        }
-        const info = selected ? ItemInfo[selected.name] : null;
-        let modifier = selected?.name === 'Potion' ? '+24 HP · stack'
-            : selected ? this.GearComparison(selected.name) : 'Empty slot';
-        if (selected?.equipped) modifier += ' · EQUIPPED';
-        f.Text(selected ? `${selected.name} · ${modifier}` : 'Select an item to inspect it', x + 12, y + 65, {
-            size: 10, weight: 700, color: f.theme.gold, maxWidth: width - 24,
-        });
-        f.Text(info?.description ?? 'Choose an item slot for details and actions.', x + 12, y + 81, {
-            size: 9, maxWidth: width - 24,
-        });
-        if (info) f.Text(`${info.category} · ${info.rarity.toUpperCase()} · ${this.ItemModifiers(selected.name)}`, x + 12, y + 97, {
-            size: 9, color: f.theme.muted, maxWidth: width - 24,
-        });
-        const buttonY = gridY + 6 * (slotHeight + 2) + 2;
-        this.Place(this.panelButtons.equipItem, x + 12, buttonY, (inner - 4) / 2, 24,
-            Boolean(selected && (this.level.campaign.inventory[selected.name] ?? 0) > 0 && EquipmentSlot(selected.name)
-                && this.level.campaign.equipment[EquipmentSlot(selected.name)] !== selected.name));
-        this.Place(this.panelButtons.useItem, x + 16 + (inner - 4) / 2, buttonY, (inner - 4) / 2, 24,
-            selected?.name === 'Potion');
-        if (selected) {
-            const action = selected.name === 'Potion' ? 'Enter: Use'
-                : this.level.campaign.equipment[EquipmentSlot(selected.name)] === selected.name ? 'Equipped'
-                    : 'Enter: Equip';
-            this.DrawItemHint(selected.name, selected.count, action, x, y, width, 278);
-        }
-    }
-
     DrawItemHint(name, owned, action, x, y, width, panelHeight) {
         const { frame: f, screen: s } = this, info = ItemInfo[name];
         if (!info) return;
@@ -1122,15 +1050,17 @@ export class TacticalHUD {
         f.Text(`${info.category} · Owned ${owned} · ${action}`, hintX + 10, hintY + 48, { size: 9, maxWidth: hintWidth - 20 });
         f.Text(info.description, hintX + 10, hintY + 65, { size: 9, maxWidth: hintWidth - 20 });
         f.Text(this.ItemModifiers(name), hintX + 10, hintY + 82, { size: 9, maxWidth: hintWidth - 20 });
-        if (name !== 'Potion') f.Text(`vs equipped: ${this.GearComparison(name)}`, hintX + 10, hintY + 101, { size: 9, color: f.theme.gold, maxWidth: hintWidth - 20 });
+        if (EquipmentStats(name)) f.Text(`vs equipped: ${this.GearComparison(name)}`, hintX + 10, hintY + 101, { size: 9, color: f.theme.gold, maxWidth: hintWidth - 20 });
     }
 
-    GearComparison(name) {
-        const slot = EquipmentSlot(name), next = EquipmentStats(name);
-        if (!slot || !next) return 'Not equipment';
-        const current = EquipmentStats(this.level.campaign.equipment[slot]) ?? {};
-        const labels = [['attack', 'ATK'], ['magic', 'MAG'], ['defense', 'DEF'], ['speed', 'SPD'], ['hp', 'HP'], ['energy', 'EN']];
-        const changes = labels.map(([key, label]) => {
+    /** Stat changes from equipping `name` into `slot` (default: the slot it would go to). */
+    GearComparison(name, slot = null) {
+        const next = EquipmentStats(name), equipment = this.level.campaign.equipment;
+        const target = slot ?? (EquipmentSlot(name) === 'ring' || !Object.hasOwn(equipment, EquipmentSlot(name) ?? '')
+            ? SlotFor(name, equipment) : EquipmentSlot(name));
+        if (!target || !next) return 'Not equipment';
+        const current = EquipmentStats(equipment[target]) ?? {};
+        const changes = CompareStats.map(([key, label]) => {
             const delta = (next[key] ?? 0) - (current[key] ?? 0);
             return delta ? `${label} ${delta > 0 ? '+' : ''}${delta}` : null;
         }).filter(Boolean);
@@ -1139,14 +1069,18 @@ export class TacticalHUD {
 
     ItemModifiers(name) {
         const item = EquipmentStats(name);
-        if (!item) return name === 'Potion' ? '+24 HP' : 'No bonuses';
-        const stats = [['attack', 'ATK'], ['magic', 'MAG'], ['defense', 'DEF'], ['speed', 'SPD'], ['hp', 'HP'], ['energy', 'EN']];
-        return stats.filter(([key]) => item[key]).map(([key, label]) => `${label} +${item[key]}`).join(' · ') || 'No bonuses';
+        if (!item) {
+            const use = ItemInfo[name]?.use;
+            if (!use) return ItemInfo[name]?.sell ? `Sells for ${ItemInfo[name].sell}G` : 'No bonuses';
+            return [use.heal ? `+${use.heal} HP` : null, use.restoreAp ? `+${use.restoreAp} AP` : null, use.cleanse ? 'Cures poison/burn/slow' : null]
+                .filter(Boolean).join(' · ');
+        }
+        return CompareStats.filter(([key]) => item[key]).map(([key, label]) => `${label} +${item[key]}`).join(' · ') || 'No bonuses';
     }
 
     GearCandidates() {
         return Object.entries(this.level.campaign.inventory)
-            .filter(([name, count]) => count > 0 && EquipmentSlot(name) === this.selectedGearSlot)
+            .filter(([name, count]) => count > 0 && EquipmentSlots.find(slot => slot.id === this.selectedGearSlot)?.accepts === EquipmentSlot(name))
             .map(([name]) => name).sort();
     }
 
@@ -1158,49 +1092,6 @@ export class TacticalHUD {
     CycleGear(direction) {
         const count = this.GearCandidates().length;
         if (count) this.selectedGearIndex = (this.selectedGearIndex + direction + count) % count;
-    }
-
-    DrawEquipment(x, y, width, hero) {
-        const { frame: f, screen: s, level: l } = this, c = s.Context;
-        const center = x + width / 2;
-        c.save();
-        c.fillStyle = '#30414a';
-        c.strokeStyle = '#c9ae69';
-        c.lineWidth = 2;
-        c.beginPath(); c.arc(center, y + 67, 13, 0, Math.PI * 2); c.fill(); c.stroke();
-        c.beginPath(); c.moveTo(center - 18, y + 87); c.lineTo(center + 18, y + 87);
-        c.lineTo(center + 24, y + 132); c.lineTo(center + 13, y + 141);
-        c.lineTo(center + 15, y + 170); c.lineTo(center + 3, y + 170);
-        c.lineTo(center, y + 144); c.lineTo(center - 3, y + 170);
-        c.lineTo(center - 15, y + 170); c.lineTo(center - 13, y + 141);
-        c.lineTo(center - 24, y + 132); c.closePath(); c.fill(); c.stroke();
-        c.restore();
-        const pointer = Touch.ToScreen(Input.instance.mouse.position, s);
-        for (const rect of EquipmentLayout(x, y, width)) {
-            const item = this.gearSlots.find(entry => entry.slot === rect.slot);
-            const hovered = pointer.x >= rect.x && pointer.x <= rect.x + rect.width
-                && pointer.y >= rect.y && pointer.y <= rect.y + rect.height;
-            if (hovered) this.SelectGearSlot(rect.slot);
-            this.Place(item, rect.x, rect.y, rect.width, rect.height, true, this.selectedGearSlot === rect.slot);
-            f.Text(item.slotLabel, rect.x + rect.width / 2, rect.y + 11, {
-                size: 9, align: 'center', weight: 700,
-                color: this.selectedGearSlot === rect.slot ? f.theme.gold : f.theme.text, maxWidth: rect.width - 8,
-            });
-            f.Text(l.campaign.equipment[rect.slot] ?? 'Empty', rect.x + rect.width / 2, rect.y + 23, {
-                size: 9, align: 'center', maxWidth: rect.width - 8,
-            });
-        }
-        const slot = EquipmentSlots.find(entry => entry.id === this.selectedGearSlot);
-        const equipped = l.campaign.equipment[slot.id];
-        const candidates = this.GearCandidates();
-        this.selectedGearIndex = Math.min(this.selectedGearIndex, Math.max(0, candidates.length - 1));
-        const alternate = candidates[this.selectedGearIndex];
-        f.Text(`ATK ${hero.attack} · MAG ${hero.magic} · DEF ${hero.defense} · SPD ${hero.speed} · HP ${hero.maxHp} · EN ${hero.energyMax}`, x + 12, y + 179, { size: 9, maxWidth: width - 24 });
-        f.Text(`${slot.label}: ${equipped ?? 'Empty'}`, x + 12, y + 193, { size: 10, weight: 700, color: f.theme.gold, maxWidth: width - 24 });
-        f.Text(alternate ? `${alternate} · ${this.GearComparison(alternate)}` : 'No owned alternatives for this slot.', x + 12, y + 211, { size: 9, maxWidth: width - 24 });
-        this.Place(this.gearPrevious, x + 12, y + 227, 34, 28, candidates.length > 1);
-        this.Place(this.gearNext, x + 50, y + 227, 34, 28, candidates.length > 1);
-        this.Place(this.gearEquip, x + 90, y + 227, width - 102, 28, Boolean(alternate));
     }
 
     DrawWorldMap(x, y, width, height, hero) {
@@ -1324,14 +1215,16 @@ export class TacticalHUD {
         if (!this.panel || this.level.exploring === 'creation') return;
         const { level: l, screen: s, frame: f } = this;
         const hero = l.campaign.hero, panel = this.panel;
-        const width = Math.min(panel === 'map' ? 680 : 300, s.Width - 20);
-        const x = panel === 'map' ? (s.Width - width) / 2 : 10, y = this.headerHeight + 16;
-        const heading = { hero: 'CHARACTER', bag: 'INVENTORY', gear: 'EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
+        const sheet = panel === 'bag' || panel === 'gear';
+        const width = Math.min(panel === 'map' ? 680 : sheet ? 660 : 300, s.Width - 20);
+        const x = panel === 'map' || sheet ? (s.Width - width) / 2 : 10;
+        const sheetHeight = sheet ? SheetLayout(0, 0, width).height + 8 : 0;
+        const y = sheet ? Math.max(10, Math.min(this.headerHeight + 16, s.Height - sheetHeight - 10)) : this.headerHeight + 16;
+        const heading = { hero: 'CHARACTER', bag: 'CHARACTER SHEET · BACKPACK', gear: 'CHARACTER SHEET · EQUIPMENT', skills: 'CLASS SKILL TREE', map: 'WORLD MAP', party: 'PARTY ROSTER', shop: 'HEARTHVALE VENDORS', settings: 'CONTROL & HUD MODE' }[panel];
         const height = panel === 'shop' ? 276
-            : panel === 'settings' ? 228
-            : panel === 'skills' ? 242
-                : panel === 'gear' ? 268
-                : panel === 'bag' ? (width < 400 ? 278 : 310)
+            : panel === 'settings' ? (l.controlSettings.mode === 'Personalizado' ? 340 : 212)
+            : panel === 'skills' ? 290
+                : sheet ? sheetHeight
                     : panel === 'map' ? Math.min(410, Math.max(246, ExplorationBarLayout(s.Width, s.Height)[0].y - y - 10))
                     : 190;
         f.Panel({ x, y, width, height });
@@ -1343,24 +1236,27 @@ export class TacticalHUD {
             this.modeButtons.forEach((item, index) => this.Place(item,
                 x + 12 + (index % 2) * (buttonWidth + 4), y + 36 + Math.floor(index / 2) * 32,
                 buttonWidth, 28, true, settings.mode === ControlModes[index] || this.settingsSelection === index));
-            this.customRadial.label = `AUTO RADIAL: ${settings.autoRadial ? 'ON' : 'OFF'}`;
-            this.customTarget.label = `SMART TARGET: ${settings.smartTarget ? 'ON' : 'OFF'}`;
-            this.Place(this.customRadial, x + 12, y + 105, width - 24, 28, settings.mode === 'Personalizado', this.settingsSelection === 4);
-            this.Place(this.customTarget, x + 12, y + 137, width - 24, 28, settings.mode === 'Personalizado', this.settingsSelection === 5);
-            if (settings.mode !== 'Personalizado')
-                f.Text(`Auto radial ${settings.autoRadial ? 'ON' : 'OFF'} · Smart target ON`, x + 14, y + 126, { size: 10 });
-            this.Place(this.settingsHelp, x + 12, y + 180, width - 24, 30, true,
-                this.settingsSelection === (settings.mode === 'Personalizado' ? 6 : 4));
+            const custom = settings.mode === 'Personalizado';
+            const toggles = [[this.customRadial, 'AUTO RADIAL', 'autoRadial'], [this.customTarget, 'SMART TARGET', 'smartTarget'],
+                [this.customDock, 'PC DOCK', 'dock'], [this.customLarge, 'LARGE TARGETS', 'largeTargets']];
+            toggles.forEach(([item, label, key], index) => {
+                item.label = `${label}: ${settings[key] ? 'ON' : 'OFF'}`;
+                this.Place(item, x + 12, y + 136 + index * 32, width - 24, 28, custom, this.settingsSelection === ControlModes.length + index);
+            });
+            if (!custom)
+                f.Text(`Dock ${settings.dock ? 'ON' : 'OFF'} · Radial ${settings.autoRadial ? 'ON' : 'OFF'} · Large ${settings.largeTargets ? 'ON' : 'OFF'}`, x + 14, y + 148, { size: 10, maxWidth: width - 28 });
+            this.Place(this.settingsHelp, x + 12, y + (custom ? 266 : 166), width - 24, 30, true,
+                this.settingsSelection === ControlModes.length + (custom ? CustomOptions.length : 0));
         }
         else if (panel === 'hero') {
             f.Text(`${hero.className} · Level ${hero.level}`, x + 14, y + 48, { size: 12 });
             f.Text(`HP ${hero.hp}/${hero.maxHp} · ATK ${hero.attack} · MAG ${hero.magic} · DEF ${hero.defense}`, x + 14, y + 68, { size: 10, maxWidth: width - 28 });
-            f.Text(`XP ${hero.xp}/${hero.nextXp} · Speed ${hero.speed}`, x + 14, y + 88, { size: 11 });
+            f.Text(`XP ${hero.xp}/${hero.nextXp} · AP ${hero.apMax} · MP ${hero.mpMax} · SPD ${hero.speed}`, x + 14, y + 88, { size: 11, maxWidth: width - 28 });
             this.Place(this.panelButtons.save, x + 12, y + 102, width - 24, 27, true);
             this.Place(this.panelButtons.rest, x + 12, y + 134, width - 24, 32, l.zone.id === 'hearthvale');
         }
-        else if (panel === 'bag') {
-            this.DrawBag(x, y, width, hero);
+        else if (sheet) {
+            this.sheet.Draw(x, y, width);
         }
         else if (panel === 'map')
             this.DrawWorldMap(x, y, width, height, hero);
@@ -1377,9 +1273,6 @@ export class TacticalHUD {
                 this.Place(this.panelButtons.companion, x + 12, y + 146, width - 24, 30, true);
             }
         }
-        else if (panel === 'gear') {
-            this.DrawEquipment(x, y, width, hero);
-        }
         else if (panel === 'skills') {
             const tree = SkillTrees[hero.archetype] ?? [];
             f.Text(`${hero.className} · ${l.campaign.skillPoints} SP`, x + 14, y + 44, { size: 11, color: f.theme.gold });
@@ -1388,24 +1281,25 @@ export class TacticalHUD {
                 const ready = skill.requires.every(required => l.campaign.unlockedSkills.includes(required));
                 const item = this.skillNodeButtons.find(entry => entry.skill.id === skill.id);
                 item.label = learned ? 'LEARNED' : ready && l.campaign.skillPoints > 0 ? 'UNLOCK' : 'LOCKED';
-                const nodeY = y + 64 + index * 45, c = s.Context;
+                const nodeY = y + 64 + index * 30, c = s.Context;
                 c.save();
                 c.strokeStyle = learned ? '#80c6a0' : '#9a906b'; c.lineWidth = 2;
-                if (index > 0) { c.beginPath(); c.moveTo(x + 22, nodeY - 38); c.lineTo(x + 22, nodeY - 8); c.stroke(); }
+                if (index > 0) { c.beginPath(); c.moveTo(x + 22, nodeY - 25); c.lineTo(x + 22, nodeY - 5); c.stroke(); }
                 c.beginPath(); c.arc(x + 22, nodeY, 5, 0, Math.PI * 2);
                 c.fillStyle = learned ? '#80c6a0' : this.skillTreeSelection === index ? '#f9cb5b' : '#26343a';
                 c.fill(); c.stroke(); c.restore();
-                f.Text(`${skill.name} · ${skill.kind.toUpperCase()}`, x + 34, y + 69 + index * 45, { size: 10, weight: 700, maxWidth: width - 132 });
+                const profile = skill.kind === 'active' ? GetAbilityProfile({}, skill.id) : null;
+                f.Text(`${skill.name} · ${profile ? `${profile.ap} AP` : 'PASSIVE'}`, x + 34, y + 63 + index * 30, { size: 10, weight: 700, maxWidth: width - 132 });
                 const requirement = skill.requires.map(id => tree.find(node => node.id === id)?.name ?? id).join(', ');
-                f.Text(requirement ? `Requires: ${requirement}` : 'Starting skill', x + 34, y + 84 + index * 45, { size: 9, maxWidth: width - 46 });
+                f.Text(requirement ? `Requires: ${requirement}` : 'Starting skill', x + 34, y + 76 + index * 30, { size: 8, maxWidth: width - 132 });
                 if (learned || !ready || l.campaign.skillPoints < 1)
-                    f.Text(learned ? 'LEARNED' : ready ? 'NEED 1 SP' : 'LOCKED', x + width - 14, y + 69 + index * 45, {
+                    f.Text(learned ? 'LEARNED' : ready ? 'NEED 1 SP' : 'LOCKED', x + width - 14, y + 68 + index * 30, {
                         size: 9, align: 'right', color: f.theme.muted,
                     });
-                this.Place(item, x + width - 91, y + 52 + index * 45, 78, 28, !learned && ready && l.campaign.skillPoints > 0, this.skillTreeSelection === index);
+                this.Place(item, x + width - 91, y + 52 + index * 30, 78, 24, !learned && ready && l.campaign.skillPoints > 0, this.skillTreeSelection === index);
             });
             if (tree[this.skillTreeSelection])
-                f.Text(tree[this.skillTreeSelection].description, x + 14, y + 235, { size: 9, maxWidth: width - 28 });
+                f.Text(tree[this.skillTreeSelection].description, x + 14, y + 64 + tree.length * 30 + 8, { size: 9, maxWidth: width - 28 });
         }
         else if (panel === 'shop') {
             const vendor = l.activeVendor?.stats;
@@ -1438,7 +1332,7 @@ export class TacticalHUD {
                     this.DrawBagIcon({ name: offer.name }, { x: x + width - 37, y: itemY + 4, width: 22, height: 20 });
                     const owned = l.campaign.BagItems().find(item => item.name === offer.name)?.count ?? 0;
                     const source = offer.source === 'equipped' ? 'EQUIPPED · ' : '';
-                    const detail = offer.slot === 'potion' ? '+24 HP per use' : `${this.ItemModifiers(offer.name)} · Δ ${this.GearComparison(offer.name)}`;
+                    const detail = !EquipmentStats(offer.name) ? this.ItemModifiers(offer.name) : `${this.ItemModifiers(offer.name)} · Δ ${this.GearComparison(offer.name)}`;
                     f.Text(`${source}OWNED ${owned} · ${detail}`, x + 14, itemY + 40, { size: 8, color: f.theme.muted, maxWidth: width - 28 });
                 });
                 this.DrawShopPages(x, y, width, offers.length);

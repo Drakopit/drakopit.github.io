@@ -6,7 +6,8 @@ import { MapScale } from './BattleRules.js';
  * (scenes/battlefield.gfscene.json) into `{ heights, units }`.
  * Tiles: column/row come from the X/Z position, height from scale Y
  * (`base + h * elevation`). Units: tile from position, facing from rotation Y
- * (`-facing * 90deg`), colour from their Material.
+ * (`-facing * 90deg`), colour from their Material, and the character model and held
+ * weapons from Data (`model`, `weapon`, `offhand` name resources.json models).
  * @param {Object} document - Parsed scene JSON from the resource manifest.
  * @returns {{heights: (number|null)[][], units: Object[]}}
  */
@@ -35,7 +36,12 @@ export function BattleFromScene(document) {
             facing: ((turns % 4) + 4) % 4,
             ...stats,
             color: scene.Component(node, 'Material').albedoColor,
+            ...Pick(scene.Component(node, 'Data'), ['model', 'weapon', 'offhand']),
         };
     });
     return { heights, units };
+}
+
+function Pick(data, keys) {
+    return Object.fromEntries(keys.filter(key => data?.[key] !== undefined).map(key => [key, data[key]]));
 }

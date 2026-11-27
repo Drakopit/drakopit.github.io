@@ -1,59 +1,66 @@
 import { Component } from 'gameforgejs/core';
-import { BattleRules, GetAbilityProfile } from '../data/BattleRules.js';
+import { AbilityBlocked, BattleRules, GetAbilityProfile, TurnBudget } from '../data/BattleRules.js';
 import { ActiveSkills } from '../data/ClassSkills.js';
-/** CT, action budgets and phase transitions. No input or rendering dependencies. */
+
+/** Phases in which the active ally is choosing what to do (the turn timer runs in these). */
+const InputPhases = new Set(['command', 'move', 'target', 'skill-select', 'item', 'face']);
+
+/**
+ * CT turn order with Dofus-style budgets: each turn grants AP for abilities and items and MP
+ * for movement, both spendable in any order and split across several actions. No input or
+ * rendering dependencies.
+ */
 export class TurnSystem extends Component {
-    constructor(grid, pawns, sound) { super(); this.grid = grid; this.pawns = pawns; this.sound = sound; this.Reset(); }
-    Reset() { this.phase = 'charge'; this.active = null; this.message = 'The highland watch — defeat the Ash patrol'; this.result = null; this.seed = 74; this.feedback = []; this.command = 0; }
+    constructor(grid, pawns, sound) { super(); this.grid = grid; this.pawns = pawns; this.sound = sound; this.turnLimit = null; this.Reset(); }
+    Reset() { this.phase = 'charge'; this.active = null; this.message = 'The highland watch — defeat the Ash patrol'; this.result = null; this.seed = 74; this.feedback = []; this.command = 0; this.turnTime = 0; this.lastTarget = null; }
     Alive() { return this.pawns.filter(p => p.stats.hp > 0); }
     Occupied(actor) { return new Set(this.Alive().filter(p => p !== actor).map(p => this.grid.Key(p.stats))); }
-    Range(actor = this.active) { return this.grid.Reachable(actor.stats, { move: Math.max(1, (['flanker', 'bruiser'].includes(actor.stats.role) ? 4 : 3) - (actor.stats.slowed > 0 ? 2 : 0)), climb: 1, jump: 2, occupied: this.Occupied(actor) }); }
+    /** Tiles the actor can reach with its remaining MP (`cost` is the MP each one takes). */
+    Range(actor = this.active) { return this.grid.Reachable(actor.stats, { move: Math.max(0, actor.stats.mp ?? actor.stats.mpMax ?? (['flanker', 'bruiser'].includes(actor.stats.role) ? 4 : TurnBudget.mp)), climb: 1, jump: 2, occupied: this.Occupied(actor) }); }
     Begin(actor) {
         this.active = actor;
         this.moved = false;
         this.acted = false;
         this.command = 0;
-        actor.stats.guarded = false;
-        actor.stats.energy = Math.min(actor.stats.energyMax ?? 2, actor.stats.energy + 1);
-        actor.stats.exposed = Math.max(0, actor.stats.exposed - 1);
-        actor.stats.haste = Math.max(0, (actor.stats.haste ?? 0) - 1);
-        if (actor.stats.burn > 0) {
-            actor.stats.hp = Math.max(0, actor.stats.hp - 4);
-            actor.stats.burn--;
-            this.feedback.push({ pawn: actor, text: '-4 BURN', life: 1.7 });
-            if (actor.stats.hp === 0) {
+        this.turnTime = 0;
+        this.lastTarget = null;
+        const stats = actor.stats;
+        stats.guarded = false;
+        stats.ap = stats.apMax ?? TurnBudget.ap;
+        stats.mp = Math.max(1, (stats.mpMax ?? TurnBudget.mp) - (stats.slowed > 0 ? 2 : 0));
+        stats.casts = {};
+        for (const [id, turns] of Object.entries(stats.cooldowns ?? {})) {
+            if (turns > 1) stats.cooldowns[id] = turns - 1;
+            else delete stats.cooldowns[id];
+        }
+        stats.exposed = Math.max(0, stats.exposed - 1);
+        stats.haste = Math.max(0, (stats.haste ?? 0) - 1);
+        for (const [status, damage, label, effect] of [['burn', 4, 'BURN', undefined], ['poison', 3, 'POISON', 'poison']]) {
+            if (!(stats[status] > 0)) continue;
+            stats.hp = Math.max(0, stats.hp - damage);
+            stats[status]--;
+            this.feedback.push({ pawn: actor, text: `-${damage} ${label}`, life: 1.7, effect });
+            if (stats.hp === 0) {
                 this.CheckResult();
-                actor.stats.ct = 0;
+                stats.ct = 0;
                 this.active = null;
                 this.phase = this.result ? 'result' : 'charge';
                 return;
             }
         }
-        if (actor.stats.poison > 0) {
-            actor.stats.hp = Math.max(0, actor.stats.hp - 3);
-            actor.stats.poison--;
-            this.feedback.push({ pawn: actor, text: '-3 POISON', life: 1.7, effect: 'poison' });
-            if (actor.stats.hp === 0) {
-                this.CheckResult();
-                actor.stats.ct = 0;
-                this.active = null;
-                this.phase = this.result ? 'result' : 'charge';
-                return;
-            }
-        }
-        if (actor.stats.stunned > 0) {
-            actor.stats.stunned--;
-            actor.stats.slowed = Math.max(0, (actor.stats.slowed ?? 0) - 1);
-            actor.stats.ct = 0;
+        if (stats.stunned > 0) {
+            stats.stunned--;
+            stats.slowed = Math.max(0, (stats.slowed ?? 0) - 1);
+            stats.ct = 0;
             this.active = null;
             this.phase = 'charge';
-            this.message = `${actor.stats.name} is stunned and loses the turn`;
+            this.message = `${stats.name} is stunned and loses the turn`;
             return;
         }
-        this.cursor = { col: actor.stats.col, row: actor.stats.row };
-        this.phase = actor.stats.team === 'ally' ? 'command' : 'ai';
+        this.cursor = { col: stats.col, row: stats.row };
+        this.phase = stats.team === 'ally' ? 'command' : 'ai';
         this.delay = 0.55;
-        this.message = `${actor.stats.name}: Move, Act, then choose a facing`;
+        this.message = `${stats.name}: ${stats.ap} AP · ${stats.mp} MP`;
     }
     OnUpdate(dt) {
         for (const text of this.feedback)
@@ -79,79 +86,97 @@ export class TurnSystem extends Component {
                 this.ResolveAttack();
             }
         }
+        if (this.turnLimit && this.active?.stats.team === 'ally' && InputPhases.has(this.phase)) {
+            this.turnTime += dt;
+            if (this.turnTime >= this.turnLimit) {
+                this.Cancel();
+                this.message = `${this.active.stats.name}'s time ran out`;
+                this.PassTurn();
+            }
+        }
+    }
+    /** Seconds left on the active ally's turn timer, or null when the turn is untimed. */
+    TimeLeft() {
+        return this.turnLimit && this.active?.stats.team === 'ally' ? Math.max(0, this.turnLimit - this.turnTime) : null;
     }
     Choose(index) {
         if (this.phase !== 'command' || !Number.isInteger(index) || index < 0 || index > 4)
             return;
         this.command = index;
+        const stats = this.active.stats;
         if (index === 0) {
-            if (this.moved) {
-                this.message = 'Movement already spent';
+            if (!(stats.mp > 0)) {
+                this.message = 'No movement points left';
                 return;
             }
             this.area = this.Range();
             this.phase = 'move';
         }
         else if (index === 4) {
-            this.previousFacing = this.active.stats.facing;
+            this.previousFacing = stats.facing;
             this.phase = 'face';
             this.message = 'Choose a direction, then confirm Wait';
         }
         else if (index === 3) {
-            if (this.acted) {
-                this.message = 'Action already spent';
-                return;
-            }
             this.phase = 'item';
-            this.message = 'Use a potion on the active hero, or cancel';
+            this.message = 'Use a consumable on the active hero, or cancel';
         }
         else if (index === 1) {
-            if (this.acted) {
-                this.message = 'Action already spent';
+            const ability = stats.basicAbility ?? 'strike';
+            const blocked = AbilityBlocked(stats, ability);
+            if (blocked) {
+                this.message = blocked;
                 return;
             }
-            this.ability = this.active.stats.basicAbility ?? 'strike';
+            this.ability = ability;
             this.phase = 'target';
-            this.message = `${GetAbilityProfile(this.active.stats, this.ability).name}: choose a target`;
+            this.message = `${GetAbilityProfile(stats, ability).name}: choose a target`;
         }
         else {
-            if (this.acted) {
-                this.message = 'Action already spent';
-                return;
-            }
             this.phase = 'skill-select';
             this.skillCursor = 0;
-            this.message = ActiveSkills(this.active.stats.archetype, this.active.stats.unlockedSkills).length
+            this.message = ActiveSkills(stats.archetype, stats.unlockedSkills).length
                 ? 'Choose an unlocked class skill'
                 : 'No class skills unlocked — earn a skill point by leveling up';
         }
     }
-    SelectSkill(id) {
-        if (this.phase !== 'skill-select' || !this.active) return false;
-        const skill = ActiveSkills(this.active.stats.archetype, this.active.stats.unlockedSkills).find(item => item.id === id);
-        if (!skill) return false;
-        const profile = GetAbilityProfile(this.active.stats, id);
-        if (this.active.stats.energy < profile.energy) {
-            this.message = 'Not enough energy for that skill';
+    /** Targets an ability directly (the PC hotbar), from the command, move or target phase. */
+    SelectAbility(id) {
+        if (!this.active || !['command', 'move', 'target', 'skill-select'].includes(this.phase)) return false;
+        const stats = this.active.stats;
+        const known = id === (stats.basicAbility ?? 'strike')
+            || ActiveSkills(stats.archetype, stats.unlockedSkills).some(skill => skill.id === id);
+        if (!known) return false;
+        const blocked = AbilityBlocked(stats, id);
+        if (blocked) {
+            this.message = blocked;
             return false;
         }
         this.ability = id;
         this.phase = 'target';
-        this.message = `${profile.name}: choose a target`;
+        this.message = `${GetAbilityProfile(stats, id).name}: choose a target`;
         return true;
+    }
+    SelectSkill(id) {
+        if (this.phase !== 'skill-select' || !this.active) return false;
+        if (!ActiveSkills(this.active.stats.archetype, this.active.stats.unlockedSkills).some(item => item.id === id)) return false;
+        return this.SelectAbility(id);
     }
     CanTarget(pawn) {
         return Boolean(this.active && pawn && BattleRules.CanAttack(this.grid, this.active.stats, pawn.stats, this.ability));
     }
+    /** Walks to a reachable tile, spending one MP per step; the rest stays for later moves. */
     Move(tile) {
-        if (!this.active || !['move', 'ai'].includes(this.phase))
+        if (!this.active || !['move', 'command', 'ai'].includes(this.phase))
             return false;
         const entry = this.Range().get(this.grid.Key(tile));
-        if (!entry || !entry.path.length || this.moved)
+        if (!entry || !entry.path.length)
             return false;
-        this.active.stats.facing = BattleRules.Facing(this.active.stats, entry.path[0]);
+        const stats = this.active.stats;
+        stats.facing = BattleRules.Facing(stats, entry.path[0]);
+        if (stats.mp !== undefined) stats.mp = Math.max(0, stats.mp - entry.cost);
         this.moved = true;
-        const next = this.active.stats.team === 'ally' ? 'command' : 'ai';
+        const next = stats.team === 'ally' ? 'command' : 'ai';
         this.phase = 'travel';
         this.active.travel.Follow(entry.path, () => { this.phase = next; this.cursor = { col: tile.col, row: tile.row }; this.delay = 0.45; });
         this.sound.Play('step');
@@ -160,13 +185,17 @@ export class TurnSystem extends Component {
     Attack(target, ability = this.ability) {
         if (!this.active || !['target', 'ai'].includes(this.phase))
             return false;
-        if (this.acted || !target || !BattleRules.CanAttack(this.grid, this.active.stats, target.stats, ability))
+        if (!target || !BattleRules.CanAttack(this.grid, this.active.stats, target.stats, ability))
             return false;
+        const stats = this.active.stats, profile = GetAbilityProfile(stats, ability);
         this.target = target;
+        this.lastTarget = target;
         this.ability = ability;
-        this.preview = BattleRules.Preview(this.grid, this.active.stats, target.stats, ability);
+        this.preview = BattleRules.Preview(this.grid, stats, target.stats, ability);
         if (target !== this.active)
-            this.active.stats.facing = BattleRules.Facing(this.active.stats, target.stats);
+            stats.facing = BattleRules.Facing(stats, target.stats);
+        stats.action = profile.heal || profile.shield || profile.haste || profile.magic ? 'cast' : profile.range > 1 ? 'shoot' : 'melee';
+        stats.actionTime = 0.9;
         this.phase = 'resolve';
         this.delay = 0.35;
         this.message = this.preview.heal !== undefined
@@ -176,6 +205,25 @@ export class TurnSystem extends Component {
             : `${this.preview.side} · ${this.preview.chance}% · ${this.preview.damage} damage`;
         this.sound.Play('warning');
         return true;
+    }
+    /** Pays an ability's AP and records its per-turn use and cooldown. */
+    Spend(ability) {
+        const stats = this.active.stats, profile = GetAbilityProfile(stats, ability);
+        if (stats.ap !== undefined) stats.ap = Math.max(0, stats.ap - profile.ap);
+        stats.casts = { ...stats.casts, [ability]: (stats.casts?.[ability] ?? 0) + 1 };
+        if (profile.cooldown) stats.cooldowns = { ...stats.cooldowns, [ability]: profile.cooldown };
+        this.acted = true;
+    }
+    /** Spends AP on something other than an ability (a consumable). */
+    SpendAP(amount) {
+        if (!this.active || this.active.stats.ap < amount) return false;
+        this.active.stats.ap -= amount;
+        this.acted = true;
+        return true;
+    }
+    AfterAction() {
+        this.phase = this.active.stats.team === 'ally' ? 'command' : 'ai';
+        this.delay = 0.5;
     }
     ResolveAttack() {
         const profile = GetAbilityProfile(this.active.stats, this.ability);
@@ -187,11 +235,9 @@ export class TurnSystem extends Component {
                 pawn: this.target, text: profile.shield ? `${profile.shield} SHIELD` : 'HASTE',
                 effect: profile.shield ? 'shield' : 'haste', life: 1.7,
             });
-            this.active.stats.energy -= profile.energy;
+            this.Spend(this.ability);
             this.sound.Play('success');
-            this.acted = true;
-            this.phase = this.active.stats.team === 'ally' ? 'command' : 'ai';
-            this.delay = 0.5;
+            this.AfterAction();
             return;
         }
         if (profile.heal) {
@@ -200,17 +246,21 @@ export class TurnSystem extends Component {
                 && pawn.stats.team === this.active.stats.team
                 && Math.abs(pawn.stats.col - target.col) + Math.abs(pawn.stats.row - target.row) === 1));
             for (const pawn of recipients) {
+                if (profile.cleanse && (pawn.stats.poison > 0 || pawn.stats.burn > 0 || pawn.stats.slowed > 0)) {
+                    pawn.stats.poison = 0;
+                    pawn.stats.burn = 0;
+                    pawn.stats.slowed = 0;
+                    this.feedback.push({ pawn, text: 'PURIFIED', effect: 'heal', life: 1.7 });
+                }
                 const healed = Math.min(BattleRules.HealAmount(this.active.stats, profile), pawn.stats.maxHp - pawn.stats.hp);
                 if (!healed) continue;
                 pawn.stats.hp += healed;
                 pawn.stats.flash = 0.3;
                 this.feedback.push({ pawn, text: `+${healed} HP`, effect: 'heal', life: 1.7 });
             }
-            this.active.stats.energy -= profile.energy;
+            this.Spend(this.ability);
             this.sound.Play('success');
-            this.acted = true;
-            this.phase = this.active.stats.team === 'ally' ? 'command' : 'ai';
-            this.delay = 0.5;
+            this.AfterAction();
             return;
         }
         this.seed = (Math.imul(this.seed, 1664525) + 1013904223) >>> 0;
@@ -246,23 +296,22 @@ export class TurnSystem extends Component {
                     if (profile.burn) pawn.stats.burn = profile.burn;
                     if (profile.expose) pawn.stats.exposed = 2;
                     if (profile.stun) pawn.stats.stunned = 1;
+                    if (profile.slow) pawn.stats.slowed = profile.slow;
                     affected.push({ pawn, damage: damage - blocked });
                 }
             }
             if (profile.knockback && defender.hp > 0)
                 this.Knockback(this.target);
         }
-        this.active.stats.energy -= profile.energy;
+        this.Spend(this.ability);
         if (hit)
             for (const entry of affected)
                 this.feedback.push({ pawn: entry.pawn, text: `-${entry.damage}${entry.pawn === this.target && profile.expose ? ' EXPOSED' : ''}`, effect: profile.poison ? 'poison' : profile.magic ? 'magic' : 'hit', life: 1.7 });
         else
             this.feedback.push({ pawn: this.target, text: 'MISS', life: 1.7 });
         this.sound.Play(hit ? 'hit' : 'select');
-        this.acted = true;
         if (this.CheckResult()) return;
-        this.phase = this.active.stats.team === 'ally' ? 'command' : 'ai';
-        this.delay = 0.5;
+        this.AfterAction();
     }
     Knockback(pawn) {
         const source = this.active.stats, target = pawn.stats;
@@ -279,6 +328,26 @@ export class TurnSystem extends Component {
     Cancel() {
         if (this.phase === 'face') this.active.stats.facing = this.previousFacing;
         if (['move', 'target', 'face', 'skill-select', 'item'].includes(this.phase)) this.phase = 'command';
+    }
+    /** Faces the last target of this turn, or else the nearest opponent. */
+    AutoFace() {
+        const actor = this.active?.stats;
+        if (!actor) return;
+        const last = this.lastTarget?.stats.hp > 0 && this.lastTarget !== this.active ? this.lastTarget : null;
+        const target = last ?? this.Alive().filter(pawn => pawn.stats.team !== actor.team)
+            .sort((a, b) => {
+                const distance = pawn => Math.abs(pawn.stats.col - actor.col) + Math.abs(pawn.stats.row - actor.row);
+                return distance(a) - distance(b) || String(a.stats.id).localeCompare(String(b.stats.id));
+            })[0];
+        if (target) actor.facing = BattleRules.Facing(actor, target.stats);
+    }
+    /** Ends the active ally's turn straight from the command phase, facing its last target. */
+    PassTurn() {
+        if (!this.active || this.phase !== 'command') return false;
+        this.AutoFace();
+        this.phase = 'face';
+        this.EndTurn();
+        return true;
     }
     EndTurn() {
         if (!this.active || !['face', 'ai'].includes(this.phase))

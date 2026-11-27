@@ -13133,27 +13133,22 @@
       "layer": "structures",
       "transform": {
         "position": [
-          6.8999999999999995,
-          1.6800000000000002,
-          3.4499999999999997
+          6.9,
+          1.55,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0.5,
+          0
         ],
         "scale": [
-          0.85,
-          0.26,
-          0.85
+          1.6,
+          1.6,
+          1.6
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "ridge_cairn",
@@ -13163,37 +13158,123 @@
             "col": 16,
             "row": 11,
             "blocking": true
-          }
+          },
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_ridge_cairn_1",
-      "name": "Ridge cairn",
+      "id": "structure_ridge_deadwood_nw_0",
+      "name": "Ridge deadwood",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          6.8999999999999995,
-          2.4,
-          3.4499999999999997
+          -11.5,
+          2.1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          0.4,
+          0
         ],
         "scale": [
-          0.46,
-          1.5,
-          0.46
+          0.75,
+          0.75,
+          0.75
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#858d8a",
-          "scale": 2
+        "Data": {
+          "structure": {
+            "id": "ridge_deadwood_nw",
+            "name": "Ridge deadwood",
+            "kind": "tree",
+            "specialty": null,
+            "col": 0,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-bare",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_ridge_deadwood_ne_0",
+      "name": "Ridge deadwood",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          11.5,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          2.4,
+          0
+        ],
+        "scale": [
+          0.7,
+          0.7,
+          0.7
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "ridge_deadwood_ne",
+            "name": "Ridge deadwood",
+            "kind": "tree",
+            "specialty": null,
+            "col": 20,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-bare",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_ridge_deadwood_n_0",
+      "name": "Ridge deadwood",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          4.6,
+          2.65,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          1.3,
+          0
+        ],
+        "scale": [
+          0.72,
+          0.72,
+          0.72
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "ridge_deadwood_n",
+            "name": "Ridge deadwood",
+            "kind": "tree",
+            "specialty": null,
+            "col": 14,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-bare",
+          "castShadow": true
         }
       }
     },
@@ -13299,7 +13380,24 @@
                 "count": 1
               }
             ],
-            "leaderStyle": "golem"
+            "leaderStyle": "golem",
+            "leaderModel": "skeleton-warrior",
+            "loot": [
+              {
+                "item": "Ash Shard",
+                "count": 2
+              },
+              {
+                "item": "Ether",
+                "count": 1
+              }
+            ],
+            "firstClear": [
+              {
+                "item": "Tactician Signet",
+                "count": 1
+              }
+            ]
           }
         }
       }
@@ -13353,7 +13451,24 @@
                 "count": 1
               }
             ],
-            "leaderStyle": "wisp"
+            "leaderStyle": "wisp",
+            "leaderModel": "skeleton-mage",
+            "loot": [
+              {
+                "item": "Ash Shard",
+                "count": 1
+              },
+              {
+                "item": "Antidote",
+                "count": 1
+              }
+            ],
+            "firstClear": [
+              {
+                "item": "Wayfarer Charm",
+                "count": 1
+              }
+            ]
           }
         }
       }

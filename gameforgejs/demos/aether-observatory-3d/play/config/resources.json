@@ -16,7 +16,28 @@
       "path": "../scenes/islands.gfscene.json"
     }
   ],
-  "models": [],
+  "models": [
+    {
+      "name": "forest-tree-a",
+      "path": "../assets/kaykit-forest/Tree_1_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-b",
+      "path": "../assets/kaykit-forest/Tree_3_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-c",
+      "path": "../assets/kaykit-forest/Tree_4_A_Color1.gltf"
+    },
+    {
+      "name": "forest-bush",
+      "path": "../assets/kaykit-forest/Bush_2_A_Color1.gltf"
+    },
+    {
+      "name": "forest-rock",
+      "path": "../assets/kaykit-forest/Rock_1_A_Color1.gltf"
+    }
+  ],
   "shaders": [
     {
       "name": "pool_water",

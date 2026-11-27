@@ -13063,26 +13063,21 @@
       "transform": {
         "position": [
           0,
-          1.6800000000000002,
+          1.55,
           -5.75
         ],
+        "rotation": [
+          0,
+          0.8,
+          0
+        ],
         "scale": [
-          0.85,
-          0.26,
-          0.85
+          1.5,
+          1.5,
+          1.5
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#c4b397",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "mistfell_standing_stone",
@@ -13092,37 +13087,9 @@
             "col": 10,
             "row": 3,
             "blocking": true
-          }
-        }
-      }
-    },
-    {
-      "id": "structure_mistfell_standing_stone_1",
-      "name": "Mistfell standing stone",
-      "type": "MeshInstance3D",
-      "layer": "structures",
-      "transform": {
-        "position": [
-          0,
-          2.4,
-          -5.75
-        ],
-        "scale": [
-          0.46,
-          1.5,
-          0.46
-        ]
-      },
-      "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#858d8a",
-          "scale": 2
+          },
+          "model": "forest-rock-b",
+          "castShadow": true
         }
       }
     },
@@ -13133,27 +13100,22 @@
       "layer": "structures",
       "transform": {
         "position": [
-          6.8999999999999995,
-          2.0300000000000002,
-          3.4499999999999997
+          6.9,
+          1.55,
+          3.45
+        ],
+        "rotation": [
+          0,
+          0.4,
+          0
         ],
         "scale": [
-          0.2,
-          0.96,
-          0.2
+          0.5,
+          0.5,
+          0.5
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4d3e35",
-          "scale": 2
-        },
         "Data": {
           "structure": {
             "id": "mistfell_pine",
@@ -13163,67 +13125,161 @@
             "col": 16,
             "row": 11,
             "blocking": true
-          }
+          },
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_mistfell_pine_1",
+      "id": "structure_mistfell_pine_nw_0",
       "name": "Mistfell pine",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          6.8999999999999995,
-          2.67,
-          3.4499999999999997
+          -11.5,
+          1.55,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          1.1,
+          0
         ],
         "scale": [
-          0.75,
-          0.95,
-          0.75
+          0.48,
+          0.48,
+          0.48
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4c7957",
-          "scale": 2
+        "Data": {
+          "structure": {
+            "id": "mistfell_pine_nw",
+            "name": "Mistfell pine",
+            "kind": "pine",
+            "specialty": null,
+            "col": 0,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "structure_mistfell_pine_2",
+      "id": "structure_mistfell_pine_ne_0",
       "name": "Mistfell pine",
       "type": "MeshInstance3D",
       "layer": "structures",
       "transform": {
         "position": [
-          6.8999999999999995,
-          3.23,
-          3.4499999999999997
+          11.5,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          2.2,
+          0
         ],
         "scale": [
-          0.45,
-          0.55,
-          0.45
+          0.5,
+          0.5,
+          0.5
         ]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "type": "surface",
-          "preset": "stone",
-          "albedoColor": "#4c7957",
-          "scale": 2
+        "Data": {
+          "structure": {
+            "id": "mistfell_pine_ne",
+            "name": "Mistfell pine",
+            "kind": "pine",
+            "specialty": null,
+            "col": 20,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-c",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_mistfell_pine_n_0",
+      "name": "Mistfell pine",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          -4.6,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          0.3,
+          0
+        ],
+        "scale": [
+          0.46,
+          0.46,
+          0.46
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "mistfell_pine_n",
+            "name": "Mistfell pine",
+            "kind": "pine",
+            "specialty": null,
+            "col": 6,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-tree-c",
+          "castShadow": true
+        }
+      }
+    },
+    {
+      "id": "structure_mistfell_bush_0",
+      "name": "Mistfell thicket",
+      "type": "MeshInstance3D",
+      "layer": "structures",
+      "transform": {
+        "position": [
+          4.6,
+          1,
+          -9.2
+        ],
+        "rotation": [
+          0,
+          0.9,
+          0
+        ],
+        "scale": [
+          1.4,
+          1.4,
+          1.4
+        ]
+      },
+      "components": {
+        "Data": {
+          "structure": {
+            "id": "mistfell_bush",
+            "name": "Mistfell thicket",
+            "kind": "bush",
+            "specialty": null,
+            "col": 14,
+            "row": 0,
+            "blocking": true
+          },
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
@@ -13370,7 +13426,24 @@
                 "count": 1
               }
             ],
-            "leaderStyle": "slime"
+            "leaderStyle": "slime",
+            "leaderModel": "skeleton-warrior",
+            "loot": [
+              {
+                "item": "Mist Herb",
+                "count": 2
+              },
+              {
+                "item": "Hound Pelt",
+                "count": 1
+              }
+            ],
+            "firstClear": [
+              {
+                "item": "Ether",
+                "count": 1
+              }
+            ]
           }
         }
       }
@@ -13424,7 +13497,19 @@
                 "count": 1
               }
             ],
-            "leaderStyle": "wolf"
+            "leaderStyle": "wolf",
+            "loot": [
+              {
+                "item": "Hound Pelt",
+                "count": 2
+              }
+            ],
+            "firstClear": [
+              {
+                "item": "Wool Cloak",
+                "count": 1
+              }
+            ]
           }
         }
       }

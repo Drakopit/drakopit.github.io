@@ -39,6 +39,8 @@
       "RADIAL_7": [{"device":"keyboard","input":"Digit7"}],
       "RADIAL_8": [{"device":"keyboard","input":"Digit8"}],
       "RADIAL_9": [{"device":"keyboard","input":"Digit9"}],
+      "RADIAL_10": [{"device":"keyboard","input":"Digit0"}],
+      "PASS_TURN": [{"device":"keyboard","input":"Space"},{"device":"gamepad","input":"button_7"}],
       "SKILLS": [{"device":"keyboard","input":"KeyK"}],
       "WORLD_MAP": [{"device":"keyboard","input":"KeyM"}],
       "SETTINGS": [{"device":"keyboard","input":"KeyB"}],

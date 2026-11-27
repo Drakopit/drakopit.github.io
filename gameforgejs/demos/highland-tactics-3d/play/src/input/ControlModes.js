@@ -1,11 +1,25 @@
-export const ControlModes = Object.freeze(['PC', 'Console', 'Mobile', 'Personalizado']);
+export const ControlModes = Object.freeze(['PC', 'Console', 'Mobile', 'Tablet', 'Personalizado']);
 
+/**
+ * Per-mode defaults. `dock` shows the PC combat dock (hotbar, Pass Turn, turn order) instead of
+ * the radial-first battle bar; `autoRadial` opens the tactical ring on every command turn;
+ * `largeTargets` enlarges touch targets. Personalizado takes each toggle from `custom`.
+ */
 export function ControlSettings(mode = 'PC', custom = {}) {
     if (!ControlModes.includes(mode)) throw new RangeError(`Unknown control mode: ${mode}`);
+    if (mode === 'Personalizado') return {
+        mode,
+        autoRadial: Boolean(custom.autoRadial),
+        smartTarget: custom.smartTarget !== false,
+        dock: custom.dock !== false,
+        largeTargets: Boolean(custom.largeTargets),
+    };
     return {
         mode,
-        autoRadial: mode === 'Personalizado' ? Boolean(custom.autoRadial) : mode !== 'PC',
-        smartTarget: mode === 'Personalizado' ? custom.smartTarget !== false : true,
+        autoRadial: mode === 'Console' || mode === 'Mobile',
+        smartTarget: true,
+        dock: mode === 'PC' || mode === 'Tablet',
+        largeTargets: mode === 'Mobile' || mode === 'Tablet',
     };
 }
 

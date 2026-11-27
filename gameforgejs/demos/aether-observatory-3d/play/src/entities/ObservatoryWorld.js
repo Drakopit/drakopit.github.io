@@ -7,7 +7,8 @@ import { OrbitMotion } from '../components/OrbitMotion.js';
 /**
  * Builds the observatory from scenes/islands.gfscene.json, so the editor's 3D view and Play show
  * the same world: island parts, structures (walkways, pillars, lamps), the orbiting rings and the
- * horizon. Nodes with Data.solid / Data.islandCollider get box colliders; Data.orbitSpeed nodes spin.
+ * horizon. Data.model nodes (trees, bushes, rocks) use resources.json models from assets/kaykit-forest.
+ * Nodes with Data.solid / Data.islandCollider get box colliders; Data.orbitSpeed nodes spin.
  * Only the drifting light motes are generated here (scenario.json → environment.motes).
  */
 export class ObservatoryWorld extends GameObject {
@@ -23,10 +24,12 @@ export class ObservatoryWorld extends GameObject {
         const layers = new Set(['island-parts', 'structures', 'rings', 'horizon']);
         const built = new Set(document.Nodes().filter(node => layers.has(node.layer)).map(node => node.id));
         const definitions = manifest.objects.filter(object => built.has(object.id));
-        const objects = SceneManifest3D.Populate(level.scene, { transforms: manifest.transforms, objects: definitions }).objects;
-        definitions.forEach((definition, index) => {
-            const mesh = objects[index];
-            this.meshes.push(mesh);
+        const { nodes } = SceneManifest3D.Populate(level.scene, { transforms: manifest.transforms, objects: definitions },
+            { assets: level.context.assets });
+        definitions.forEach(definition => {
+            const parts = nodes.get(definition.id)?.meshes ?? [];
+            const mesh = parts[0];
+            this.meshes.push(...parts);
             if (definition.islandCollider || definition.solid) {
                 // A box the size and place of the node in the world (axis-aligned: the native solver's boxes).
                 const node = document.Node(definition.id);
@@ -37,7 +40,7 @@ export class ObservatoryWorld extends GameObject {
             }
             if (definition.orbitSpeed) {
                 const actor = new MeshActor(level.scene, mesh);
-                level.scene.Remove(mesh); this.meshes.pop();
+                level.scene.Remove(mesh); this.meshes.splice(this.meshes.indexOf(mesh), 1);
                 const [x, y, z] = document.WorldPosition(document.Node(definition.id));
                 actor.AddComponent(new OrbitMotion(mesh, {center: new Vector3D(x, y, z), speed: definition.orbitSpeed}));
                 level.AddEntity(actor);

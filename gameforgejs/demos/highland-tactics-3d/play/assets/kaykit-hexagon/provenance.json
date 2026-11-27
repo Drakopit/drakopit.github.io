@@ -1,0 +1,126 @@
+{
+  "author": "Kay Lousberg (KayKit)",
+  "license": "CC0 1.0 (see the copied License files)",
+  "files": [
+    {
+      "file": "building_blacksmith_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_blacksmith_blue.gltf",
+      "sha256": "b9b76474cde5a379334b31cf8ef108c26e8051b6f7560402cd7c2a100fb4bf54"
+    },
+    {
+      "file": "building_blacksmith_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_blacksmith_blue.bin",
+      "sha256": "2b5f91972249f3b4acee5d293b0291769213f3bd6272bd3fdacbd2b113b82853"
+    },
+    {
+      "file": "building_market_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_market_blue.gltf",
+      "sha256": "24874a4651dfff0d1aea31e15a32b9c35122958764c6f968ca55f286285ffbe9"
+    },
+    {
+      "file": "building_market_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_market_blue.bin",
+      "sha256": "35713e17b24a26274ba38def66f17fe838987e4e8f803cf680140b3754676442"
+    },
+    {
+      "file": "building_home_B_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_home_B_blue.gltf",
+      "sha256": "bf503f4edcd3a744a021ccdd5b9215f6c8934ef87fa44d95632cb653422797eb"
+    },
+    {
+      "file": "building_home_B_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_home_B_blue.bin",
+      "sha256": "a9736eef43b33d8963f1f54b709eb4395cd5069aa6317b09856687d4045059ca"
+    },
+    {
+      "file": "building_barracks_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_barracks_blue.gltf",
+      "sha256": "a4f3aaa7ebb33cf0d86a139941b350e580e3e1376e3ead99a5aaecb5de2f3817"
+    },
+    {
+      "file": "building_barracks_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_barracks_blue.bin",
+      "sha256": "e3613795eeb9a6366920771b7b1c2b67b2b1df8c39b3ac82edc22d816c18499e"
+    },
+    {
+      "file": "building_well_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_well_blue.gltf",
+      "sha256": "66305823322b2e6a7f1cb8d8bf0d91ed9b94b8d96f61d0f7af77bd0d09f6463e"
+    },
+    {
+      "file": "building_well_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_well_blue.bin",
+      "sha256": "5c50811c6666df2a9b43afc1a83ccccf19678c0f8e40c3ca0bf341722dc5133f"
+    },
+    {
+      "file": "barrel.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/barrel.gltf",
+      "sha256": "24673663eb53ffab6c8db612654856f051c4877bfc02ea25fee89cd95ee4d100"
+    },
+    {
+      "file": "barrel.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/barrel.bin",
+      "sha256": "ff1b034f1ac95b063a2baa3d72a0ad0b33f25337f776e7a25fbc811d9c77dee8"
+    },
+    {
+      "file": "crate_A_big.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/crate_A_big.gltf",
+      "sha256": "a96ce5522e45104b5a04cf9605ca30b9572cc79c7633d41f3434b9843010a225"
+    },
+    {
+      "file": "crate_A_big.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/crate_A_big.bin",
+      "sha256": "600d29bdf010f891dcabfb014b6271789e7b45fec7317989a13ccca92908c5c8"
+    },
+    {
+      "file": "sack.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/sack.gltf",
+      "sha256": "b61929d6161907aff4f1fd211cd0a8300d002d1a686ba43d07c4aff171fbd9f0"
+    },
+    {
+      "file": "sack.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/sack.bin",
+      "sha256": "5c3e6f5c63f8c4420ed3dfb2027beffc981740b5af9c89be148b56c19b993e02"
+    },
+    {
+      "file": "weaponrack.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/weaponrack.gltf",
+      "sha256": "e6985e05285ae219a0a6317522debb9d48c8b39334820e0c9694f195f1519be5"
+    },
+    {
+      "file": "weaponrack.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/weaponrack.bin",
+      "sha256": "3773a0eab3da0c7526a13880b3dc7f2c8c42f97e5b8970d5bf5a522f0ea7f0ea"
+    },
+    {
+      "file": "tent.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/tent.gltf",
+      "sha256": "d8920394ddec09d8afa0cfaa2dad1c75b55fd21819fbd7c31392b3b8dce5dca0"
+    },
+    {
+      "file": "tent.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/tent.bin",
+      "sha256": "fce10cd8e153d14b53a4f0fd902124c214ea29fac370707bb3a604ce2a718fc2"
+    },
+    {
+      "file": "flag_red.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_red.gltf",
+      "sha256": "c1f76b1ca3d47a30a868500ecbe2844e89b75b4bebc7283f41bd37561aa58c1f"
+    },
+    {
+      "file": "flag_red.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_red.bin",
+      "sha256": "04aea453efb0632960b2395a356fd0ee2fd4c24e16fe726be956b1ee182cf4b5"
+    },
+    {
+      "file": "hexagons_medieval.png",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Textures/hexagons_medieval.png",
+      "sha256": "5301a06866ba3be68dcc14cc429bd6d0f69004b72884283715d7e233f2e9782e"
+    },
+    {
+      "file": "License.txt",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/License.txt",
+      "sha256": "18c35a487baeffbdbe8256c0c7154a688321fe955b351c78773fab0a978cc02c"
+    }
+  ]
+}

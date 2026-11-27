@@ -1,0 +1,76 @@
+{
+  "author": "Kay Lousberg (KayKit)",
+  "license": "CC0 1.0 (see the copied License files)",
+  "files": [
+    {
+      "file": "License.txt",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/License.txt",
+      "sha256": "3f1c955e7641d644a50ee00e9ba3f631585898322ab4332a4df6fe67e45b7b1f"
+    },
+    {
+      "file": "weapons_bits_texture.png",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Textures/weapons_bits_texture.png",
+      "sha256": "c153429a49928594b00b53c07c4ab3d6352087b7f5df6c272d4aedfdb99a40be"
+    },
+    {
+      "file": "staff_A.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/staff_A.bin",
+      "sha256": "2c08abd861d4a57a85b058e1f0d5b96054bb43d1a993dd6669d3118ebbe1ac2b"
+    },
+    {
+      "file": "staff_A.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/staff_A.gltf",
+      "sha256": "64d8b071a0d51929aac04e52257cea2ed9d3645c1e78ede6d3ddb5ea7968f1ac"
+    },
+    {
+      "file": "sword_A.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/sword_A.bin",
+      "sha256": "5b3d293758c6a33d792d7c2a055c71d84848e77a1c9d0f203508cc9955db4aeb"
+    },
+    {
+      "file": "sword_A.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/sword_A.gltf",
+      "sha256": "62e4b70be05c95d31b10852f64f321f02c6aa6aaf0e95ef641b7f943c5730446"
+    },
+    {
+      "file": "sword_B.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/sword_B.gltf",
+      "sha256": "265840768f36afc22fc75e7a5a8c98fd33d199b2b4a6b76653fd2bd37fb8093f"
+    },
+    {
+      "file": "sword_B.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/sword_B.bin",
+      "sha256": "f076069f94986ec221cb46c71a16bc966be47ff35544db8c7f7b6623fdaf2c64"
+    },
+    {
+      "file": "shield_A.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/shield_A.gltf",
+      "sha256": "3634e520841d408a021c247c613084299e3a57458a4d3fa1ee84a9ba37fd5d9b"
+    },
+    {
+      "file": "shield_A.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/shield_A.bin",
+      "sha256": "274bf02beaf4a9c8e936b62e18189c2bf11ceda1f1720b6c86dffe6ad42e60df"
+    },
+    {
+      "file": "bow_A_withString.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/bow_A_withString.gltf",
+      "sha256": "a01fc3f9412b414efa62aed49e3556bb270d6dce11011fafded55f6af75bb152"
+    },
+    {
+      "file": "bow_A_withString.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/bow_A_withString.bin",
+      "sha256": "9b37ca7c90f9e621bef63b7fe0fc5bb9aebc2862248ccfb498b0c0faab1b8e48"
+    },
+    {
+      "file": "wand_A.gltf",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/wand_A.gltf",
+      "sha256": "f914bb6a9a5d581e5f46da466a9e6cb925727997bbe0924e2fcc41e7db68f0d2"
+    },
+    {
+      "file": "wand_A.bin",
+      "source": "KayKit_FantasyWeaponsBits_1.0_FREE/Assets/gltf/wand_A.bin",
+      "sha256": "ec6c0221b6fc29a4ab6874d6a66051539ff2a8cf59f7adc334ea15e2a3ace45e"
+    }
+  ]
+}

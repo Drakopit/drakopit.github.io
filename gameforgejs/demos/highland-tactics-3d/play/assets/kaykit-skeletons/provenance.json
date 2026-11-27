@@ -1,0 +1,26 @@
+{
+  "author": "Kay Lousberg (KayKit)",
+  "license": "CC0 1.0 (see the copied License files)",
+  "files": [
+    {
+      "file": "Skeleton_Warrior.glb",
+      "source": "KayKit_Skeletons_1.1_FREE/characters/gltf/Skeleton_Warrior.glb",
+      "sha256": "992d5cfd6beb5565c50f742587d492f2a2cfcdfb3ffe4435aa16461c6d0e54be"
+    },
+    {
+      "file": "Skeleton_Rogue.glb",
+      "source": "KayKit_Skeletons_1.1_FREE/characters/gltf/Skeleton_Rogue.glb",
+      "sha256": "d5b8f074a78a9972af0966014905ea1df2e71d2c3495d37a211980e6343ee774"
+    },
+    {
+      "file": "Skeleton_Mage.glb",
+      "source": "KayKit_Skeletons_1.1_FREE/characters/gltf/Skeleton_Mage.glb",
+      "sha256": "aee903d0febd151dbc49a4784ad4135862b20c1b025bf433b98a08d52e5f7849"
+    },
+    {
+      "file": "License.txt",
+      "source": "KayKit_Skeletons_1.1_FREE/License.txt",
+      "sha256": "327a1aac6e6ff1259d82d0024cdaf088bcef302f8d7a116b5142538ac2b5cf8d"
+    }
+  ]
+}

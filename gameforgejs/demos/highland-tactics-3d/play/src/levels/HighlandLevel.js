@@ -2,7 +2,7 @@ import { MathExt, SoundEffects, SceneDocument, GameViewport } from 'gameforgejs/
 import { GameObject } from 'gameforgejs/2d';
 import { Level3D, OrthographicCamera, HeightGrid, SceneManifest3D, SurfaceMaterial } from 'gameforgejs/3d';
 import { BattleFromScene } from '../data/BattleScene.js';
-import { HighlandCampaign, EquipmentSlot } from '../data/HighlandCampaign.js';
+import { Archetypes, HighlandCampaign, EquipmentSlot, ItemInfo } from '../data/HighlandCampaign.js';
 import { FindExplorePath as FindPath } from '../data/ExplorePathfinding.js';
 import { GetZone } from '../data/WorldMaps.js';
 import { TacticalPawn } from '../entities/TacticalPawn.js';
@@ -135,7 +135,9 @@ export class HighlandLevel extends Level3D {
             color: hero.color,
             team: 'ally',
             heroWeapon: true,
+            model: Archetypes[hero.archetype]?.model,
             visualWeapon: this.campaign.equipment.weapon,
+            visualOffhand: this.campaign.equipment.offhand,
             unlockedSkills: [...this.campaign.unlockedSkills],
         };
     }
@@ -171,6 +173,7 @@ export class HighlandLevel extends Level3D {
             speed: 1,
             attack: 0,
             defense: 0,
+            model: vendor.model,
             color: { weapon: '#b95b45', armor: '#718a9f', consumable: '#6aa46f', rest: '#9a72aa' }[vendor.specialty],
             visualStyle: vendor.specialty,
         }));
@@ -203,6 +206,8 @@ export class HighlandLevel extends Level3D {
             speed: 1,
             attack: 0,
             defense: 0,
+            model: encounter.leaderModel,
+            weapon: { 'skeleton-warrior': 'highland-sword', 'skeleton-mage': 'highland-wand' }[encounter.leaderModel],
             color: { golem: '#b88463', slime: '#82bf81', wolf: '#66758b', wisp: '#c7764e' }[encounter.leaderStyle],
             visualStyle: encounter.leaderStyle,
         }));
@@ -525,7 +530,7 @@ export class HighlandLevel extends Level3D {
             : { ...unit, ...this.campaign.CompanionStats() });
         const extraEnemies = [
             { id: 'hound', name: 'Ash Hound', team: 'enemy', role: 'flanker', basicAbility: 'hound-bite', visualStyle: 'wolf', col: 7, row: 7, facing: 0, hp: 28, speed: 26, attack: 12, defense: 2, color: '#b98b59' },
-            { id: 'adept', name: 'Ash Adept', team: 'enemy', role: 'caster', basicAbility: 'ember-flare', visualStyle: 'wisp', col: 4, row: 7, facing: 0, hp: 26, speed: 21, attack: 8, magic: 14, defense: 1, color: '#9676b8' },
+            { id: 'adept', name: 'Ash Adept', team: 'enemy', role: 'caster', basicAbility: 'ember-flare', visualStyle: 'wisp', model: 'skeleton-mage', weapon: 'highland-wand', col: 4, row: 7, facing: 0, hp: 26, speed: 21, attack: 8, magic: 14, defense: 1, color: '#9676b8' },
         ];
         const templates = [...enemies, ...extraEnemies];
         const spawnPoints = [...enemies, ...extraEnemies].map(({ col, row }) => ({ col, row }));
@@ -550,6 +555,7 @@ export class HighlandLevel extends Level3D {
         this.turn.grid = this.grid;
         this.turn.pawns = this.pawns;
         this.turn.enabled = true;
+        this.turn.turnLimit = this.sceneParams.turnLimit === undefined ? 60 : this.sceneParams.turnLimit;
         this.turn.Reset();
         this.turn.message = `${this.zone.name} patrol · defeat every Ash raider`;
         this.exploring = 'battle';
@@ -594,15 +600,19 @@ export class HighlandLevel extends Level3D {
         this.sound.Play('success');
     }
 
-    Buy(item, slot) {
-        const specialty = slot === 'potion' ? 'consumable' : slot === 'weapon' ? 'weapon' : 'armor';
+    /** Buys from the active vendor: consumables at the alchemist, gear into `slot` (or the first fitting one). */
+    Buy(item, slot = null) {
+        const consumable = slot === 'potion' || ItemInfo[item]?.category === 'Consumables';
+        const kind = consumable ? null : EquipmentSlot(item);
+        const specialty = consumable ? 'consumable' : kind === 'weapon' ? 'weapon' : 'armor';
         if (this.zone.id !== 'hearthvale' || !this.activeVendor || !this.CanInteractShopkeeper(this.activeVendor)
             || this.activeVendor.stats.specialty !== specialty) {
             this.turn.message = 'This vendor does not stock that item.';
             return;
         }
 
-        const success = slot === 'potion' ? this.campaign.BuyPotion() : this.campaign.Buy(item, slot);
+        const success = consumable ? this.campaign.BuyConsumable(item)
+            : slot && slot !== 'ring' ? this.campaign.Buy(item, slot) : this.campaign.Buy(item);
         this.turn.message = success ? `${item} purchased.` : 'Not enough gold, or you already have this item equipped.';
         if (success) {
             this.SyncEquipmentToPlayer();
@@ -633,45 +643,53 @@ export class HighlandLevel extends Level3D {
         this.turn.message = used ? 'Potion used · 24 HP restored.' : 'No potion needed or available.';
     }
 
+    /** Uses a backpack item outside battle (only Potions work there; the rest are battle items). */
     UseItem(item) {
-        if (item !== 'Potion') return false;
+        if (item !== 'Potion') {
+            this.turn.message = ItemInfo[item]?.use ? `${item} can only be used in battle.` : `${item} cannot be used.`;
+            return false;
+        }
         const before = this.campaign.hero.hp;
         this.UsePotion();
         return this.campaign.hero.hp > before;
     }
 
     UseBattlePotion() {
-        if (this.exploring !== 'battle' || this.turn.phase !== 'item' || this.turn.active !== this.player || this.turn.acted) {
+        if (this.exploring !== 'battle' || this.turn.active !== this.player) {
             this.turn.message = 'Only your active hero can use a potion.';
             return false;
         }
-        this.campaign.SyncHero(this.player.stats);
-        if (!this.campaign.UsePotion()) {
-            this.turn.message = 'No potion needed or available.';
-            return false;
-        }
-        this.player.stats.hp = this.campaign.hero.hp;
-        this.turn.acted = true;
-        this.turn.phase = 'command';
-        this.turn.message = 'Potion used · 24 HP restored.';
-        this.sound.Play('success');
-        return true;
+        return this.actions.UseItem('Potion');
     }
 
-    EquipItem(item) {
-        if (!this.actions.Equip(item)) return false;
+    EquipItem(item, slot = null) {
+        if (!this.actions.Equip(item, slot)) {
+            this.turn.message = this.exploring === 'explore' ? `${item} does not fit there.` : 'Change equipment outside battle.';
+            return false;
+        }
         this.SyncEquipmentToPlayer();
         this.turn.message = `${item} equipped.`;
         this.sound.Play('select');
         return true;
     }
 
+    UnequipItem(slot) {
+        const item = this.campaign.equipment[slot];
+        if (!this.actions.Unequip(slot)) return false;
+        this.SyncEquipmentToPlayer();
+        this.turn.message = `${item} moved to the backpack.`;
+        this.sound.Play('select');
+        return true;
+    }
+
     SyncEquipmentToPlayer() {
         if (!this.player || !this.campaign.hero) return;
-        for (const stat of ['attack', 'magic', 'defense', 'speed', 'maxHp', 'hp', 'energyMax'])
+        for (const stat of ['attack', 'magic', 'defense', 'speed', 'maxHp', 'hp', 'apMax', 'mpMax'])
             this.player.stats[stat] = this.campaign.hero[stat];
         this.player.stats.visualWeapon = this.campaign.equipment.weapon;
-        this.player.stats.energy = Math.min(this.player.stats.energy, this.player.stats.energyMax);
+        this.player.stats.visualOffhand = this.campaign.equipment.offhand;
+        this.player.stats.ap = Math.min(this.player.stats.ap ?? this.player.stats.apMax, this.player.stats.apMax);
+        this.player.stats.mp = Math.min(this.player.stats.mp ?? this.player.stats.mpMax, this.player.stats.mpMax);
     }
 
     ResetBattle() {
@@ -680,13 +698,19 @@ export class HighlandLevel extends Level3D {
     }
 
     SellPotion() {
+        return this.SellItem('Potion');
+    }
+
+    /** Sells one consumable or resource to the alchemist. */
+    SellItem(item) {
         if (this.activeVendor?.stats.specialty !== 'consumable' || !this.CanInteractShopkeeper(this.activeVendor)) {
-            this.turn.message = 'Take potions to the alchemist.';
-            return;
+            this.turn.message = 'Take consumables and resources to the alchemist.';
+            return false;
         }
-        const sold = this.campaign.SellPotion();
-        this.turn.message = sold ? 'Potion sold for 5G.' : 'No potion to sell.';
+        const sold = this.campaign.SellItem(item);
+        this.turn.message = sold ? `${item} sold for ${ItemInfo[item].sell}G.` : `No ${item} to sell.`;
         if (sold) this.sound.Play('select');
+        return sold;
     }
 
     SellEquipment(slot) {
@@ -705,6 +729,7 @@ export class HighlandLevel extends Level3D {
 
     SellOwned(item) {
         const slot = EquipmentSlot(item);
+        if (!slot && ItemInfo[item]?.sell) return this.SellItem(item);
         const specialty = slot === 'weapon' ? 'weapon' : 'armor';
         if (!slot || this.activeVendor?.stats.specialty !== specialty || !this.CanInteractShopkeeper(this.activeVendor)) {
             this.turn.message = 'Take equipment to the matching Hearthvale vendor.';
@@ -721,7 +746,8 @@ export class HighlandLevel extends Level3D {
         if (learned && this.player) {
             this.player.stats.attack = this.campaign.hero.attack;
             this.player.stats.defense = this.campaign.hero.defense;
-            this.player.stats.energyMax = this.campaign.hero.energyMax;
+            this.player.stats.apMax = this.campaign.hero.apMax;
+            this.player.stats.mpMax = this.campaign.hero.mpMax;
             this.player.stats.unlockedSkills = [...this.campaign.unlockedSkills];
             this.turn.message = `${id} learned · ${this.campaign.skillPoints} skill points remain.`;
             this.sound.Play('success');
@@ -756,7 +782,29 @@ export class HighlandLevel extends Level3D {
         if (!this.hud.help.visible) this.UpdatePatrols(dt);
         if (this.exploring === 'battle') this.FinishBattle();
         if (this.exploring === 'explore') this.campaign.SyncHero(this.player.stats);
-        this.terrain.Highlights(this.turn, this.exploring === 'explore' ? this.exploreRoute : null);
+        this.terrain.Highlights(this.turn, this.exploring === 'explore' ? this.exploreRoute : null, this.BattlePreview());
+    }
+
+    /**
+     * What the PC dock previews on the grid during the hero's command phase: the move range and
+     * the path to the hovered tile, or the range and AoE of the hovered hotbar ability.
+     */
+    BattlePreview() {
+        const turn = this.turn, active = turn.active;
+        if (this.exploring !== 'battle' || !this.controlSettings.dock || turn.phase !== 'command'
+            || active?.stats.team !== 'ally' || this.hud.ringOpen) return null;
+        const stats = active.stats, key = `${stats.id}:${stats.col},${stats.row}:${stats.mp}`;
+        if (this.previewKey !== key) {
+            this.previewKey = key;
+            this.previewArea = turn.Range();
+        }
+        const slot = this.hud.HoveredSlot?.();
+        const tile = this.hoveredTile ?? null;
+        if (slot?.kind === 'ability' && !slot.locked) return { ability: slot.id, tile };
+        const occupied = tile && turn.Alive().some(pawn => pawn.stats.col === tile.col && pawn.stats.row === tile.row && pawn !== active);
+        if (occupied) return { ability: stats.basicAbility ?? 'strike', tile };
+        const path = tile ? this.previewArea.get(this.grid.Key(tile))?.path ?? null : null;
+        return { area: this.previewArea, path };
     }
 
     OnGUI() { this.hud.Draw(); }

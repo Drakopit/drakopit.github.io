@@ -1,15 +1,18 @@
 import { BasicAbilities, GetSkill } from './ClassSkills.js';
+import { TurnBudget } from './BattleRules.js';
 import { WorldZones } from './WorldMaps.js';
 
+/** Calling base stats; `model` names the class's character in config/resources.json. */
 export const Archetypes = Object.freeze({
-    vanguard: { name: 'Vanguard', color: '#77c9cf', hp: 48, attack: 14, magic: 6, defense: 5, speed: 22 },
-    ranger: { name: 'Ranger', color: '#82b77c', hp: 40, attack: 13, magic: 8, defense: 3, speed: 27 },
-    arcanist: { name: 'Arcanist', color: '#a993d4', hp: 36, attack: 9, magic: 16, defense: 2, speed: 24 },
-    cleric: { name: 'Cleric', color: '#e5c987', hp: 42, attack: 9, magic: 13, defense: 4, speed: 23 },
+    vanguard: { name: 'Vanguard', color: '#77c9cf', hp: 48, attack: 14, magic: 6, defense: 5, speed: 22, model: 'hero-knight' },
+    ranger: { name: 'Ranger', color: '#82b77c', hp: 40, attack: 13, magic: 8, defense: 3, speed: 27, model: 'hero-ranger' },
+    arcanist: { name: 'Arcanist', color: '#a993d4', hp: 36, attack: 9, magic: 16, defense: 2, speed: 24, model: 'hero-mage' },
+    cleric: { name: 'Cleric', color: '#e5c987', hp: 42, attack: 9, magic: 13, defense: 4, speed: 23, model: 'hero-rogue-hooded' },
 });
 
 export const CompanionBase = Object.freeze({ hp: 44, attack: 14, defense: 4, speed: 20 });
 
+/** Gear: `slot` is the kind of slot an item fits (rings fit either ring slot). */
 export const Equipment = Object.freeze({
     weapons: {
         'Training Blade': { attack: 0, price: 0 },
@@ -25,17 +28,32 @@ export const Equipment = Object.freeze({
         'Leather Gloves': { slot: 'gloves', attack: 1, price: 20 },
         'Trail Boots': { slot: 'boots', speed: 2, price: 25 },
         'Oak Shield': { slot: 'offhand', defense: 2, price: 30 },
-        'Focus Ring': { slot: 'accessory', energy: 1, price: 30 },
+        'Focus Ring': { slot: 'ring', ap: 1, price: 30 },
+        'Iron Band': { slot: 'ring', defense: 1, price: 18 },
+        'Tactician Signet': { slot: 'ring', ap: 1, speed: 2, price: 90 },
+        'Amber Amulet': { slot: 'amulet', magic: 2, price: 28 },
+        'Wayfarer Charm': { slot: 'amulet', mp: 1, price: 75 },
+        'Wool Cloak': { slot: 'cloak', defense: 1, price: 18 },
+        'Shadow Cape': { slot: 'cloak', speed: 3, price: 45 },
     },
 });
 
+/** The paper doll, in display order. `accepts` is the item slot kind each one takes. */
 export const EquipmentSlots = Object.freeze([
-    { id: 'helm', label: 'HELM' }, { id: 'armor', label: 'ARMOR' },
-    { id: 'belt', label: 'BELT' }, { id: 'gloves', label: 'GLOVES' },
-    { id: 'boots', label: 'BOOTS' }, { id: 'weapon', label: 'WEAPON' },
-    { id: 'offhand', label: 'SHIELD' }, { id: 'accessory', label: 'RING' },
+    { id: 'helm', label: 'HELM', accepts: 'helm' },
+    { id: 'amulet', label: 'AMULET', accepts: 'amulet' },
+    { id: 'cloak', label: 'CLOAK', accepts: 'cloak' },
+    { id: 'armor', label: 'CHEST', accepts: 'armor' },
+    { id: 'belt', label: 'BELT', accepts: 'belt' },
+    { id: 'gloves', label: 'GLOVES', accepts: 'gloves' },
+    { id: 'boots', label: 'BOOTS', accepts: 'boots' },
+    { id: 'weapon', label: 'MAIN HAND', accepts: 'weapon' },
+    { id: 'offhand', label: 'OFF-HAND', accepts: 'offhand' },
+    { id: 'ring1', label: 'RING', accepts: 'ring' },
+    { id: 'ring2', label: 'RING', accepts: 'ring' },
 ]);
 
+/** The slot kind an item fits (`ring` for rings), or null for non-equipment. */
 export function EquipmentSlot(item) {
     if (Equipment.weapons[item]) return 'weapon';
     const armor = Equipment.armor[item];
@@ -46,8 +64,29 @@ export function EquipmentStats(item) {
     return Equipment.weapons[item] ?? Equipment.armor[item] ?? null;
 }
 
+/** Whether the paper-doll slot `slotId` can hold `item`. */
+export function SlotAccepts(slotId, item) {
+    const kind = EquipmentSlot(item);
+    return Boolean(kind && EquipmentSlots.find(slot => slot.id === slotId)?.accepts === kind);
+}
+
+/** The slot an item goes to when equipped without choosing one: the first empty fitting slot. */
+export function SlotFor(item, equipment) {
+    const slots = EquipmentSlots.filter(slot => SlotAccepts(slot.id, item));
+    return (slots.find(slot => !equipment[slot.id]) ?? slots[0])?.id ?? null;
+}
+
+/**
+ * Item catalogue. Consumables carry `use` (battle AP cost and effect) and `price`/`sell`;
+ * resources only sell. Gear prices live in `Equipment`.
+ */
 export const ItemInfo = Object.freeze({
-    Potion: { category: 'Consumables', rarity: 'common', description: 'Restores 24 HP. Use only when wounded.', icon: 'potion' },
+    Potion: { category: 'Consumables', rarity: 'common', description: 'Restores 24 HP. Use only when wounded.', icon: 'potion', price: 15, sell: 5, use: { ap: 2, heal: 24 } },
+    Ether: { category: 'Consumables', rarity: 'uncommon', description: 'Restores 2 AP in battle, once per turn.', icon: 'ether', price: 25, sell: 8, use: { ap: 0, restoreAp: 2, perTurn: 1 } },
+    Antidote: { category: 'Consumables', rarity: 'common', description: 'Cures poison, burn and slow in battle.', icon: 'antidote', price: 12, sell: 4, use: { ap: 1, cleanse: true } },
+    'Ash Shard': { category: 'Resources', rarity: 'uncommon', description: 'A warm shard from the Ashen Ridge. Alchemists buy it.', icon: 'shard', sell: 6 },
+    'Hound Pelt': { category: 'Resources', rarity: 'common', description: 'A rough pelt from a shadow hound.', icon: 'pelt', sell: 4 },
+    'Mist Herb': { category: 'Resources', rarity: 'common', description: 'A pale herb that grows in the Mistfell fog.', icon: 'herb', sell: 3 },
     'Training Blade': { category: 'Weapons', rarity: 'common', description: 'A balanced starter blade.', icon: 'blade' },
     'Highland Edge': { category: 'Weapons', rarity: 'rare', description: 'A keen highland steel blade.', icon: 'blade' },
     'Runed Staff': { category: 'Weapons', rarity: 'rare', description: 'A staff etched to steady arcane energy.', icon: 'staff' },
@@ -59,15 +98,31 @@ export const ItemInfo = Object.freeze({
     'Leather Gloves': { category: 'Armor', rarity: 'common', description: 'A steady grip for any weapon.', icon: 'gloves' },
     'Trail Boots': { category: 'Armor', rarity: 'uncommon', description: 'Light boots for a quicker stride.', icon: 'boots' },
     'Oak Shield': { category: 'Armor', rarity: 'uncommon', description: 'A reliable shield of oak and iron.', icon: 'shield' },
-    'Focus Ring': { category: 'Armor', rarity: 'uncommon', description: 'A ring that steadies tactical focus.', icon: 'ring' },
+    'Focus Ring': { category: 'Accessories', rarity: 'uncommon', description: 'A ring that sharpens tactical focus.', icon: 'ring' },
+    'Iron Band': { category: 'Accessories', rarity: 'common', description: 'A plain iron ring worn by the watch.', icon: 'ring' },
+    'Tactician Signet': { category: 'Accessories', rarity: 'epic', description: 'The seal of a highland tactician.', icon: 'ring' },
+    'Amber Amulet': { category: 'Accessories', rarity: 'uncommon', description: 'Amber that hums with stored magic.', icon: 'amulet' },
+    'Wayfarer Charm': { category: 'Accessories', rarity: 'rare', description: 'A charm that quickens every stride.', icon: 'amulet' },
+    'Wool Cloak': { category: 'Armor', rarity: 'common', description: 'A warm cloak against the highland wind.', icon: 'cloak' },
+    'Shadow Cape': { category: 'Armor', rarity: 'rare', description: 'A dark cape that moves like smoke.', icon: 'cloak' },
 });
+
+/** Backpack filters: each lists the item categories it shows. */
+export const BagFilters = Object.freeze({
+    All: null,
+    Gear: ['Weapons', 'Armor', 'Accessories'],
+    Consumables: ['Consumables'],
+    Resources: ['Resources'],
+});
+
+const EmptyEquipment = () => Object.fromEntries(EquipmentSlots.map(slot => [slot.id, null]));
 
 export class HighlandCampaign {
     constructor() {
         this.hero = null;
         this.gold = 50;
         this.inventory = { Potion: 2 };
-        this.equipment = { weapon: 'Training Blade', armor: 'Wool Coat', helm: null, belt: null, gloves: null, boots: null, offhand: null, accessory: null };
+        this.equipment = { ...EmptyEquipment(), weapon: 'Training Blade', armor: 'Wool Coat' };
         this.skillPoints = 0;
         this.unlockedSkills = [];
         this.clearedZones = new Set();
@@ -79,7 +134,7 @@ export class HighlandCampaign {
     SaveData() {
         if (!this.hero) throw new Error('Create a character before saving.');
         return {
-            version: 1,
+            version: 2,
             hero: { archetype: this.hero.archetype, name: this.hero.name, level: this.hero.level,
                 xp: this.hero.xp, hp: this.hero.hp, col: this.hero.col, row: this.hero.row, facing: this.hero.facing },
             gold: this.gold, inventory: { ...this.inventory }, equipment: { ...this.equipment },
@@ -89,10 +144,18 @@ export class HighlandCampaign {
         };
     }
 
-    static FromSave(data) {
+    /** Version 1 saves had eight slots with one `accessory` ring; it becomes the first ring slot. */
+    static MigrateSave(data) {
+        if (data?.version !== 1 || !data.equipment || typeof data.equipment !== 'object' || Array.isArray(data.equipment)) return data;
+        const { accessory = null, ...rest } = data.equipment;
+        return { ...data, version: 2, equipment: { ...rest, amulet: null, cloak: null, ring1: accessory, ring2: null } };
+    }
+
+    static FromSave(saved) {
+        const data = HighlandCampaign.MigrateSave(saved);
         const validNumber = value => Number.isSafeInteger(value) && value >= 0;
         const invalid = () => { throw new Error('Save data is invalid or from an unsupported version.'); };
-        if (!data || data.version !== 1 || !data.hero || !Object.hasOwn(Archetypes, data.hero.archetype)) invalid();
+        if (!data || data.version !== 2 || !data.hero || !Object.hasOwn(Archetypes, data.hero.archetype)) invalid();
         const hero = data.hero, zones = WorldZones(), zone = zones.find(item => item.id === data.zoneId);
         const encounters = new Set(zones.flatMap(item => item.encounters.map(encounter => encounter.id)));
         if (!zone || typeof hero.name !== 'string' || !hero.name.trim() || hero.name.length > 20
@@ -107,7 +170,7 @@ export class HighlandCampaign {
         if (Object.entries(data.inventory).some(([item, count]) => !Object.hasOwn(ItemInfo, item) || !validNumber(count))
             || Object.keys(data.equipment).length !== EquipmentSlots.length
             || EquipmentSlots.some(({ id }) => !Object.hasOwn(data.equipment, id)
-                || (data.equipment[id] !== null && (!Object.hasOwn(ItemInfo, data.equipment[id]) || EquipmentSlot(data.equipment[id]) !== id)))
+                || (data.equipment[id] !== null && (!Object.hasOwn(ItemInfo, data.equipment[id]) || !SlotAccepts(id, data.equipment[id]))))
             || data.clearedZones.some(id => !encounters.has(id))
             || new Set(data.clearedZones).size !== data.clearedZones.length) invalid();
         const learned = new Set();
@@ -155,6 +218,7 @@ export class HighlandCampaign {
             className: base.name,
             archetype,
             color: base.color,
+            model: base.model,
             baseHp: base.hp,
             baseAttack: base.attack,
             baseMagic: base.magic,
@@ -185,14 +249,13 @@ export class HighlandCampaign {
         if (!this.hero) return;
         const gear = Object.values(this.equipment).map(EquipmentStats).filter(Boolean);
         const total = stat => gear.reduce((sum, item) => sum + (item[stat] ?? 0), 0);
-        const passiveAttack = this.unlockedSkills.reduce((sum, id) => sum + (GetSkill(this.hero.archetype, id)?.attack ?? 0), 0);
-        const passiveDefense = this.unlockedSkills.reduce((sum, id) => sum + (GetSkill(this.hero.archetype, id)?.defense ?? 0), 0);
-        const passiveEnergy = this.unlockedSkills.reduce((sum, id) => sum + (GetSkill(this.hero.archetype, id)?.energy ?? 0), 0);
-        this.hero.attack = this.hero.baseAttack + (this.hero.level - 1) * 2 + total('attack') + passiveAttack;
+        const passive = stat => this.unlockedSkills.reduce((sum, id) => sum + (GetSkill(this.hero.archetype, id)?.[stat] ?? 0), 0);
+        this.hero.attack = this.hero.baseAttack + (this.hero.level - 1) * 2 + total('attack') + passive('attack');
         this.hero.magic = this.hero.baseMagic + (this.hero.level - 1) * 2 + total('magic');
-        this.hero.defense = this.hero.baseDefense + (this.hero.level - 1) + total('defense') + passiveDefense;
+        this.hero.defense = this.hero.baseDefense + (this.hero.level - 1) + total('defense') + passive('defense');
         this.hero.speed = this.hero.baseSpeed + total('speed');
-        this.hero.energyMax = 2 + total('energy') + passiveEnergy;
+        this.hero.apMax = TurnBudget.ap + total('ap') + passive('ap');
+        this.hero.mpMax = TurnBudget.mp + total('mp');
         this.hero.maxHp = this.hero.baseHp + (this.hero.level - 1) * 6 + total('hp');
         this.hero.hp = Math.min(this.hero.hp, this.hero.maxHp);
     }
@@ -249,6 +312,17 @@ export class HighlandCampaign {
         return levels;
     }
 
+    /** Adds battle loot (`[{ item, count }]`) to the backpack and returns what was added. */
+    AddLoot(loot = []) {
+        const added = [];
+        for (const { item, count = 1 } of loot) {
+            if (!Object.hasOwn(ItemInfo, item) || !Number.isSafeInteger(count) || count < 1) continue;
+            this.inventory[item] = (this.inventory[item] ?? 0) + count;
+            added.push({ item, count });
+        }
+        return added;
+    }
+
     LearnSkill(id) {
         if (!this.hero || this.unlockedSkills.includes(id) || this.skillPoints < 1) return false;
         const skill = GetSkill(this.hero.archetype, id);
@@ -261,9 +335,9 @@ export class HighlandCampaign {
         return true;
     }
 
-    Buy(item, slot) {
+    Buy(item, slot = SlotFor(item, this.equipment)) {
         const offer = EquipmentStats(item);
-        if (EquipmentSlot(item) !== slot) return false;
+        if (!SlotAccepts(slot, item)) return false;
         if (!this.hero || !offer || this.gold < offer.price) return false;
         if (this.equipment[slot] === item) return false;
         this.gold -= offer.price;
@@ -274,8 +348,8 @@ export class HighlandCampaign {
         return true;
     }
 
-    EquipOwned(item, slot) {
-        if (!this.hero || !EquipmentStats(item) || EquipmentSlot(item) !== slot || !(this.inventory[item] > 0) || this.equipment[slot] === item)
+    EquipOwned(item, slot = SlotFor(item, this.equipment)) {
+        if (!this.hero || !EquipmentStats(item) || !SlotAccepts(slot, item) || !(this.inventory[item] > 0) || this.equipment[slot] === item)
             return false;
         const previous = this.equipment[slot];
         this.inventory[item]--;
@@ -285,18 +359,39 @@ export class HighlandCampaign {
         return true;
     }
 
-    BuyPotion() {
-        if (this.gold < 15) return false;
-        this.gold -= 15;
-        this.inventory.Potion = (this.inventory.Potion ?? 0) + 1;
+    /** Moves an equipped item back to the backpack, leaving its slot empty. */
+    Unequip(slot) {
+        const item = this.equipment[slot];
+        if (!this.hero || !item) return false;
+        this.equipment[slot] = null;
+        this.inventory[item] = (this.inventory[item] ?? 0) + 1;
+        this.ApplyEquipment();
         return true;
     }
 
-    SellPotion() {
-        if (!(this.inventory.Potion > 0)) return false;
-        this.inventory.Potion--;
-        this.gold += 5;
+    BuyConsumable(item) {
+        const info = ItemInfo[item];
+        if (info?.category !== 'Consumables' || this.gold < info.price) return false;
+        this.gold -= info.price;
+        this.inventory[item] = (this.inventory[item] ?? 0) + 1;
         return true;
+    }
+
+    /** Sells one consumable or resource from the backpack. */
+    SellItem(item) {
+        const info = ItemInfo[item];
+        if (!info?.sell || !(this.inventory[item] > 0)) return false;
+        this.inventory[item]--;
+        this.gold += info.sell;
+        return true;
+    }
+
+    BuyPotion() {
+        return this.BuyConsumable('Potion');
+    }
+
+    SellPotion() {
+        return this.SellItem('Potion');
     }
 
     SellEquipment(slot) {
@@ -337,7 +432,7 @@ export class HighlandCampaign {
     UsePotion() {
         if (!this.hero || !(this.inventory.Potion > 0) || this.hero.hp >= this.hero.maxHp) return false;
         this.inventory.Potion--;
-        this.hero.hp = Math.min(this.hero.maxHp, this.hero.hp + 24);
+        this.hero.hp = Math.min(this.hero.maxHp, this.hero.hp + ItemInfo.Potion.use.heal);
         return true;
     }
 }

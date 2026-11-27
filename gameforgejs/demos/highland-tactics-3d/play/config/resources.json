@@ -30,12 +30,148 @@
   ],
   "models": [
     {
+      "name": "hero-knight",
+      "path": "../assets/kaykit-characters/Knight.glb"
+    },
+    {
+      "name": "hero-ranger",
+      "path": "../assets/kaykit-characters/Ranger.glb"
+    },
+    {
+      "name": "hero-mage",
+      "path": "../assets/kaykit-characters/Mage.glb"
+    },
+    {
+      "name": "hero-rogue-hooded",
+      "path": "../assets/kaykit-characters/Rogue_Hooded.glb"
+    },
+    {
+      "name": "hero-barbarian",
+      "path": "../assets/kaykit-characters/Barbarian.glb"
+    },
+    {
+      "name": "skeleton-warrior",
+      "path": "../assets/kaykit-skeletons/Skeleton_Warrior.glb"
+    },
+    {
+      "name": "skeleton-rogue",
+      "path": "../assets/kaykit-skeletons/Skeleton_Rogue.glb"
+    },
+    {
+      "name": "skeleton-mage",
+      "path": "../assets/kaykit-skeletons/Skeleton_Mage.glb"
+    },
+    {
+      "name": "rig-general",
+      "path": "../assets/kaykit-animations/Rig_Medium_General.glb"
+    },
+    {
+      "name": "rig-movement",
+      "path": "../assets/kaykit-animations/Rig_Medium_MovementBasic.glb"
+    },
+    {
+      "name": "rig-melee",
+      "path": "../assets/kaykit-animations/Rig_Medium_CombatMelee.glb"
+    },
+    {
+      "name": "rig-ranged",
+      "path": "../assets/kaykit-animations/Rig_Medium_CombatRanged.glb"
+    },
+    {
       "name": "highland-sword",
       "path": "../assets/kaykit-weapons/sword_A.gltf"
     },
     {
+      "name": "highland-sword-b",
+      "path": "../assets/kaykit-weapons/sword_B.gltf"
+    },
+    {
       "name": "highland-staff",
       "path": "../assets/kaykit-weapons/staff_A.gltf"
+    },
+    {
+      "name": "highland-shield",
+      "path": "../assets/kaykit-weapons/shield_A.gltf"
+    },
+    {
+      "name": "highland-bow",
+      "path": "../assets/kaykit-weapons/bow_A_withString.gltf"
+    },
+    {
+      "name": "highland-wand",
+      "path": "../assets/kaykit-weapons/wand_A.gltf"
+    },
+    {
+      "name": "hex-blacksmith",
+      "path": "../assets/kaykit-hexagon/building_blacksmith_blue.gltf"
+    },
+    {
+      "name": "hex-market",
+      "path": "../assets/kaykit-hexagon/building_market_blue.gltf"
+    },
+    {
+      "name": "hex-home",
+      "path": "../assets/kaykit-hexagon/building_home_B_blue.gltf"
+    },
+    {
+      "name": "hex-barracks",
+      "path": "../assets/kaykit-hexagon/building_barracks_blue.gltf"
+    },
+    {
+      "name": "hex-well",
+      "path": "../assets/kaykit-hexagon/building_well_blue.gltf"
+    },
+    {
+      "name": "prop-barrel",
+      "path": "../assets/kaykit-hexagon/barrel.gltf"
+    },
+    {
+      "name": "prop-crate",
+      "path": "../assets/kaykit-hexagon/crate_A_big.gltf"
+    },
+    {
+      "name": "prop-sack",
+      "path": "../assets/kaykit-hexagon/sack.gltf"
+    },
+    {
+      "name": "prop-weaponrack",
+      "path": "../assets/kaykit-hexagon/weaponrack.gltf"
+    },
+    {
+      "name": "prop-tent",
+      "path": "../assets/kaykit-hexagon/tent.gltf"
+    },
+    {
+      "name": "prop-flag",
+      "path": "../assets/kaykit-hexagon/flag_red.gltf"
+    },
+    {
+      "name": "forest-tree-a",
+      "path": "../assets/kaykit-forest/Tree_1_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-b",
+      "path": "../assets/kaykit-forest/Tree_2_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-c",
+      "path": "../assets/kaykit-forest/Tree_4_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-bare",
+      "path": "../assets/kaykit-forest/Tree_Bare_1_A_Color1.gltf"
+    },
+    {
+      "name": "forest-bush",
+      "path": "../assets/kaykit-forest/Bush_2_A_Color1.gltf"
+    },
+    {
+      "name": "forest-rock",
+      "path": "../assets/kaykit-forest/Rock_1_A_Color1.gltf"
+    },
+    {
+      "name": "forest-rock-b",
+      "path": "../assets/kaykit-forest/Rock_3_A_Color1.gltf"
     }
   ],
   "shaders": [

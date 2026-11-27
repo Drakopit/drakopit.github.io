@@ -4393,6 +4393,10 @@
           "hp": 40,
           "speed": 24,
           "attack": 13
+        },
+        "Data": {
+          "model": "hero-knight",
+          "weapon": "highland-sword"
         }
       }
     },
@@ -4433,6 +4437,10 @@
           "hp": 44,
           "speed": 20,
           "attack": 14
+        },
+        "Data": {
+          "model": "hero-barbarian",
+          "weapon": "highland-sword-b"
         }
       }
     },
@@ -4473,6 +4481,11 @@
           "hp": 32,
           "speed": 18,
           "attack": 10
+        },
+        "Data": {
+          "model": "skeleton-warrior",
+          "weapon": "highland-sword",
+          "offhand": "highland-shield"
         }
       }
     },
@@ -4513,6 +4526,10 @@
           "hp": 30,
           "speed": 22,
           "attack": 11
+        },
+        "Data": {
+          "model": "skeleton-rogue",
+          "weapon": "highland-bow"
         }
       }
     },

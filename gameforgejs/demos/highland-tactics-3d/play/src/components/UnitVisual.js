@@ -1,12 +1,27 @@
-import { Component } from 'gameforgejs/core';
-import { Mesh, ModelMeshFactory, PrimitiveMesh, ToonMaterial, Transform3D } from 'gameforgejs/3d';
-/** Original low-poly pawns with a cape, shield and forward-pointing weapon. */
+import { AssetManager, Component, MathExt } from 'gameforgejs/core';
+import { Mesh, ModelMeshFactory, PrimitiveMesh, SkeletalAnimator, ToonMaterial, Transform3D } from 'gameforgejs/3d';
+import { HeldModels, UnitAnimations, UnitModelScale } from '../data/UnitModels.js';
+
+const Loaded = name => Boolean(name && AssetManager.instance?.models?.[name]);
+
+/**
+ * A unit's look: an animated KayKit character when its model is loaded (with held weapons on
+ * the rig's hand slots), otherwise original low-poly pawns with a cape, shield and weapon.
+ * `options.model` names the character; `options.weapon`/`options.offhand` name fixed held models.
+ */
 export class UnitVisual extends Component {
-    constructor(scene, color, visualStyle = null, heroWeapon = false) {
+    constructor(scene, color, visualStyle = null, heroWeapon = false, options = {}) {
         super();
         this.scene = scene;
         this.root = new Transform3D();
         this.meshes = [];
+        this.weapons = [];
+        this.heroWeapon = heroWeapon;
+        this.yaw = null;
+        if (Loaded(options.model) && Loaded(UnitAnimations.idle.library)) {
+            this.BuildCharacter(options);
+            return;
+        }
         const cloth = new ToonMaterial({ albedoColor: color }), skin = new ToonMaterial({ albedoColor: '#f4d7aa' }), steel = new ToonMaterial({ albedoColor: '#c1d4d7' });
         const parts = visualStyle === 'slime' ? [
             { p: [0, 0.28, 0], s: [0.72, 0.42, 0.62], m: cloth },
@@ -73,10 +88,40 @@ export class UnitVisual extends Component {
         }
         this.cloth = cloth;
         this.original = [...cloth.albedoColor];
-        this.heroWeapon = heroWeapon;
-        this.weapons = [];
+    }
+    BuildCharacter({ model, weapon = null, offhand = null }) {
+        const toon = name => (part, index) => new ToonMaterial(ModelMeshFactory.CreateMaterial(part, index, name));
+        this.character = ModelMeshFactory.FromAsset(model, { materialFactory: toon(model) });
+        this.character.transform.parent = this.root;
+        this.character.SetScale(UnitModelScale);
+        // KayKit characters face +Z; a unit facing NORTH looks down -Z.
+        this.character.SetRotation(0, Math.PI, 0);
+        this.animator = new SkeletalAnimator(this.character);
+        for (const [name, { library, clip }] of Object.entries(UnitAnimations))
+            this.animator.AddClip(name, AssetManager.instance.GetModel(library), clip);
+        this.animator.Play('idle');
+        const nodes = this.animator.pose.nodes.map(node => node.name);
+        this.sockets = ['handslot.r', 'handslot.l'].map(name => ({
+            index: nodes.indexOf(name),
+            transform: new Transform3D({ parent: this.character.transform }),
+        }));
+        this.deadTime = 0;
+        // Held models: every equippable item for a hero (shown by equipment), fixed ones otherwise.
+        const held = this.heroWeapon
+            ? Object.entries(HeldModels).map(([item, entry]) => ({ item, ...entry }))
+            : [{ item: null, model: weapon, hand: 'right' }, { item: null, model: offhand, hand: 'left' }];
+        this.held = held.filter(entry => Loaded(entry.model)).map(({ item, model: name, hand }) => {
+            const model = ModelMeshFactory.FromAsset(name, { materialFactory: toon(name) });
+            model.transform.parent = this.sockets[hand === 'left' ? 1 : 0].transform;
+            return { item, model };
+        });
     }
     OnStart() {
+        if (this.character) {
+            this.character.AddTo(this.scene);
+            for (const { model } of this.held) model.AddTo(this.scene);
+            return;
+        }
         for (const mesh of this.meshes) this.scene.Add(mesh);
         if (this.heroWeapon) {
             this.weapons = ['highland-sword', 'highland-staff'].map(name => {
@@ -89,10 +134,17 @@ export class UnitVisual extends Component {
             });
         }
     }
-    OnUpdate() {
+    OnUpdate(dt) {
         const stats = this.owner.stats, p = this.owner.travel.position;
         this.root.SetPosition(p.x, p.y, p.z);
-        this.root.rotation.y = -stats.facing * Math.PI / 2;
+        // Units turn smoothly toward their facing (snapping on the first frame).
+        const yaw = -stats.facing * Math.PI / 2;
+        this.yaw = this.yaw === null || dt === undefined ? yaw : MathExt.LerpAngle(this.yaw, yaw, Math.min(1, dt * 12));
+        this.root.rotation.y = this.yaw;
+        if (this.character) {
+            this.Animate(stats, dt ?? 0);
+            return;
+        }
         this.cloth.albedoColor = stats.flash > 0 ? [1, 0.8, 0.6, 1] : this.original;
         for (const mesh of this.meshes)
             mesh.visible = stats.hp > 0;
@@ -103,7 +155,43 @@ export class UnitVisual extends Component {
             for (const mesh of model.meshes) mesh.visible = visible;
         });
     }
+    /** Chooses the clip for the unit's state, then moves held models with the hand slots. */
+    Animate(stats, dt) {
+        const animator = this.animator;
+        const timed = (clip, progress) => {
+            animator.Play(clip, { loop: false });
+            animator.Seek(Math.max(0, Math.min(1, progress)) * animator.current.duration);
+        };
+        let visible = true;
+        if (stats.hp <= 0) {
+            this.deadTime += dt;
+            timed('death', this.deadTime / 1.1);
+            visible = this.deadTime < 1.9;
+        }
+        else {
+            this.deadTime = 0;
+            if (stats.action && stats.actionTime > 0) timed(stats.action, 1 - stats.actionTime / 0.9);
+            else if (stats.flash > 0) timed('hit', 1 - stats.flash / 0.3);
+            else {
+                animator.Play(this.owner.travel.path?.length ? 'walk' : stats.guarded ? 'guard' : 'idle');
+                animator.Update(dt);
+            }
+        }
+        for (const socket of this.sockets)
+            if (socket.index >= 0) socket.transform.matrix = animator.pose.world[socket.index];
+        for (const mesh of this.character.meshes) mesh.visible = visible;
+        for (const { item, model } of this.held) {
+            const shown = visible && (!item || stats.visualWeapon === item || stats.visualOffhand === item);
+            for (const mesh of model.meshes) mesh.visible = shown;
+        }
+    }
     OnDestroy() {
+        if (this.character) {
+            for (const mesh of this.character.meshes) this.scene.Remove(mesh);
+            for (const { model } of this.held)
+                for (const mesh of model.meshes) this.scene.Remove(mesh);
+            return;
+        }
         for (const mesh of this.meshes) this.scene.Remove(mesh);
         for (const model of this.weapons)
             for (const mesh of model.meshes) this.scene.Remove(mesh);

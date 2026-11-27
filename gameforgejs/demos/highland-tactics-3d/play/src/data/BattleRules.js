@@ -5,10 +5,25 @@ export const Facings = Object.freeze([
     { name: 'SOUTH', col: 0, row: 1 }, { name: 'WEST', col: -1, row: 0 },
 ]);
 export const Commands = Object.freeze(['MOVE', 'ATTACK', 'SKILL', 'ITEM', 'WAIT / FACE']);
+/** Action and movement points every unit starts a turn with (gear and passives add to them). */
+export const TurnBudget = Object.freeze({ ap: 6, mp: 3, mpMobile: 4 });
 export const MapScale = Object.freeze({ tile: 1.15, base: 0.45, elevation: 0.55 });
 
 export function GetAbilityProfile(attacker, ability) {
     return AbilityProfiles[ability] ?? AbilityProfiles[attacker.basicAbility] ?? AbilityProfiles.strike;
+}
+
+/**
+ * Why an ability cannot be cast right now (AP, cooldown or per-turn limit), or null when it can.
+ * Stats without an `ap` value have no tracked budget (hypothetical previews), so only the
+ * cooldown and per-turn limits apply to them.
+ */
+export function AbilityBlocked(attacker, ability) {
+    const profile = GetAbilityProfile(attacker, ability);
+    if ((attacker.cooldowns?.[ability] ?? 0) > 0) return `${profile.name} recharges in ${attacker.cooldowns[ability]} turn${attacker.cooldowns[ability] > 1 ? 's' : ''}`;
+    if (profile.perTurn && (attacker.casts?.[ability] ?? 0) >= profile.perTurn) return `${profile.name} already used this turn`;
+    if (attacker.ap !== undefined && attacker.ap < profile.ap) return `Not enough AP for ${profile.name} (${profile.ap} AP)`;
+    return null;
 }
 
 /** Deterministic previews and resolution use exactly the same rules. */
@@ -62,7 +77,8 @@ export class BattleRules {
             return false;
         const profile = GetAbilityProfile(attacker, ability);
         const support = profile.heal || profile.shield || profile.haste;
-        if (support ? attacker.team !== defender.team || (profile.heal && defender.hp >= defender.maxHp) : attacker.team === defender.team)
+        const ailing = profile.cleanse && (defender.poison > 0 || defender.burn > 0 || defender.slowed > 0);
+        if (support ? attacker.team !== defender.team || (profile.heal && defender.hp >= defender.maxHp && !ailing) : attacker.team === defender.team)
             return false;
         const distance = Math.abs(attacker.col - defender.col) + Math.abs(attacker.row - defender.row);
         const source = grid.Get(attacker.col, attacker.row), target = grid.Get(defender.col, defender.row);
@@ -70,6 +86,6 @@ export class BattleRules {
         if (profile.shape === 'line' && attacker.col !== defender.col && attacker.row !== defender.row) return false;
         const height = Math.abs(source.h - target.h);
         return distance <= profile.range && height <= profile.height
-            && (attacker.energy ?? 0) >= profile.energy && (distance === 0 || grid.CanSee(attacker, defender));
+            && !AbilityBlocked(attacker, ability) && (distance === 0 || grid.CanSee(attacker, defender));
     }
 }

@@ -346,317 +346,236 @@
       }
     },
     {
-      "id": "island_1_trunk_0",
-      "name": "Tree trunk 1",
+      "id": "island_1_tree_0",
+      "name": "Tree 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [0.38000000000000006, 1.7500000000000002, 0],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [0.38000000000000006, 0.5, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.046875, 0.9375, 0.051136]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_0",
-      "name": "Tree canopy 1",
+      "id": "island_1_bush_0",
+      "name": "Bush 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [0.38000000000000006, 3.833333333333333, 0],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [0.446667, 0.5, 0.05],
+        "rotation": [0, 0, 0],
+        "scale": [0.091667, 1.833333, 0.1]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_1",
-      "name": "Tree trunk 2",
+      "id": "island_1_tree_1",
+      "name": "Tree 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [0.23692612470631877, 1.7500000000000002, 0.2970959633378513],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [0.23692612470631877, 0.5, 0.2970959633378513],
+        "rotation": [0, 0, 0],
+        "scale": [0.060417, 1.208333, 0.065909]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_1",
-      "name": "Tree canopy 2",
+      "id": "island_1_rock_1",
+      "name": "Rock 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [0.23692612470631877, 3.833333333333333, 0.2970959633378513],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [0.178593, 0.5, 0.356187],
+        "rotation": [0, 0, 0],
+        "scale": [0.075, 1.5, 0.081818]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_2",
-      "name": "Tree trunk 3",
+      "id": "island_1_tree_2",
+      "name": "Tree 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.08455795490339946, 1.7500000000000002, 0.3704726066290929],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [-0.08455795490339946, 0.5, 0.3704726066290929],
+        "rotation": [0, 0, 0],
+        "scale": [0.045833, 0.916667, 0.05]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_2",
-      "name": "Tree canopy 3",
+      "id": "island_1_bush_2",
+      "name": "Bush 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.08455795490339946, 3.833333333333333, 0.3704726066290929],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [-0.017891, 0.5, 0.420473],
+        "rotation": [0, 0, 0],
+        "scale": [0.091667, 1.833333, 0.1]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_3",
-      "name": "Tree trunk 4",
+      "id": "island_1_tree_3",
+      "name": "Tree 4",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467212],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [-0.34236816980291923, 0.5, 0.16487582086467212],
+        "rotation": [0, 0, 0],
+        "scale": [0.046875, 0.9375, 0.051136]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_3",
-      "name": "Tree canopy 4",
+      "id": "island_1_tree_4",
+      "name": "Tree 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467212],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [-0.3423681698029193, 0.5, -0.16487582086467203],
+        "rotation": [0, 0, 0],
+        "scale": [0.060417, 1.208333, 0.065909]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_4",
-      "name": "Tree trunk 5",
+      "id": "island_1_bush_4",
+      "name": "Bush 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [-0.275702, 0.5, -0.114876],
+        "rotation": [0, 0, 0],
+        "scale": [0.091667, 1.833333, 0.1]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_4",
-      "name": "Tree canopy 5",
+      "id": "island_1_rock_4",
+      "name": "Rock 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [-0.400702, 0.5, -0.105785],
+        "rotation": [0, 0, 0],
+        "scale": [0.075, 1.5, 0.081818]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_5",
-      "name": "Tree trunk 6",
+      "id": "island_1_tree_5",
+      "name": "Tree 6",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.08455795490339955, 1.7500000000000002, -0.3704726066290929],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [-0.08455795490339955, 0.5, -0.3704726066290929],
+        "rotation": [0, 0, 0],
+        "scale": [0.045833, 0.916667, 0.05]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_canopy_5",
-      "name": "Tree canopy 6",
+      "id": "island_1_tree_6",
+      "name": "Tree 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [-0.08455795490339955, 3.833333333333333, -0.3704726066290929],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
+        "position": [0.23692612470631869, 0.5, -0.2970959633378513],
+        "rotation": [0, 0, 0],
+        "scale": [0.046875, 0.9375, 0.051136]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_1_trunk_6",
-      "name": "Tree trunk 7",
+      "id": "island_1_bush_6",
+      "name": "Bush 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_1",
       "transform": {
-        "position": [0.23692612470631869, 1.7500000000000002, -0.2970959633378513],
-        "scale": [0.016666666666666666, 2.5, 0.018181818181818184]
+        "position": [0.303593, 0.5, -0.247096],
+        "rotation": [0, 0, 0],
+        "scale": [0.091667, 1.833333, 0.1]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
-        }
-      }
-    },
-    {
-      "id": "island_1_canopy_6",
-      "name": "Tree canopy 7",
-      "type": "MeshInstance3D",
-      "layer": "island-parts",
-      "parent": "island_1",
-      "transform": {
-        "position": [0.23692612470631869, 3.833333333333333, -0.2970959633378513],
-        "scale": [0.06666666666666667, 1.6666666666666667, 0.07272727272727274]
-      },
-      "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
@@ -1015,317 +934,236 @@
       }
     },
     {
-      "id": "island_2_trunk_0",
-      "name": "Tree trunk 1",
+      "id": "island_2_tree_0",
+      "name": "Tree 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [0.38, 1.7500000000000002, 0],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.38, 0.5, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.06525, 1.0875, 0.06525]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_0",
-      "name": "Tree canopy 1",
+      "id": "island_2_bush_0",
+      "name": "Bush 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [0.38, 3.833333333333333, 0],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.46, 0.5, 0.055],
+        "rotation": [0, 0, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_1",
-      "name": "Tree trunk 2",
+      "id": "island_2_tree_1",
+      "name": "Tree 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [0.23692612470631874, 1.7500000000000002, 0.2970959633378513],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.23692612470631874, 0.5, 0.2970959633378513],
+        "rotation": [0, 2.399, 0],
+        "scale": [0.05, 0.833333, 0.05]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_1",
-      "name": "Tree canopy 2",
+      "id": "island_2_rock_1",
+      "name": "Rock 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [0.23692612470631874, 3.833333333333333, 0.2970959633378513],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.166926, 0.5, 0.362096],
+        "rotation": [0, 1.1, 0],
+        "scale": [0.09, 1.5, 0.09]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_2",
-      "name": "Tree trunk 3",
+      "id": "island_2_tree_2",
+      "name": "Tree 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.08455795490339944, 1.7500000000000002, 0.370472606629093],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.08455795490339944, 0.5, 0.370472606629093],
+        "rotation": [0, 4.798, 0],
+        "scale": [0.06875, 1.145833, 0.06875]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_2",
-      "name": "Tree canopy 3",
+      "id": "island_2_bush_2",
+      "name": "Bush 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.08455795490339944, 3.833333333333333, 0.370472606629093],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.004558, 0.5, 0.425473],
+        "rotation": [0, 2.2, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_3",
-      "name": "Tree trunk 4",
+      "id": "island_2_tree_3",
+      "name": "Tree 4",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467215],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.34236816980291923, 0.5, 0.16487582086467215],
+        "rotation": [0, 0.913815, 0],
+        "scale": [0.06525, 1.0875, 0.06525]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_3",
-      "name": "Tree canopy 4",
+      "id": "island_2_tree_4",
+      "name": "Tree 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467215],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.3423681698029193, 0.5, -0.16487582086467203],
+        "rotation": [0, 3.312815, 0],
+        "scale": [0.05, 0.833333, 0.05]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_4",
-      "name": "Tree trunk 5",
+      "id": "island_2_bush_4",
+      "name": "Bush 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.262368, 0.5, -0.109876],
+        "rotation": [0, 4.4, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_4",
-      "name": "Tree canopy 5",
+      "id": "island_2_rock_4",
+      "name": "Rock 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.412368, 0.5, -0.099876],
+        "rotation": [0, 4.4, 0],
+        "scale": [0.09, 1.5, 0.09]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_5",
-      "name": "Tree trunk 6",
+      "id": "island_2_tree_5",
+      "name": "Tree 6",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.08455795490339954, 1.7500000000000002, -0.370472606629093],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.08455795490339954, 0.5, -0.370472606629093],
+        "rotation": [0, 5.711815, 0],
+        "scale": [0.06875, 1.145833, 0.06875]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_canopy_5",
-      "name": "Tree canopy 6",
+      "id": "island_2_tree_6",
+      "name": "Tree 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [-0.08455795490339954, 3.833333333333333, -0.370472606629093],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.23692612470631866, 0.5, -0.2970959633378514],
+        "rotation": [0, 1.827629, 0],
+        "scale": [0.06525, 1.0875, 0.06525]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_2_trunk_6",
-      "name": "Tree trunk 7",
+      "id": "island_2_bush_6",
+      "name": "Bush 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_2",
       "transform": {
-        "position": [0.23692612470631866, 1.7500000000000002, -0.2970959633378514],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.316926, 0.5, -0.242096],
+        "rotation": [0, 0.316815, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
-        }
-      }
-    },
-    {
-      "id": "island_2_canopy_6",
-      "name": "Tree canopy 7",
-      "type": "MeshInstance3D",
-      "layer": "island-parts",
-      "parent": "island_2",
-      "transform": {
-        "position": [0.23692612470631866, 3.833333333333333, -0.2970959633378514],
-        "scale": [0.08, 1.6666666666666667, 0.08]
-      },
-      "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
@@ -1684,317 +1522,236 @@
       }
     },
     {
-      "id": "island_3_trunk_0",
-      "name": "Tree trunk 1",
+      "id": "island_3_tree_0",
+      "name": "Tree 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [0.38, 1.7500000000000002, 0],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.38, 0.5, 0],
+        "rotation": [0, 0, 0],
+        "scale": [0.045, 0.75, 0.045]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_0",
-      "name": "Tree canopy 1",
+      "id": "island_3_bush_0",
+      "name": "Bush 1",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [0.38, 3.833333333333333, 0],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.46, 0.5, 0.055],
+        "rotation": [0, 0, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_1",
-      "name": "Tree trunk 2",
+      "id": "island_3_tree_1",
+      "name": "Tree 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [0.23692612470631874, 1.7500000000000002, 0.2970959633378513],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.23692612470631874, 0.5, 0.2970959633378513],
+        "rotation": [0, 2.399, 0],
+        "scale": [0.0625, 1.041667, 0.0625]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_1",
-      "name": "Tree canopy 2",
+      "id": "island_3_rock_1",
+      "name": "Rock 2",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [0.23692612470631874, 3.833333333333333, 0.2970959633378513],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.166926, 0.5, 0.362096],
+        "rotation": [0, 1.1, 0],
+        "scale": [0.09, 1.5, 0.09]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_2",
-      "name": "Tree trunk 3",
+      "id": "island_3_tree_2",
+      "name": "Tree 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.08455795490339944, 1.7500000000000002, 0.370472606629093],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.08455795490339944, 0.5, 0.370472606629093],
+        "rotation": [0, 4.798, 0],
+        "scale": [0.07975, 1.329167, 0.07975]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_2",
-      "name": "Tree canopy 3",
+      "id": "island_3_bush_2",
+      "name": "Bush 3",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.08455795490339944, 3.833333333333333, 0.370472606629093],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.004558, 0.5, 0.425473],
+        "rotation": [0, 2.2, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_3",
-      "name": "Tree trunk 4",
+      "id": "island_3_tree_3",
+      "name": "Tree 4",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.34236816980291923, 1.7500000000000002, 0.16487582086467215],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.34236816980291923, 0.5, 0.16487582086467215],
+        "rotation": [0, 0.913815, 0],
+        "scale": [0.045, 0.75, 0.045]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_3",
-      "name": "Tree canopy 4",
+      "id": "island_3_tree_4",
+      "name": "Tree 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.34236816980291923, 3.833333333333333, 0.16487582086467215],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.3423681698029193, 0.5, -0.16487582086467203],
+        "rotation": [0, 3.312815, 0],
+        "scale": [0.0625, 1.041667, 0.0625]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-a",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_4",
-      "name": "Tree trunk 5",
+      "id": "island_3_bush_4",
+      "name": "Bush 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.3423681698029193, 1.7500000000000002, -0.16487582086467203],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.262368, 0.5, -0.109876],
+        "rotation": [0, 4.4, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_4",
-      "name": "Tree canopy 5",
+      "id": "island_3_rock_4",
+      "name": "Rock 5",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.3423681698029193, 3.833333333333333, -0.16487582086467203],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [-0.412368, 0.5, -0.099876],
+        "rotation": [0, 4.4, 0],
+        "scale": [0.09, 1.5, 0.09]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-rock",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_5",
-      "name": "Tree trunk 6",
+      "id": "island_3_tree_5",
+      "name": "Tree 6",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.08455795490339954, 1.7500000000000002, -0.370472606629093],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [-0.08455795490339954, 0.5, -0.370472606629093],
+        "rotation": [0, 5.711815, 0],
+        "scale": [0.07975, 1.329167, 0.07975]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
+        "Data": {
+          "model": "forest-tree-b",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_canopy_5",
-      "name": "Tree canopy 6",
+      "id": "island_3_tree_6",
+      "name": "Tree 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [-0.08455795490339954, 3.833333333333333, -0.370472606629093],
-        "scale": [0.08, 1.6666666666666667, 0.08]
+        "position": [0.23692612470631866, 0.5, -0.2970959633378514],
+        "rotation": [0, 1.827629, 0],
+        "scale": [0.045, 0.75, 0.045]
       },
       "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-tree-c",
+          "castShadow": true
         }
       }
     },
     {
-      "id": "island_3_trunk_6",
-      "name": "Tree trunk 7",
+      "id": "island_3_bush_6",
+      "name": "Bush 7",
       "type": "MeshInstance3D",
       "layer": "island-parts",
       "parent": "island_3",
       "transform": {
-        "position": [0.23692612470631866, 1.7500000000000002, -0.2970959633378514],
-        "scale": [0.02, 2.5, 0.02]
+        "position": [0.316926, 0.5, -0.242096],
+        "rotation": [0, 0.316815, 0],
+        "scale": [0.11, 1.833333, 0.11]
       },
       "components": {
-        "Mesh": {
-          "type": "cube",
-          "size": 1
-        },
-        "Material": {
-          "albedoColor": "#c89350",
-          "metallic": 0.65,
-          "roughness": 0.35
-        }
-      }
-    },
-    {
-      "id": "island_3_canopy_6",
-      "name": "Tree canopy 7",
-      "type": "MeshInstance3D",
-      "layer": "island-parts",
-      "parent": "island_3",
-      "transform": {
-        "position": [0.23692612470631866, 3.833333333333333, -0.2970959633378514],
-        "scale": [0.08, 1.6666666666666667, 0.08]
-      },
-      "components": {
-        "Mesh": {
-          "type": "sphere",
-          "radius": 1,
-          "widthSegments": 7,
-          "heightSegments": 4
-        },
-        "Material": {
-          "albedoColor": "#437b74",
-          "roughness": 1
+        "Data": {
+          "model": "forest-bush",
+          "castShadow": true
         }
       }
     },

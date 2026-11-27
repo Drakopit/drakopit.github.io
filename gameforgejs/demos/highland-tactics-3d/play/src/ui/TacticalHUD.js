@@ -11,11 +11,15 @@ import { BagColumns, BagSorts, InventoryLayout, InventoryPanel } from './Invento
 import { EquipmentLayout, EquipmentPanel } from './EquipmentPanel.js';
 import { CompareStats, ItemValue } from './ItemCard.js';
 import { DrawItemIcon } from './ItemIcons.js';
+import { NetworkFormLayout, NetworkPanel } from './NetworkPanel.js';
 
-export { DockLayout, InventoryLayout, EquipmentLayout };
+export { DockLayout, InventoryLayout, EquipmentLayout, NetworkFormLayout };
 
 /** World log: messages kept, and lines shown above the exploration bar. */
 const LogLimit = 30, LogLines = 3;
+/** Longest chat line the server accepts. */
+export const ChatLimit = 160;
+const CreationMessage = 'Choose a calling to begin your journey.';
 const RarityOrder = Object.freeze({ epic: 0, rare: 1, uncommon: 2, common: 3 });
 const CategoryOrder = Object.freeze(['Weapons', 'Armor', 'Accessories', 'Consumables', 'Special', 'Materials']);
 
@@ -99,7 +103,7 @@ export class TacticalHUD {
         this.frame = new HUDFrame(level.ui.Draw);
         this.help = new InputHelpPanel(new Draw(this.screen), {
             title: 'Highland Tactics / Controls',
-            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character & attributes · K skills · M map · F vendor · H help', 'Inventory (I): [ ] tabs · / search · Enter use/equip/read. Equipment (E): arrows pick slot/item · Enter equip.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
+            lines: ['Arrows / WASD move across zones and choose battle commands.', 'Click any reachable open tile to walk there; click highlighted tiles in battle.', 'I inventory · E gear · C character & attributes · K skills · M map · F vendor · H help', 'Inventory (I): [ ] tabs · / search · Enter use/equip/read. Equipment (E): arrows pick slot/item · Enter equip.', 'Online/LAN: / opens zone chat · Enter sends · Esc cancels.', 'Shop: up/down select · left/right buy/sell · Enter trade.', 'PC battle: 1 attack · 2–7 skills · 8–0 items · Space pass turn · click tiles to move or aim · V ring.'],
         });
         this.panel = null;
         this.selectedArchetype = 'vanguard';
@@ -107,6 +111,7 @@ export class TacticalHUD {
         this.selectedBagIndex = 0;
         this.bagSort = 'Newest';
         this.search = { text: '', active: false, released: false };
+        this.chat = { text: '', active: false, released: false };
         this.inventorySlots = [];
         this.slotRects = [];
         this.shopTab = 'buy';
@@ -217,7 +222,9 @@ export class TacticalHUD {
         this.nameField.SetMaxLength(20);
         this.nameField.SetText('Highland Recruit');
         this.nameField.onSubmit = () => this.nameField.SetActive(false);
-        this.nameFieldInput = event => this.HandleNameInput(event) || this.HandleSearchInput(event);
+        this.network = new NetworkPanel(this);
+        this.nameFieldInput = event => this.network.HandleInput(event) || this.HandleNameInput(event)
+            || this.HandleChatInput(event) || this.HandleSearchInput(event);
         if (typeof window !== 'undefined') window.addEventListener('keydown', this.nameFieldInput);
     }
 
@@ -276,11 +283,51 @@ export class TacticalHUD {
         this.selectedBagIndex = 0;
     }
 
-    /** True once after search typing ended with Enter/Escape, so that key does not also close the panel. */
+    /** True once after search or chat typing ended with Enter/Escape, so that key does not also act in the game. */
     ConsumeSearchRelease() {
-        const released = this.search.released;
+        const released = this.search.released || Boolean(this.chat?.released);
         this.search.released = false;
+        if (this.chat) this.chat.released = false;
         return released;
+    }
+
+    /**
+     * Zone chat while signed in: "/" starts typing (with no panel open), Enter sends, Escape
+     * cancels. Other players' lines arrive through `RecordChat`.
+     */
+    HandleChatInput(event) {
+        const l = this.level;
+        if (!l.remote || l.exploring !== 'explore') {
+            this.chat.active = false;
+            return false;
+        }
+        if (!this.chat.active) {
+            if (this.panel || event.key !== '/') return false;
+            this.chat.active = true;
+            this.chat.text = '';
+        }
+        else if (event.key === 'Enter') {
+            const text = this.chat.text.trim();
+            this.chat.active = false;
+            this.chat.released = true;
+            this.chat.text = '';
+            if (text) l.remote.Chat(text);
+        }
+        else if (event.key === 'Escape') {
+            this.chat.active = false;
+            this.chat.released = true;
+            this.chat.text = '';
+        }
+        else if (event.key === 'Backspace') this.chat.text = this.chat.text.slice(0, -1);
+        else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) this.chat.text = (this.chat.text + event.key).slice(0, ChatLimit);
+        else return false;
+        event.preventDefault?.();
+        return true;
+    }
+
+    /** A chat line from the zone, shown in the world log. */
+    RecordChat(from, text) {
+        this.RecordLog(`${from}: ${text}`);
     }
 
     CycleBagSort(step = 1) {
@@ -468,7 +515,7 @@ export class TacticalHUD {
         this.RecordLog(this.level.turn?.message);
         this.inventory?.Update(dt);
         this.equipmentPanel?.Update(dt);
-        if (this.level.exploring === 'creation' && this.nameField?.Click?.())
+        if (this.level.exploring === 'creation' && (this.nameField?.Click?.() | this.network?.Click()))
             this.level.controls?.SuppressNextWorldClick();
         const command = this.level.exploring === 'battle' && this.level.turn.phase === 'command';
         if (this.level.turn.phase !== 'skill-select') {
@@ -694,11 +741,19 @@ export class TacticalHUD {
         if (this.panel) return;
         const layout = ExplorationBarLayout(s.Width, s.Height, this.barItems.length);
         const lines = (this.log?.length ? this.log : [l.turn.message]).slice(-LogLines);
-        const width = Math.min(430, s.Width - 20), height = 14 + lines.length * 14, y = layout[0].y - 3 - height;
+        const online = l.remote ? 1 : 0;
+        const width = Math.min(430, s.Width - 20), height = 14 + (lines.length + online) * 14, y = layout[0].y - 3 - height;
         f.Panel({ x: 10, y, width, height });
+        if (online) {
+            const others = l.remote.Ghosts().length;
+            const status = this.chat.active
+                ? `SAY › ${this.chat.text}${Math.floor(performance.now() / 500) % 2 ? '_' : ' '}`
+                : `ONLINE · ${l.remote.session.account?.username ?? ''} · ${others} other${others === 1 ? '' : 's'} here · / chat`;
+            f.Text(status, 22, y + 17, { size: 10, weight: 700, color: this.chat.active ? f.theme.text : '#7cddc5', maxWidth: width - 24 });
+        }
         lines.forEach((line, index) => {
             const newest = index === lines.length - 1;
-            f.Text(line, 22, y + 17 + index * 14, { size: 10, color: newest ? f.theme.gold : f.theme.muted, weight: newest ? 700 : 400, maxWidth: width - 24 });
+            f.Text(line, 22, y + 17 + (index + online) * 14, { size: 10, color: newest ? f.theme.gold : f.theme.muted, weight: newest ? 700 : 400, maxWidth: width - 24 });
         });
         this.DrawExplorationBar(layout);
     }
@@ -708,7 +763,7 @@ export class TacticalHUD {
         const position = vendor.travel.position;
         const point = l.camera.Project(new Vector3D(position.x, position.y + 1.5, position.z), s.Width, s.Height);
         const width = 72, height = 28, x = point.x - width / 2, y = point.y - height;
-        const bottom = ExplorationBarLayout(s.Width, s.Height)[0].y - 3 - (14 + LogLines * 14);
+        const bottom = ExplorationBarLayout(s.Width, s.Height)[0].y - 3 - (14 + (LogLines + (l.remote ? 1 : 0)) * 14);
         if (!point.visible || !Number.isFinite(x) || !Number.isFinite(y)
             || x < 0 || x + width > s.Width || y < this.headerHeight || y + height > bottom) return;
         this.Place(this.talk, x, y, width, height);
@@ -989,12 +1044,27 @@ export class TacticalHUD {
 
     DrawCharacterCreation() {
         const { level: l, screen: s, frame: f } = this;
-        const width = Math.min(500, s.Width - 28), x = (s.Width - width) / 2, y = Math.max(120, (s.Height - 312) / 2);
+        const network = this.network, form = network.FormVisible;
+        const width = Math.min(500, s.Width - 28), x = (s.Width - width) / 2, y = Math.max(96, (s.Height - 344) / 2);
         const context = s.Context;
         context.save(); context.fillStyle = 'rgba(5,12,17,.42)'; context.fillRect(0, 0, s.Width, s.Height); context.restore();
-        f.Panel({ x, y, width, height: 300 });
+        f.Panel({ x, y, width, height: 332 });
         f.Text('BEGIN YOUR HIGHLAND JOURNEY', s.Width / 2, y + 35, { size: 19, align: 'center', weight: 700, color: f.theme.gold, maxWidth: width - 24 });
-        f.Text(l.turn.message.startsWith('Continue failed:') ? l.turn.message : 'Name your hero and choose a calling.', s.Width / 2, y + 59, { size: 12, align: 'center', maxWidth: width - 24 });
+        const prompt = form ? 'Sign in to a shared world, or register a new account.'
+            : l.signedIn ? 'Signed in · name your hero and choose a calling.' : 'Name your hero and choose a calling.';
+        f.Text(l.turn.message && l.turn.message !== CreationMessage ? l.turn.message : prompt, s.Width / 2, y + 59, { size: 12, align: 'center', maxWidth: width - 24 });
+        const formLayout = NetworkFormLayout(x, y, width);
+        network.DrawModes(formLayout);
+        if (form) {
+            network.DrawForm(formLayout);
+            return;
+        }
+        this.DrawCreationChoices(x, y + 32, width);
+    }
+
+    /** Name, calling and the BEGIN / CONTINUE (or SIGN OUT) buttons, from `y` down. */
+    DrawCreationChoices(x, y, width) {
+        const { level: l, screen: s, frame: f } = this;
         this.nameField.SetBox(new Rectangle(x + 24, y + 76, width - 48, 36));
         this.nameField.DrawCursor();
         const gap = 6, classWidth = (width - 32 - gap) / 2;
@@ -1008,8 +1078,8 @@ export class TacticalHUD {
         ];
         const index = archetypes.indexOf(this.selectedArchetype);
         f.Text(callings[index], s.Width / 2, y + 198, { size: 12, align: 'center' });
-        this.Place(this.begin, x + 16, y + 226, (width - 38) / 2, 48, true);
-        this.Place(this.continue, x + 22 + (width - 38) / 2, y + 226, (width - 38) / 2, 48, true);
+        this.Place(this.begin, x + 16, y + 226, (width - 38) / 2, 48, !l.networkBusy);
+        this.Place(l.signedIn ? this.network.signOut : this.continue, x + 22 + (width - 38) / 2, y + 226, (width - 38) / 2, 48, true);
     }
 
     /** Backpack contents (not what is worn), narrowed by the active filter. */
@@ -1526,6 +1596,7 @@ export class TacticalHUD {
     Draw() {
         for (const item of this.buttons) item.button.enabled = false;
         this.nameField.SetBox(new Rectangle(-1000, -1000, 0, 0));
+        this.network.Hide();
         const l = this.level, s = this.screen;
         this.DrawStatus();
         if (l.exploring === 'creation')
@@ -1546,6 +1617,7 @@ export class TacticalHUD {
                             size: 10, align: 'center', weight: 700, color: this.frame.theme.gold,
                         });
                 }
+                this.DrawPlayerLabels();
                 if (nearest?.distance <= 1) this.DrawVendorPrompt(nearest.vendor);
             }
             if (l.hoveredEncounter)
@@ -1564,8 +1636,21 @@ export class TacticalHUD {
         this.help.OnDrawn();
     }
 
+    /** Names over the other players in the zone (crossed swords while they fight a battle). */
+    DrawPlayerLabels() {
+        const { level: l, screen: s, frame: f } = this;
+        for (const ghost of l.remote?.Ghosts() ?? []) {
+            const position = ghost.travel.position;
+            const projected = l.camera.Project(new Vector3D(position.x, position.y + 1.3, position.z), s.Width, s.Height);
+            if (!projected.visible) continue;
+            const label = `${ghost.stats.inBattle ? '⚔ ' : ''}${ghost.stats.name} · Lv ${ghost.stats.level}`;
+            f.Text(label, projected.x, projected.y - 12, { size: 10, align: 'center', weight: 700, color: '#7cddc5', maxWidth: 160 });
+        }
+    }
+
     Dispose() {
         if (typeof window !== 'undefined') window.removeEventListener('keydown', this.nameFieldInput);
+        this.network?.Dispose();
         for (const item of this.buttons) item.button.Dispose();
         this.nameField.Dispose();
         this.help.Dispose();

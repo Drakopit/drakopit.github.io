@@ -2,7 +2,8 @@ import { MathExt, SoundEffects, SceneDocument, GameViewport } from 'gameforgejs/
 import { GameObject } from 'gameforgejs/2d';
 import { Level3D, OrthographicCamera, HeightGrid, SceneManifest3D, SurfaceMaterial } from 'gameforgejs/3d';
 import { BattleFromScene } from '../data/BattleScene.js';
-import { Archetypes, HighlandCampaign, EquipmentSlot, ItemInfo, Attributes, AttributePointsPerLevel } from '../data/HighlandCampaign.js';
+import { BuildBattleUnits, HeroUnit } from '../data/BattleRoster.js';
+import { HighlandCampaign, EquipmentSlot, ItemInfo, Attributes, AttributePointsPerLevel } from '../data/HighlandCampaign.js';
 import { FindExplorePath as FindPath } from '../data/ExplorePathfinding.js';
 import { GetZone } from '../data/WorldMaps.js';
 import { TacticalPawn } from '../entities/TacticalPawn.js';
@@ -13,6 +14,11 @@ import { TacticalControls } from '../input/TacticalControls.js';
 import { TacticalHUD } from '../ui/TacticalHUD.js';
 import { ControlSettings } from '../input/ControlModes.js';
 import { HighlandActions } from '../data/HighlandActions.js';
+import { ActiveSession, EndSession, MmoClient, NormalizeServerUrl, StartSession } from '../net/MmoClient.js';
+import { CampaignFromServer, RemoteLink } from '../net/RemoteLink.js';
+import { RemoteActions } from '../net/RemoteActions.js';
+
+const NetworkStorageKey = 'highland-network-v1';
 
 /** Scene composition and campaign transitions; combat rules remain in ECS components. */
 export class HighlandLevel extends Level3D {
@@ -127,22 +133,147 @@ export class HighlandLevel extends Level3D {
         this.cameraAngle = Math.PI / 4;
         this.cameraViewTarget = 13;
         this.releaseViewport = GameViewport.Bind(this.ui.Screen, { maxWidth: 1440, onResize: () => GameViewport.Align(this.ui.Screen, this.screen3D) });
+        const session = ActiveSession();
+        this.signedIn = Boolean(session);
+        if (session && this.exploring !== 'creation') {
+            this.remote = new RemoteLink(this, session);
+            this.actions = new RemoteActions(this, this.remote);
+            // The server has no turn timer, so the browser must not pass turns on its own.
+            if (this.exploring === 'battle') this.turn.turnLimit = 0;
+            this.remote.Attach();
+        }
+    }
+
+    // ---------- online / LAN ----------
+
+    /** Last server address and username per mode (never the password). */
+    NetworkMemory() {
+        try { return JSON.parse(globalThis.localStorage?.getItem(NetworkStorageKey) ?? '{}') ?? {}; }
+        catch { return {}; }
+    }
+
+    /**
+     * Connects to an MMO server and signs in (or registers). A hero saved on the server enters its
+     * zone at once; a new account goes on to character creation.
+     */
+    async SignIn({ mode, address, username, password, register = false }) {
+        if (this.exploring !== 'creation' || this.networkBusy) return false;
+        let client = null;
+        this.networkBusy = true;
+        try {
+            const url = NormalizeServerUrl(address);
+            this.turn.message = `Connecting to ${url}…`;
+            client = new MmoClient(url);
+            await client.Connect();
+            const reply = await client.Request(register ? 'register' : 'login', { username, password });
+            StartSession({ client, account: reply.account, token: reply.token, mode });
+            try {
+                const memory = this.NetworkMemory();
+                memory[mode] = { address, username };
+                globalThis.localStorage?.setItem(NetworkStorageKey, JSON.stringify(memory));
+            }
+            catch { /* storage is optional */ }
+            this.signedIn = true;
+            this.sound.Play('success');
+            if (reply.save) {
+                this.EnterServerZone(reply.save);
+                return true;
+            }
+            this.turn.message = `Signed in as ${reply.account.username} · name your hero and choose a calling.`;
+            return true;
+        }
+        catch (error) {
+            client?.Close();
+            this.turn.message = `Sign-in failed: ${error.message}`;
+            this.sound.Play('warning');
+            return false;
+        }
+        finally {
+            this.networkBusy = false;
+        }
+    }
+
+    SignOut() {
+        EndSession();
+        this.signedIn = false;
+        if (this.exploring === 'creation') this.turn.message = 'Signed out.';
+        else this.LoadScene('hearthvale', { controlSettings: this.controlSettings });
+    }
+
+    /** Creates the hero on the server, then enters the world with the server's save. */
+    async CreateRemoteCharacter(archetype, name) {
+        const session = ActiveSession();
+        if (!session || this.networkBusy) return false;
+        this.networkBusy = true;
+        try {
+            const reply = await session.client.Request('character.create', { archetype, name: String(name ?? '').trim().slice(0, 20) || 'Highland Recruit' });
+            this.EnterServerZone(reply.save);
+            return true;
+        }
+        catch (error) {
+            this.turn.message = `Character creation failed: ${error.message}`;
+            return false;
+        }
+        finally {
+            this.networkBusy = false;
+        }
+    }
+
+    /** Loads the zone a server save stands in, exactly where the server put the hero. */
+    EnterServerZone(save) {
+        const campaign = CampaignFromServer(save);
+        this.campaign = campaign;
+        this.hud.panel = null;
+        this.hud.nameField.SetActive(false);
+        this.LoadScene(campaign.zoneId, {
+            campaign: campaign.SaveData(),
+            entry: { col: campaign.hero.col, row: campaign.hero.row },
+            controlSettings: this.controlSettings,
+        });
+        return true;
+    }
+
+    /** Replaces the local campaign with the server's; the hero keeps walking unless `position`. */
+    ApplyServerSave(save, { position = false } = {}) {
+        if (this.exploring !== 'explore' || !save) return;
+        const stats = this.player?.stats;
+        this.campaign = CampaignFromServer(save, position || !stats ? null : { col: stats.col, row: stats.row, facing: stats.facing });
+        this.campaign.zoneId = this.zone.id;
+        if (position && stats) {
+            stats.col = this.campaign.hero.col;
+            stats.row = this.campaign.hero.row;
+            this.player.travel.Snap();
+            this.exploreRoute = null;
+        }
+        this.SyncEquipmentToPlayer();
+        if (stats) stats.unlockedSkills = [...this.campaign.unlockedSkills];
+    }
+
+    /** The connection dropped: keep playing locally (nothing is saved to the server any more). */
+    OnRemoteLost() {
+        this.remote?.Detach();
+        this.remote = null;
+        this.signedIn = false;
+        this.actions = new HighlandActions(this);
+    }
+
+    CreateGhost(definition) {
+        if (this.exploring !== 'explore') return null;
+        return this.AddEntity(new TacticalPawn(this.grid, this.scene, definition));
+    }
+
+    RemoveGhost(pawn) {
+        this.RemoveEntity(pawn);
+    }
+
+    GhostPath(ghost, target) {
+        if (ghost.travel.path.length) ghost.travel.Snap();
+        const occupied = new Set((this.zone.structures ?? []).map(structure => this.grid.Key(structure)));
+        return FindPath(this.grid, ghost.stats, target, occupied);
     }
 
     HeroDefinition() {
-        const hero = this.campaign.hero;
-        return {
-            ...hero,
-            name: hero.name,
-            hp: hero.hp,
-            color: hero.color,
-            team: 'ally',
-            heroWeapon: true,
-            model: Archetypes[hero.archetype]?.model,
-            visualWeapon: this.campaign.equipment.weapon,
-            visualOffhand: this.campaign.equipment.offhand,
-            unlockedSkills: [...this.campaign.unlockedSkills],
-        };
+        return HeroUnit(this.campaign);
     }
 
     SetControlSettings(settings) {
@@ -332,6 +463,7 @@ export class HighlandLevel extends Level3D {
     }
 
     CreateCharacter(archetype, name) {
+        if (this.exploring === 'creation' && this.signedIn) return this.CreateRemoteCharacter(archetype, name);
         if (this.exploring !== 'creation' || !this.campaign.CreateCharacter(archetype)) return;
         this.campaign.hero.name = String(name ?? '').trim().slice(0, 20) || 'Highland Recruit';
         this.campaign.hero.col = this.zone.spawn.col;
@@ -351,6 +483,10 @@ export class HighlandLevel extends Level3D {
 
     SaveGame() {
         if (this.exploring !== 'explore') return false;
+        if (this.remote) {
+            this.turn.message = 'Online heroes are saved on the server after every change.';
+            return true;
+        }
         this.campaign.SyncHero(this.player.stats);
         try {
             globalThis.localStorage.setItem('highland-tactics-save-v1', JSON.stringify(this.campaign.SaveData()));
@@ -364,7 +500,7 @@ export class HighlandLevel extends Level3D {
     }
 
     ContinueGame() {
-        if (this.exploring !== 'creation') return false;
+        if (this.exploring !== 'creation' || this.signedIn) return false;
         let campaign;
         try {
             const saved = globalThis.localStorage.getItem('highland-tactics-save-v1');
@@ -482,12 +618,25 @@ export class HighlandLevel extends Level3D {
         if (portal && pointKey(portal) === key) {
             if (portal.to === 'ashen-ridge' && !this.campaign.clearedZones.has('mistfell')) {
                 this.turn.message = 'Defeat the Mistfell patrol to open the ridge road.';
+                this.remote?.Moved(this.player.stats);
+                return;
+            }
+            if (this.remote) {
+                this.exploring = 'travel';
+                this.turn.message = `Travelling to ${portal.to}…`;
+                this.remote.Travel(this.player.stats)
+                    .then(save => this.EnterServerZone(save))
+                    .catch(error => {
+                        this.exploring = 'explore';
+                        this.turn.message = `Server: ${error.message}`;
+                    });
                 return;
             }
             this.LoadZone(portal.to, portal.entry);
             this.sound.Play('success');
             return;
         }
+        this.remote?.Moved(this.player.stats);
         const group = this.GroupNear(tile);
         if (group) {
             this.StartBattle(group.stats.encounterId ?? this.zone.id);
@@ -522,37 +671,7 @@ export class HighlandLevel extends Level3D {
         const encounter = this.zone.encounters.find(entry => entry.id === encounterId);
         if (!encounter) throw new RangeError(`Unknown encounter in ${this.zone.id}: ${encounterId}`);
         this.encounterId = encounterId;
-        const allyUnits = this.battleData.units.filter(unit => unit.team === 'ally');
-        const enemies = this.battleData.units.filter(unit => unit.team === 'enemy').map(unit => ({
-            ...unit,
-            role: unit.id === 'scout' ? 'flanker' : 'bruiser',
-            basicAbility: unit.id === 'scout' ? 'quick-shot' : 'guard-bash',
-        }));
-        const party = allyUnits.filter((unit, index) => index === 0 || (this.partyControlEnabled && this.campaign.companionDeployed)).map((unit, index) => index === 0
-            ? { ...this.HeroDefinition(), col: unit.col, row: unit.row }
-            : { ...unit, ...this.campaign.CompanionStats() });
-        const extraEnemies = [
-            { id: 'hound', name: 'Ash Hound', team: 'enemy', role: 'flanker', basicAbility: 'hound-bite', visualStyle: 'wolf', col: 7, row: 7, facing: 0, hp: 28, speed: 26, attack: 12, defense: 2, color: '#b98b59' },
-            { id: 'adept', name: 'Ash Adept', team: 'enemy', role: 'caster', basicAbility: 'ember-flare', visualStyle: 'wisp', model: 'skeleton-mage', weapon: 'highland-wand', col: 4, row: 7, facing: 0, hp: 26, speed: 21, attack: 8, magic: 14, defense: 1, color: '#9676b8' },
-        ];
-        const templates = [...enemies, ...extraEnemies];
-        const spawnPoints = [...enemies, ...extraEnemies].map(({ col, row }) => ({ col, row }));
-        const roster = encounter.composition.flatMap(({ name, count }) => {
-            const unit = templates.find(template => template.name === name);
-            if (!unit) throw new RangeError(`Unknown encounter unit: ${name}`);
-            return Array.from({ length: count }, () => unit);
-        });
-        if (roster.length > spawnPoints.length) throw new RangeError('Encounter exceeds available battle spawn points');
-        const difficulty = encounter.level >= 4 ? 1.2 : 1;
-        const units = [
-            ...party,
-            ...roster.map((unit, index) => ({
-                ...unit, ...spawnPoints[index], id: `${unit.id}-${index}`, level: encounter.level,
-                hp: Math.round(unit.hp * difficulty), attack: Math.round(unit.attack * difficulty),
-                magic: Math.round((unit.magic ?? unit.attack) * difficulty),
-                defense: unit.defense ?? 2,
-            })),
-        ];
+        const units = BuildBattleUnits(this.battleData, encounter, this.campaign, { partyControlEnabled: this.partyControlEnabled });
         this.pawns = units.map(unit => this.AddEntity(new TacticalPawn(this.grid, this.scene, unit)));
         this.player = this.pawns[0];
         this.turn.grid = this.grid;
@@ -570,6 +689,7 @@ export class HighlandLevel extends Level3D {
 
     FinishBattle() {
         if (this.exploring !== 'battle' || this.resultHandled || !this.turn.result) return;
+        if (this.remote) return this.FinishRemoteBattle();
         if (this.turn.result === 'VICTORY') {
             const { levels } = this.lootResult ?? this.actions.Loot();
             this.resultHandled = true;
@@ -588,8 +708,34 @@ export class HighlandLevel extends Level3D {
         this.turn.enabled = false;
     }
 
+    /** Online battles end with the server's verdict: its result, rewards and save replace the local ones. */
+    FinishRemoteBattle() {
+        const settled = this.remote.Settled();
+        if (!settled) {
+            this.turn.message = 'Waiting for the server to confirm the result…';
+            return;
+        }
+        this.turn.result = settled.result;
+        this.campaign = CampaignFromServer(settled.save);
+        this.serverSave = settled.save;
+        this.resultHandled = true;
+        this.turn.message = settled.result === 'VICTORY'
+            ? settled.levels
+                ? `VICTORY · Level ${this.campaign.hero.level}! +${settled.levels * AttributePointsPerLevel} attribute points [C] · Return to ${this.zone.name}.`
+                : `VICTORY · +${settled.experience ?? 0} XP · Return to ${this.zone.name}.`
+            : 'DEFEAT · Return to Hearthvale and recover before another patrol.';
+        this.exploring = 'result';
+        this.turn.enabled = false;
+    }
+
     ReturnToExplore() {
         if (this.exploring !== 'result') return;
+        if (this.remote && this.serverSave) {
+            this.hud.panel = null;
+            this.sound.Play('success');
+            this.EnterServerZone(this.serverSave);
+            return;
+        }
         if (this.turn.result === 'DEFEAT') {
             this.campaign.hero.hp = Math.max(1, Math.ceil(this.campaign.hero.maxHp * 0.4));
             if (this.partyControlEnabled && this.campaign.companionDeployed)
@@ -620,6 +766,7 @@ export class HighlandLevel extends Level3D {
         if (success) {
             this.SyncEquipmentToPlayer();
             this.sound.Play('select');
+            this.remote?.Change('buy', { item });
         }
     }
 
@@ -638,11 +785,13 @@ export class HighlandLevel extends Level3D {
         if (this.player) this.player.stats.hp = this.campaign.hero.hp;
         this.turn.message = this.partyControlEnabled ? 'Rested at Hearthvale — your party is ready.' : 'Rested at Hearthvale — fully restored.';
         this.sound.Play('success');
+        this.remote?.Change('rest');
     }
 
     UsePotion() {
         const used = this.campaign.UsePotion();
         if (used && this.player) this.player.stats.hp = this.campaign.hero.hp;
+        if (used && this.exploring === 'explore') this.remote?.Change('use', { item: 'Potion' });
         this.turn.message = used ? 'Potion used · 24 HP restored.' : 'No potion needed or available.';
     }
 
@@ -658,6 +807,7 @@ export class HighlandLevel extends Level3D {
             return false;
         }
         this.SyncEquipmentToPlayer();
+        this.remote?.Change('attribute', { id, count });
         this.turn.message = `${Attributes[id].label} raised · ${this.campaign.attributePoints} point(s) left.`;
         this.sound.Play('select');
         return true;
@@ -674,6 +824,7 @@ export class HighlandLevel extends Level3D {
                 return false;
             }
             this.SyncEquipmentToPlayer();
+            this.remote?.Change('use', { item });
             this.turn.message = `${item} read · AP ${this.campaign.hero.apMax} · MP ${this.campaign.hero.mpMax}.`;
             this.sound.Play('success');
             return true;
@@ -727,7 +878,7 @@ export class HighlandLevel extends Level3D {
     }
 
     ResetBattle() {
-        if (this.exploring === 'battle')
+        if (this.exploring === 'battle' && !this.remote)
             this.StartBattle(this.encounterId);
     }
 
@@ -743,7 +894,10 @@ export class HighlandLevel extends Level3D {
         }
         const sold = this.campaign.SellItem(item);
         this.turn.message = sold ? `${item} sold for ${ItemInfo[item].sell}G.` : `No ${item} to sell.`;
-        if (sold) this.sound.Play('select');
+        if (sold) {
+            this.sound.Play('select');
+            this.remote?.Change('sell', { item });
+        }
         return sold;
     }
 
@@ -753,11 +907,13 @@ export class HighlandLevel extends Level3D {
             this.turn.message = 'Take equipment to the matching Hearthvale vendor.';
             return;
         }
+        const item = this.campaign.equipment[slot];
         const sold = this.campaign.SellEquipment(slot);
         this.turn.message = sold ? `${slot} sold for half value.` : `The default ${slot} cannot be sold.`;
         if (sold) {
             this.SyncEquipmentToPlayer();
             this.sound.Play('select');
+            if (this.remote) this.remote.Change('unequip', { slot }).then(() => this.remote?.Change('sell', { item }));
         }
     }
 
@@ -771,7 +927,10 @@ export class HighlandLevel extends Level3D {
         }
         const sold = this.campaign.SellOwned(item);
         this.turn.message = sold ? `${item} sold for half value.` : `No sellable ${item} in your bag.`;
-        if (sold) this.sound.Play('select');
+        if (sold) {
+            this.sound.Play('select');
+            this.remote?.Change('sell', { item });
+        }
         return sold;
     }
 
@@ -784,6 +943,7 @@ export class HighlandLevel extends Level3D {
             this.player.stats.mpMax = this.campaign.hero.mpMax;
             this.player.stats.unlockedSkills = [...this.campaign.unlockedSkills];
             this.turn.message = `${id} learned · ${this.campaign.skillPoints} skill points remain.`;
+            this.remote?.Change('learn', { id });
             this.sound.Play('success');
         }
         else
@@ -797,7 +957,7 @@ export class HighlandLevel extends Level3D {
 
     UpdateCamera(dt) {
         this.cameraAngle = MathExt.LerpAngle(this.cameraAngle, Math.PI / 4 + this.cameraStep * Math.PI / 2, Math.min(1, dt * 8));
-        const focus = this.exploring === 'explore' ? this.player.travel.position : { x: 0, z: 0 };
+        const focus = ['explore', 'travel'].includes(this.exploring) ? this.player.travel.position : { x: 0, z: 0 };
         const blend = Math.min(1, dt * 6);
         const x = this.camera.target[0] + (focus.x - this.camera.target[0]) * blend;
         const z = this.camera.target[2] + (focus.z - this.camera.target[2]) * blend;
@@ -814,6 +974,7 @@ export class HighlandLevel extends Level3D {
         if (!this.hud.help.visible)
             super.OnUpdate(dt);
         if (!this.hud.help.visible) this.UpdatePatrols(dt);
+        this.remote?.Update(dt);
         if (this.exploring === 'battle') this.FinishBattle();
         if (this.exploring === 'explore') this.campaign.SyncHero(this.player.stats);
         this.terrain.Highlights(this.turn, this.exploring === 'explore' ? this.exploreRoute : null, this.BattlePreview());
@@ -845,6 +1006,7 @@ export class HighlandLevel extends Level3D {
 
     OnExit() {
         this.releaseViewport?.();
+        this.remote?.Detach();
         this.hud?.Dispose();
         super.OnExit();
     }

@@ -5,14 +5,14 @@
       "id": "highland-tactics-3d",
       "name": "Highland Tactics 3D",
       "dimension": "3d",
-      "description": "A single-hero tactical RPG: explore three authored 21×17 zones with click-to-path routes, roaming skeleton patrols and shopkeeper NPCs, then fight 6 AP / 3 MP tactical battles alone. Each level grants 5 attribute points; AP and MP only grow through rare gear and capped permanent scrolls. Separate Inventory (tabs, search, sort, weight and rich item cards) and Equipment (11-slot paper doll, stat breakdown, AP/MP budget, Fire/Poison/Arcane resistances) panels, a radar minimap, a world log and a PC combat dock. Heroes, enemies, weapons, buildings and props are CC0 KayKit models; the licenses ship with the build.",
-      "controls": "Walk with WASD/arrows or click any reachable tile. F or the Talk icon interacts with nearby vendors. C character & attributes (arrows + Enter or the + buttons spend points), I inventory (/ search, [ ] tabs, double-click or Enter to use/equip), E equipment (arrows pick slot and item, Enter equips), K skill graph, M world map, B settings/control modes. In PC and Tablet battles, 1 basic attack, 2–7 class skills, 8–0 Potion/Ether/Antidote; hover a slot or an enemy to preview, click a tile to move, Space passes the turn, right-click or Escape cancels. V opens the optional tactical ring; Console and Mobile use radial commands. Q/O orbit, T rain, R retry, H help.",
+      "description": "A single-hero tactical RPG: explore three authored 21×17 zones with click-to-path routes, roaming skeleton patrols and shopkeeper NPCs, then fight 6 AP / 3 MP tactical battles alone. Each level grants 5 attribute points; AP and MP only grow through rare gear and capped permanent scrolls. Separate Inventory (tabs, search, sort, weight and rich item cards) and Equipment (11-slot paper doll, stat breakdown, AP/MP budget, Fire/Poison/Arcane resistances) panels, a radar minimap, a world log and a PC combat dock. Offline is the default and needs no server; with the companion Node.js + SQLite server, LAN and Online modes add accounts, shared zones with other players, zone chat and server-checked shops, gear and battles. Heroes, enemies, weapons, buildings and props are CC0 KayKit models; the licenses ship with the build.",
+      "controls": "Walk with WASD/arrows or click any reachable tile. F or the Talk icon interacts with nearby vendors. C character & attributes (arrows + Enter or the + buttons spend points), I inventory (/ search, [ ] tabs, double-click or Enter to use/equip), E equipment (arrows pick slot and item, Enter equips), K skill graph, M world map, B settings/control modes. In PC and Tablet battles, 1 basic attack, 2–7 class skills, 8–0 Potion/Ether/Antidote; hover a slot or an enemy to preview, click a tile to move, Space passes the turn, right-click or Escape cancels. V opens the optional tactical ring; Console and Mobile use radial commands. Q/O orbit, T rain, R retry (Offline), H help. Signed in to a server, / opens zone chat.",
       "playable": true,
       "screenshot": true,
       "screenshotExtension": "png",
       "statusLabel": "Playable",
-      "sourceRevision": "78d1bde02292d39c35366c1e9104e15eaf2bc4f1",
-      "runtimeRevision": "16f95fc35922fee19ee3849738bff6b858748ec4"
+      "sourceRevision": "b90497e",
+      "runtimeRevision": "16f95fc"
     },
     {
       "id": "aether-observatory-3d",

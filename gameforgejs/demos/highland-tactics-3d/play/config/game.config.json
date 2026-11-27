@@ -6,6 +6,11 @@
   "gameplay": {
     "partyControlEnabled": false
   },
+  "network": {
+    "mode": "offline",
+    "lanPort": 7878,
+    "onlineUrl": ""
+  },
   "window": {
     "title": "Highland Tactics — GameForgeJS"
   },

@@ -70,13 +70,8 @@ export class TurnSystem extends Component {
         this.feedback = this.feedback.filter(text => text.life > 0);
         if (this.result)
             return;
-        if (this.phase === 'charge') {
-            for (const pawn of this.Alive())
-                pawn.stats.ct += pawn.stats.speed * dt * 3 * (pawn.stats.haste > 0 ? 1.5 : 1);
-            const ready = this.Alive().filter(p => p.stats.ct >= 100).sort((a, b) => b.stats.ct - a.stats.ct || a.stats.id.localeCompare(b.stats.id));
-            if (ready.length)
-                this.Begin(ready[0]);
-        }
+        if (this.phase === 'charge')
+            this.Charge(dt);
         else if (this.phase === 'ai') {
             this.delay -= dt;
             if (this.delay <= 0)
@@ -95,6 +90,30 @@ export class TurnSystem extends Component {
                 this.message = `${this.active.stats.name}'s time ran out`;
                 this.PassTurn();
             }
+        }
+    }
+    /**
+     * Fills every unit's CT for dt seconds. The first unit to reach 100 starts its turn at the
+     * exact moment it gets there (ties by id), so the turn order does not depend on the frame
+     * rate: a browser at 30 or 144 FPS and the MMO server's fixed steps agree.
+     */
+    Charge(dt) {
+        const alive = this.Alive(), rate = pawn => pawn.stats.speed * 3 * (pawn.stats.haste > 0 ? 1.5 : 1);
+        let first = null, wait = dt;
+        for (const pawn of alive) {
+            const speed = rate(pawn);
+            if (!(speed > 0)) continue;
+            const time = Math.max(0, (100 - pawn.stats.ct) / speed);
+            if (time < wait || (time === wait && first && pawn.stats.id.localeCompare(first.stats.id) < 0)) {
+                wait = time;
+                first = pawn;
+            }
+        }
+        for (const pawn of alive)
+            pawn.stats.ct += rate(pawn) * wait;
+        if (first) {
+            first.stats.ct = Math.max(100, first.stats.ct);
+            this.Begin(first);
         }
     }
     /** Seconds left on the active ally's turn timer, or null when the turn is untimed. */

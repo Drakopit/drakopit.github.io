@@ -70,7 +70,7 @@ export const SkillTrees = Object.freeze({
     ],
     arcanist: [
         { id: 'fireball', name: 'Fireball', kind: 'active', description: 'A fiery cross that burns nearby foes.', requires: [] },
-        { id: 'deep-focus', name: 'Deep Focus', kind: 'passive', description: '+1 maximum AP.', requires: ['fireball'], ap: 1 },
+        { id: 'deep-focus', name: 'Deep Focus', kind: 'passive', description: '+2 magic.', requires: ['fireball'], magic: 2 },
         { id: 'arcane-burst', name: 'Arcane Burst', kind: 'active', description: 'A cross blast that exposes foes.', requires: ['deep-focus'] },
         { id: 'chain-lightning', name: 'Chain Lightning', kind: 'active', description: 'A stunning cross blast.', requires: ['arcane-burst'] },
         { id: 'frost-lance', name: 'Frost Lance', kind: 'active', description: 'A piercing line of ice that slows.', requires: ['fireball'] },
@@ -79,7 +79,7 @@ export const SkillTrees = Object.freeze({
     ],
     cleric: [
         { id: 'heal', name: 'Heal', kind: 'active', description: 'Heal yourself or an ally; scales with MAG.', requires: [] },
-        { id: 'devotion', name: 'Devotion', kind: 'passive', description: '+1 maximum AP.', requires: ['heal'], ap: 1 },
+        { id: 'devotion', name: 'Devotion', kind: 'passive', description: '+2 magic.', requires: ['heal'], magic: 2 },
         { id: 'healing-light', name: 'Healing Light', kind: 'active', description: 'Heals allies in a cross.', requires: ['devotion'] },
         { id: 'haste', name: 'Haste', kind: 'active', description: 'Speed an ally for two turns.', requires: ['healing-light'] },
         { id: 'smite', name: 'Smite', kind: 'active', description: 'Holy light that stuns a foe.', requires: ['heal'] },

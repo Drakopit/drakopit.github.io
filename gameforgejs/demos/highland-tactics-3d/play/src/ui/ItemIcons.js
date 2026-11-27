@@ -62,6 +62,11 @@ export function DrawIconShape(c, icon, rect, { fill = '#7294a3', stroke = '#c8d0
         path([[0, -9], [8, -6], [7, 3], [0, 9], [-7, 3], [-8, -6]]); c.fill(); c.stroke();
         c.beginPath(); c.moveTo(...p(0, -7)); c.lineTo(...p(0, 7)); c.stroke();
     }
+    else if (icon === 'scroll') {
+        c.rect(...p(-7, -7), 14 * k, 14 * k); c.fillStyle = '#e8d6a4'; c.fill(); c.stroke();
+        c.beginPath(); c.arc(...p(-7, -7), 2.5 * k, 0, Math.PI * 2); c.arc(...p(-7, 7), 2.5 * k, 0, Math.PI * 2); c.stroke();
+        c.beginPath(); c.moveTo(...p(-3, -2)); c.lineTo(...p(4, -2)); c.moveTo(...p(-3, 2)); c.lineTo(...p(4, 2)); c.strokeStyle = '#9b6bd1'; c.stroke();
+    }
     else if (icon === 'shard') {
         path([[0, -10], [5, -2], [2, 9], [-3, 9], [-5, -2]]); c.fillStyle = '#e07a4c'; c.fill(); c.stroke();
         c.beginPath(); c.moveTo(...p(0, -10)); c.lineTo(...p(-1, 9)); c.stroke();

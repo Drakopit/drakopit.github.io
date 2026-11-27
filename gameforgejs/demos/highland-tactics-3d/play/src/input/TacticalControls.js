@@ -149,6 +149,8 @@ export class TacticalControls {
                 l.hud.MoveMapSelection(index === 0 || index === 3 ? -1 : 1);
             else if (l.exploring === 'explore' && l.hud.panel === 'skills')
                 l.hud.MoveSkillTreeSelection(index === 0 || index === 3 ? -1 : 1);
+            else if (l.exploring === 'explore' && l.hud.panel === 'hero')
+                l.hud.MoveAttributeSelection(index === 0 || index === 3 ? -1 : 1);
             else if (t.phase === 'command')
                 t.command = (t.command + (index === 0 || index === 3 ? -1 : 1) + Commands.length) % Commands.length;
             else if (t.phase === 'face')
@@ -179,6 +181,10 @@ export class TacticalControls {
             }
             if (l.hud.panel === 'settings' && ActionManager.IsActionDown('CONFIRM')) {
                 l.hud.ActivateSettingsSelection();
+                return;
+            }
+            if (l.hud.panel === 'hero' && ActionManager.IsActionDown('CONFIRM')) {
+                l.hud.ActivateAttributeSelection();
                 return;
             }
             if (l.hud.panel === 'skills' && ActionManager.IsActionDown('CONFIRM')) {

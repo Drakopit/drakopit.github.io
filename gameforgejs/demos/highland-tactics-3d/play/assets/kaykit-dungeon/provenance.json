@@ -1,0 +1,236 @@
+{
+  "author": "Kay Lousberg (KayKit)",
+  "license": "CC0 1.0 (see the copied License files)",
+  "files": [
+    {
+      "file": "torch_lit.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/torch_lit.gltf",
+      "sha256": "2962691576e45f5b80debe2ce35f99d9f929f9d013ad9f7bc8e96341beef48e5"
+    },
+    {
+      "file": "torch_lit.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/torch_lit.bin",
+      "sha256": "1ac41275544c951d7db724b78452b5a27399718691b83de3c1ba727d8b9e5944"
+    },
+    {
+      "file": "pillar.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/pillar.gltf",
+      "sha256": "e82b97258de31743aa7874abebd27764e4a48b19d686f6e1493ce8209ac894b0"
+    },
+    {
+      "file": "pillar.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/pillar.bin",
+      "sha256": "6fc17e077a7f071f44aa24ee6dce92a719d910363cabfc17ea0cf849983d048f"
+    },
+    {
+      "file": "pillar_decorated.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/pillar_decorated.gltf",
+      "sha256": "e37f204f4dc911c8b5a0f13121aa7857026cd2b6d5e9a665dc67bcc247680342"
+    },
+    {
+      "file": "pillar_decorated.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/pillar_decorated.bin",
+      "sha256": "31146b0dbda9198f5cef7d94b2f02994c0aa2f7763b95a28198824b4ca4f1055"
+    },
+    {
+      "file": "column.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/column.gltf",
+      "sha256": "2208960efa3f835a4dbd87e7ed942a81f57f7eb793388d5db65590c5936a8403"
+    },
+    {
+      "file": "column.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/column.bin",
+      "sha256": "e82740f9fda6b695caf0c956c7d74ae31db307eaa344cdd75fe548fd0482387e"
+    },
+    {
+      "file": "rubble_large.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/rubble_large.gltf",
+      "sha256": "ec76b40daae2426b59a9e8cd4078f71280fa73ce1eb8c58a4d58d59a6b581b50"
+    },
+    {
+      "file": "rubble_large.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/rubble_large.bin",
+      "sha256": "688a0b95a2607ef536592ea2971301ed363767aa33ec93f9a3f79d074539fa64"
+    },
+    {
+      "file": "rubble_half.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/rubble_half.gltf",
+      "sha256": "6afe02e2962410d95cd07dfdaea78c6dafd95eefeab3fdabe03d28b8f0200e68"
+    },
+    {
+      "file": "rubble_half.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/rubble_half.bin",
+      "sha256": "b7bd410520c16c0bf0407ae562be28d44e8de84146363e13d5c2bd99edf0f9d1"
+    },
+    {
+      "file": "barrier.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/barrier.gltf",
+      "sha256": "10177e924141244ee6d53e87399c1f12db4dfb9602776634e61e3210b1bfb015"
+    },
+    {
+      "file": "barrier.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/barrier.bin",
+      "sha256": "cc3ad43da98574947dbcf73df39f5acdcd4cf37f69871ed162b566c2c950b5e7"
+    },
+    {
+      "file": "chest_gold.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/chest_gold.gltf",
+      "sha256": "91d388b9bc142a37064d1ad0b3e096205b616ea4a84146873b20eb88deffbeef"
+    },
+    {
+      "file": "chest_gold.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/chest_gold.bin",
+      "sha256": "b47929753acecb995bab5afa41233c0f87d78804c94878fc9977dc0390e9dbc4"
+    },
+    {
+      "file": "banner_red.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/banner_red.gltf",
+      "sha256": "b338f5e3c1f5ddfa377fa939132ac14dee0df623757fcc97e6ab15b040d18000"
+    },
+    {
+      "file": "banner_red.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/banner_red.bin",
+      "sha256": "81cebdf8aa6b9773fdf6650cb089692e9257adb8bc52f8533d2ff143835d5a6b"
+    },
+    {
+      "file": "banner_patternA_blue.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/banner_patternA_blue.gltf",
+      "sha256": "1c16472feb0822a9968a55f85c3e22387d840b85111cc7a277a20501b1016284"
+    },
+    {
+      "file": "banner_patternA_blue.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/banner_patternA_blue.bin",
+      "sha256": "66c96fe3d32c09a0724d1da1bded9ad9c4af13ead1735a73165715cd56f91323"
+    },
+    {
+      "file": "keg.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/keg.gltf",
+      "sha256": "a7a442e4624edb6ef040482a74fdb50cc3d29dddf424cfc123b5d991bee23188"
+    },
+    {
+      "file": "keg.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/keg.bin",
+      "sha256": "31dc451ca13dca4e9313fd590ad64ba43a9cadaccd750cde230990ab2ed07bfe"
+    },
+    {
+      "file": "barrel_large.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/barrel_large.gltf",
+      "sha256": "6a3b211d6ae6bfb028a0bbb836d5aec6d09c805c43dbd03c28543458243273cc"
+    },
+    {
+      "file": "barrel_large.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/barrel_large.bin",
+      "sha256": "f6ed14f969f48ba104521223486e3be16e5b4efee6d369b61ff5fceb53bae4c7"
+    },
+    {
+      "file": "candle_triple.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/candle_triple.gltf",
+      "sha256": "aaedcfa4c76bd509e808509e2affabaacea71af8287006a157789d75fcd4fef8"
+    },
+    {
+      "file": "candle_triple.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/candle_triple.bin",
+      "sha256": "483a4ad1141b982a58f77d292bd2dfc81c654e20bf9d47698b23b8e61779530f"
+    },
+    {
+      "file": "sword_shield.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/sword_shield.gltf",
+      "sha256": "5b852f28b851953b6e10d6ee3f882104cdef32ccc53bdfaaedc75a212c9cbffc"
+    },
+    {
+      "file": "sword_shield.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/sword_shield.bin",
+      "sha256": "9f53f0db78579301a63474cd303a610a3ed9c9e4c841722907221fd99e790d4f"
+    },
+    {
+      "file": "table_medium.gltf",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/table_medium.gltf",
+      "sha256": "826a24b261e897b37dcaf3470f6c9275830c4a8ed58f052ea9abaffde9fd086a"
+    },
+    {
+      "file": "table_medium.bin",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/gltf/table_medium.bin",
+      "sha256": "80675d395aba32e885564eb675882080b3a2dc58d5eae612daf5f9798ac650d6"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "dungeon_texture.png",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/Assets/textures/dungeon_texture.png",
+      "sha256": "2f9b3819af0c9ae0fd6f4c559a127c07ae849448d9b0e49bfb194e8827f93a4f"
+    },
+    {
+      "file": "License.txt",
+      "source": "KayKit_Dungeon_Pack_1.1_FREE/License.txt",
+      "sha256": "3ad9bfddc7e218841ee558f6c462369230021192183a29e5ed1793942c752290"
+    }
+  ]
+}

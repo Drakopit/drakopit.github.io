@@ -9,6 +9,10 @@ BootstrapGame({
         new HighlandLevel('hearthvale'),
         new HighlandLevel('mistfell'),
         new HighlandLevel('ashen-ridge'),
+        new HighlandLevel('highland-citadel'),
+        new HighlandLevel('sunlit-meadow'),
+        new HighlandLevel('whispering-woods'),
+        new HighlandLevel('sunken-ruins'),
         new HighlandLevel('battlefield'),
     ],
 });

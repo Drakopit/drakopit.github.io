@@ -35,6 +35,38 @@
     },
     {
       "dimension": "3d",
+      "id": "sunlit-meadow",
+      "label": "Sunlit Meadow",
+      "format": "gameforgejs.scene",
+      "path": "scenes/sunlit-meadow.gfscene.json",
+      "resourceName": "sunlit-meadow"
+    },
+    {
+      "dimension": "3d",
+      "id": "whispering-woods",
+      "label": "Whispering Woods",
+      "format": "gameforgejs.scene",
+      "path": "scenes/whispering-woods.gfscene.json",
+      "resourceName": "whispering-woods"
+    },
+    {
+      "dimension": "3d",
+      "id": "sunken-ruins",
+      "label": "Sunken Ruins",
+      "format": "gameforgejs.scene",
+      "path": "scenes/sunken-ruins.gfscene.json",
+      "resourceName": "sunken-ruins"
+    },
+    {
+      "dimension": "3d",
+      "id": "highland-citadel",
+      "label": "Highland Citadel",
+      "format": "gameforgejs.scene",
+      "path": "scenes/highland-citadel.gfscene.json",
+      "resourceName": "highland-citadel"
+    },
+    {
+      "dimension": "3d",
       "id": "battlefield",
       "label": "Highland battlefield",
       "format": "gameforgejs.scene",

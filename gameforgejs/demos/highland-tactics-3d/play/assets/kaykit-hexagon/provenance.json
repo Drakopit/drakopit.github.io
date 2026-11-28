@@ -113,6 +113,266 @@
       "sha256": "04aea453efb0632960b2395a356fd0ee2fd4c24e16fe726be956b1ee182cf4b5"
     },
     {
+      "file": "building_tavern_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_tavern_blue.gltf",
+      "sha256": "58a3573cf468f9c5f1d03a6da74fbc884f5f662ccddbfef2a10860abfe50109b"
+    },
+    {
+      "file": "building_tavern_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_tavern_blue.bin",
+      "sha256": "00a4f91c275d168a4fcaea5f35cd4839047b498232f5f807d29ec17aa9490fe9"
+    },
+    {
+      "file": "building_church_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_church_blue.gltf",
+      "sha256": "ac2d9dfbdcffd1604e1522ddb26fe27c1feae2bc01bf90664c8044b22926867b"
+    },
+    {
+      "file": "building_church_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_church_blue.bin",
+      "sha256": "f1609a2910972dd82f948b7265e65646a93cbe303d5deb7c69d5b3d6f4f50dda"
+    },
+    {
+      "file": "building_tower_A_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_tower_A_blue.gltf",
+      "sha256": "792eee30a2c4524a1c26eace28cd7b324ef86a72120766399e695923ea06058c"
+    },
+    {
+      "file": "building_tower_A_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_tower_A_blue.bin",
+      "sha256": "5feb3e59e0a48d3bfaf852374c870b28452526c795ac54c344a23e57f4e5211d"
+    },
+    {
+      "file": "building_archeryrange_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_archeryrange_blue.gltf",
+      "sha256": "d1bda2174779c08e01ef3ea79695a8bad11ba710ce19f49c3934386568eedb85"
+    },
+    {
+      "file": "building_archeryrange_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_archeryrange_blue.bin",
+      "sha256": "10c8477c5c7d53e8d6062e9dd45f24e79114fe44bdd1b94b0cb5152c3e6fb3a9"
+    },
+    {
+      "file": "building_home_A_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_home_A_blue.gltf",
+      "sha256": "60b3568e086d586b491eed8168c46acb61bb9670fb2c296faa64929b18dfcbea"
+    },
+    {
+      "file": "building_home_A_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_home_A_blue.bin",
+      "sha256": "31c30bc9d4fb9ac6182e20331f2501ec153131ca01a57d8412a6b8e6219c23fd"
+    },
+    {
+      "file": "building_windmill_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_windmill_blue.gltf",
+      "sha256": "a98412d4bcd016ce63f66b5d7193adf664867c3649829707b04586fb73e31f38"
+    },
+    {
+      "file": "building_windmill_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/blue/building_windmill_blue.bin",
+      "sha256": "ced3ff9447703352a7d57e2beb5b5e6f0c661c4d6c623a5d4efc22740103f467"
+    },
+    {
+      "file": "building_castle_red.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_castle_red.gltf",
+      "sha256": "a9006907e13955578e803f0230a8b641d20bc499aeb6e4ead546e6e6894f4e9c"
+    },
+    {
+      "file": "building_castle_red.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_castle_red.bin",
+      "sha256": "41423a51068adeadbb1630503d55c4088498200f12ff8286e949c316ab5cdada"
+    },
+    {
+      "file": "building_tower_B_red.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_tower_B_red.gltf",
+      "sha256": "ea0d5107771df1532eb1dffe20d5c69c34eced9e67515eef8c7218736cb592b2"
+    },
+    {
+      "file": "building_tower_B_red.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_tower_B_red.bin",
+      "sha256": "258731d5116a6885f950fec0896b7412b2b133640178923790d390dbdad56c81"
+    },
+    {
+      "file": "building_tower_catapult_red.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_tower_catapult_red.gltf",
+      "sha256": "338440a8120a9180f166e43504c9638d5cc743ae922c486df76b250fe64f5169"
+    },
+    {
+      "file": "building_tower_catapult_red.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/red/building_tower_catapult_red.bin",
+      "sha256": "a0ae8566b37251199e31347350126ea23e5090961e86a632a6ac47b8c3e696fc"
+    },
+    {
+      "file": "fence_wood_straight.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_wood_straight.gltf",
+      "sha256": "5a2af87c5a6b90875e3bc11f289a321a5d4b2459975dba52351edbc58b2132e3"
+    },
+    {
+      "file": "fence_wood_straight.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_wood_straight.bin",
+      "sha256": "fa71b68019e2fe287621f3a5b06b7e18d1dcdd74a6f1c38af7888a8fb0c0078b"
+    },
+    {
+      "file": "fence_stone_straight.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_stone_straight.gltf",
+      "sha256": "9738b7f152b3e4d9912cbad772435d9bd8247982be81e713b9b3ddc7579d1439"
+    },
+    {
+      "file": "fence_stone_straight.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_stone_straight.bin",
+      "sha256": "a8b6f2cd8f0f67996b1e6fb4675a707d1cc43b5d5c743ac6af7c0aec695e3aa9"
+    },
+    {
+      "file": "wall_straight.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/wall_straight.gltf",
+      "sha256": "7f466420a00fac9c6eb568178a81ef2719ac3c710f1fdc4027f8fc46a262ad7a"
+    },
+    {
+      "file": "wall_straight.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/wall_straight.bin",
+      "sha256": "919cfc7da53ddfba6143eccfbdf8bdffa4bdb5a01e7099d289b99832971d18f4"
+    },
+    {
+      "file": "wall_straight_gate.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/wall_straight_gate.gltf",
+      "sha256": "877f3e95f89c23741c38b9d2f8f307c1369042ec5c354d7858d72ab2b9666c3a"
+    },
+    {
+      "file": "wall_straight_gate.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/wall_straight_gate.bin",
+      "sha256": "9e64ec5b8c23113bc1bdb57ae824e067216dcf3d8475e6303e3198556fb8da28"
+    },
+    {
+      "file": "building_destroyed.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/building_destroyed.gltf",
+      "sha256": "e5cd1027e9c2f7981a29a7d9e036504f6b168680b017a0289313a8fdcbc634bc"
+    },
+    {
+      "file": "building_destroyed.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/building_destroyed.bin",
+      "sha256": "7f022ee7422b3af497d95b586fd38940b5be0e390e42071f8c696923d92d6bbf"
+    },
+    {
+      "file": "building_grain.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/building_grain.gltf",
+      "sha256": "f0369ab4750c4b60d34b6afdcef3d5545cb80d94c10c322d4a66aebe7b209d89"
+    },
+    {
+      "file": "building_grain.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/building_grain.bin",
+      "sha256": "09793d41dfecbd5ace3a2fae3de7a5117d740b7b1ba2a2e85fbe7d1b75bf0297"
+    },
+    {
+      "file": "target.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/target.gltf",
+      "sha256": "e92374d50c46b5816a1c118260d27ac49d3e52e8d7de6b0b7a9326a69c43cc44"
+    },
+    {
+      "file": "target.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/target.bin",
+      "sha256": "783dc41050451fb43efafc97b60bf486a50679bac07a782c0beb7af9d05bbe2e"
+    },
+    {
+      "file": "bucket_water.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/bucket_water.gltf",
+      "sha256": "5e7ba97fe666f4a05d1933ea6d2d8555f5846ca4fc0f19e673e922d8441c8c4b"
+    },
+    {
+      "file": "bucket_water.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/bucket_water.bin",
+      "sha256": "715a23aa28232449c1b99d62a5f9d432f080dda0e766cbe09ef2fee38b4be958"
+    },
+    {
+      "file": "wheelbarrow.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/wheelbarrow.gltf",
+      "sha256": "bb037662a3e5be1f4fe597ffc4927d2a6ad88d307da10388cfb178ca5fdae63d"
+    },
+    {
+      "file": "wheelbarrow.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/wheelbarrow.bin",
+      "sha256": "72ca612b0dc940c856ed5abbbb9df9562c09bff52cfb2258375b16cbaad29e12"
+    },
+    {
+      "file": "resource_lumber.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/resource_lumber.gltf",
+      "sha256": "601a69f44f0c4a9b5070a80bd4a20887960e01f1523a6125c1edc8ba19168f1f"
+    },
+    {
+      "file": "resource_lumber.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/resource_lumber.bin",
+      "sha256": "90bb1e1f23dbc3de372059b45ae289ec414b1fb50b49852ce0a3b30dc370db8b"
+    },
+    {
+      "file": "flag_blue.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_blue.gltf",
+      "sha256": "de33035f0e9945f8d4e6ca3242e18f4822227cc8cc3a1afd9f0d193419573f08"
+    },
+    {
+      "file": "flag_blue.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_blue.bin",
+      "sha256": "2ff9fa2caea9c02a2eda8092c203e378ef92dca7741d41110627740211fc03a7"
+    },
+    {
+      "file": "flag_yellow.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_yellow.gltf",
+      "sha256": "0e68155151ea610a3a4f37c30127b1275e51c66c2c7afc48803196730b10119a"
+    },
+    {
+      "file": "flag_yellow.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/flag_yellow.bin",
+      "sha256": "f64d1627cd1222f79c02d0e999528aee9030e4d898b9ea7f633ffd8a12f23cea"
+    },
+    {
+      "file": "crate_long_A.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/crate_long_A.gltf",
+      "sha256": "36b6bc187c410f3a4d7ec1bd88161e20ffd43f4b3a952c14165cfb83f65a06ff"
+    },
+    {
+      "file": "crate_long_A.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/crate_long_A.bin",
+      "sha256": "1fb1050d8da5dfa703ed1d5a6c853682161dd299dfa23112941f625f63eae1c3"
+    },
+    {
+      "file": "bucket_arrows.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/bucket_arrows.gltf",
+      "sha256": "7b01b94f11ee20c38f712197012dde3a48449f61d8d5831a787ab48c686ca1c2"
+    },
+    {
+      "file": "bucket_arrows.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/props/bucket_arrows.bin",
+      "sha256": "374d4ba50d81d78443ac181e861f94640e902152f69e0a01bd09f32094864966"
+    },
+    {
+      "file": "waterlily_A.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/waterlily_A.gltf",
+      "sha256": "037a145b2e75f8dc35b0712456469dd99697046b112194843deac454589474b8"
+    },
+    {
+      "file": "waterlily_A.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/waterlily_A.bin",
+      "sha256": "d5566117df906426f5ccb1f1385b31e931334eb141e8c4b6d1901181423f3b5a"
+    },
+    {
+      "file": "waterplant_A.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/waterplant_A.gltf",
+      "sha256": "a4b1c359cc60eb24e702d60777f65795cc490e79ac3ce2699458909a470a7abd"
+    },
+    {
+      "file": "waterplant_A.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/waterplant_A.bin",
+      "sha256": "03022fac7dbab3ddff3f3ea87d682f4085494f69f43b2229eab651e00cbffec1"
+    },
+    {
+      "file": "rock_single_C.gltf",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/rock_single_C.gltf",
+      "sha256": "4cbf4a67fa176d2374b4863348fddf7879b892e612dd455ad14173f17172d45b"
+    },
+    {
+      "file": "rock_single_C.bin",
+      "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/decoration/nature/rock_single_C.bin",
+      "sha256": "7d63c76a9f576bda17a63c77d8f7c9f617e11ed57e3459d9c8d5da7ebdf0b8f1"
+    },
+    {
       "file": "hexagons_medieval.png",
       "source": "KayKit_Medieval_Hexagon_Pack_1.0_FREE/Textures/hexagons_medieval.png",
       "sha256": "5301a06866ba3be68dcc14cc429bd6d0f69004b72884283715d7e233f2e9782e"

@@ -73,6 +73,86 @@
       "sha256": "8659daf4bc724f414eda02193bc6a48132b595eef7c62009b7c0a3d93a8aa9b2"
     },
     {
+      "file": "Tree_3_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_3_A_Color1.gltf",
+      "sha256": "a5140f21978004544844df4c2969625724c2c263e74f798716ea9e115216a230"
+    },
+    {
+      "file": "Tree_3_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_3_A_Color1.bin",
+      "sha256": "ea2f20e847bd3bcf748b9f1cf9932abe45967db8dcacfeafaea1f07e3da6a2e9"
+    },
+    {
+      "file": "Tree_2_C_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_2_C_Color1.gltf",
+      "sha256": "55a4e60b889a4823b72f1741b78ad6e8d6dd3e3f43b74a19d840ca7c7b4b1f97"
+    },
+    {
+      "file": "Tree_2_C_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_2_C_Color1.bin",
+      "sha256": "4fc63a4762f8aa024e777707522fb7d3e8cd599182b9392e7ac4e70e245286ff"
+    },
+    {
+      "file": "Tree_1_B_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_1_B_Color1.gltf",
+      "sha256": "03f4773b06adf252ac8ca0a9bfdc77f315c1f4036b6151796f110b4897e586c5"
+    },
+    {
+      "file": "Tree_1_B_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_1_B_Color1.bin",
+      "sha256": "5d4129bdc6f13a24e076f7fa870c6695dc20491f4820c54153fe9d1d90b40522"
+    },
+    {
+      "file": "Bush_1_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Bush_1_A_Color1.gltf",
+      "sha256": "bc6cf33dbed296a181d8afbd82ffe1c44ee5e57cb095f9efdf4b63e93c165b70"
+    },
+    {
+      "file": "Bush_1_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Bush_1_A_Color1.bin",
+      "sha256": "66ba041776959c19849954c9d2393528783461ca6dd11ebe1c1f6b9026b63c0c"
+    },
+    {
+      "file": "Bush_4_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Bush_4_A_Color1.gltf",
+      "sha256": "56b56b9187350ad1222a4bd61112ed3c2a839a49ad876ca6e01ef17b426f3d02"
+    },
+    {
+      "file": "Bush_4_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Bush_4_A_Color1.bin",
+      "sha256": "e6716cb3d232d0f24f719ef9edf61fb1218e570f3767228c4dc155eaf7e2f56f"
+    },
+    {
+      "file": "Grass_2_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Grass_2_A_Color1.gltf",
+      "sha256": "fa822543a17721c40b3386557ed37af6c44fd6d4ce6b4fc16f9187d69cde8fe1"
+    },
+    {
+      "file": "Grass_2_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Grass_2_A_Color1.bin",
+      "sha256": "07fc84eda0b374b3fd4afed280452f0be21f75c0e53fbf6778d3997c09832a64"
+    },
+    {
+      "file": "Rock_2_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Rock_2_A_Color1.gltf",
+      "sha256": "bbe5254a4c13be7f4aa017297a9458db441e99234028af378d29207d80be4696"
+    },
+    {
+      "file": "Rock_2_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Rock_2_A_Color1.bin",
+      "sha256": "ffee05221dda59936ba6c94112b65bb3c8a38e938fbb219a2808a1590daab050"
+    },
+    {
+      "file": "Tree_Bare_2_A_Color1.gltf",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_Bare_2_A_Color1.gltf",
+      "sha256": "426327b23a1e52e6f2e4d5e977794cf92fc4121ea92d9c82ed475ead5b71cb50"
+    },
+    {
+      "file": "Tree_Bare_2_A_Color1.bin",
+      "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Assets/gltf/Tree_Bare_2_A_Color1.bin",
+      "sha256": "399090bcbf7e791f588256001fa4a9c3bb7c96332d09eb56281f58e81def9e06"
+    },
+    {
       "file": "forest_texture.png",
       "source": "KayKit_Forest_Nature_Pack_1.0_FREE/Textures/forest_texture.png",
       "sha256": "406c01e0ac1d3368fc7b26ff5fb0d3335ba5e48bd19a703540ed92ee3971ea39"

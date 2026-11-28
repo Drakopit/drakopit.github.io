@@ -5,7 +5,7 @@ import { BattleFromScene } from '../data/BattleScene.js';
 import { BuildBattleUnits, HeroUnit } from '../data/BattleRoster.js';
 import { HighlandCampaign, EquipmentSlot, ItemInfo, Attributes, AttributePointsPerLevel } from '../data/HighlandCampaign.js';
 import { FindExplorePath as FindPath } from '../data/ExplorePathfinding.js';
-import { GetZone } from '../data/WorldMaps.js';
+import { GetZone, RouteLock } from '../data/WorldMaps.js';
 import { TacticalPawn } from '../entities/TacticalPawn.js';
 import { HighlandEnvironment } from '../entities/HighlandEnvironment.js';
 import { TerrainView } from '../rendering/TerrainView.js';
@@ -388,7 +388,7 @@ export class HighlandLevel extends Level3D {
                         || other.travel.path.some(step => step.col === tile.col && step.row === tile.row)))
                     || this.IsShopkeeperTile(tile)
                     || (this.zone.structures ?? []).some(structure => structure.col === tile.col && structure.row === tile.row)
-                    || [this.zone.portal, this.zone.returnPortal].some(portal => portal?.col === tile.col && portal?.row === tile.row))
+                    || (this.zone.portals ?? [this.zone.portal, this.zone.returnPortal]).some(portal => portal?.col === tile.col && portal?.row === tile.row))
                     continue;
                 const path = FindPath(this.grid, group.stats, tile);
                 if (path?.length === 1) {
@@ -581,7 +581,7 @@ export class HighlandLevel extends Level3D {
     }
 
     IsExploreTrigger(tile) {
-        const points = [this.zone.portal, this.zone.returnPortal];
+        const points = this.zone.portals ?? [this.zone.portal, this.zone.returnPortal];
         return points.some(point => point && point.col === tile.col && point.row === tile.row)
             || Boolean(this.GroupNear(tile));
     }
@@ -614,10 +614,11 @@ export class HighlandLevel extends Level3D {
         this.campaign.SyncHero(this.player.stats);
         const key = `${tile.col},${tile.row}`;
         const pointKey = point => point && `${point.col},${point.row}`;
-        const portal = this.zone.portal && pointKey(this.zone.portal) === key ? this.zone.portal : this.zone.returnPortal;
-        if (portal && pointKey(portal) === key) {
-            if (portal.to === 'ashen-ridge' && !this.campaign.clearedZones.has('mistfell')) {
-                this.turn.message = 'Defeat the Mistfell patrol to open the ridge road.';
+        const portal = (this.zone.portals ?? [this.zone.portal, this.zone.returnPortal]).find(point => point && pointKey(point) === key);
+        if (portal) {
+            const locked = RouteLock(portal.to, this.campaign.clearedZones);
+            if (locked) {
+                this.turn.message = locked;
                 this.remote?.Moved(this.player.stats);
                 return;
             }

@@ -13279,6 +13279,51 @@
       }
     },
     {
+      "id": "portal_ashen_ridge",
+      "name": "HIGHLAND CITADEL",
+      "type": "MeshInstance3D",
+      "layer": "portals",
+      "transform": {
+        "position": [
+          11.5,
+          1.48,
+          9.2
+        ],
+        "scale": [
+          0.16,
+          0.88,
+          0.16
+        ]
+      },
+      "components": {
+        "Mesh": {
+          "type": "cube",
+          "size": 1
+        },
+        "Material": {
+          "type": "unlit",
+          "color": [
+            1,
+            0.77,
+            0.25,
+            1
+          ]
+        },
+        "Data": {
+          "portal": {
+            "col": 20,
+            "row": 16,
+            "label": "HIGHLAND CITADEL",
+            "to": "highland-citadel",
+            "entry": {
+              "col": 1,
+              "row": 9
+            }
+          }
+        }
+      }
+    },
+    {
       "id": "return_portal_ashen_ridge",
       "name": "MISTFELL PASS",
       "type": "MeshInstance3D",

@@ -16,6 +16,22 @@
       "path": "../scenes/ashen-ridge.gfscene.json"
     },
     {
+      "name": "sunlit-meadow",
+      "path": "../scenes/sunlit-meadow.gfscene.json"
+    },
+    {
+      "name": "whispering-woods",
+      "path": "../scenes/whispering-woods.gfscene.json"
+    },
+    {
+      "name": "sunken-ruins",
+      "path": "../scenes/sunken-ruins.gfscene.json"
+    },
+    {
+      "name": "highland-citadel",
+      "path": "../scenes/highland-citadel.gfscene.json"
+    },
+    {
       "name": "battlefield",
       "path": "../scenes/battlefield.gfscene.json"
     },
@@ -172,6 +188,202 @@
     {
       "name": "forest-rock-b",
       "path": "../assets/kaykit-forest/Rock_3_A_Color1.gltf"
+    },
+    {
+      "name": "hex-home-a",
+      "path": "../assets/kaykit-hexagon/building_home_A_blue.gltf"
+    },
+    {
+      "name": "hex-tavern",
+      "path": "../assets/kaykit-hexagon/building_tavern_blue.gltf"
+    },
+    {
+      "name": "hex-church",
+      "path": "../assets/kaykit-hexagon/building_church_blue.gltf"
+    },
+    {
+      "name": "hex-tower-a",
+      "path": "../assets/kaykit-hexagon/building_tower_A_blue.gltf"
+    },
+    {
+      "name": "hex-archeryrange",
+      "path": "../assets/kaykit-hexagon/building_archeryrange_blue.gltf"
+    },
+    {
+      "name": "hex-windmill",
+      "path": "../assets/kaykit-hexagon/building_windmill_blue.gltf"
+    },
+    {
+      "name": "hex-castle",
+      "path": "../assets/kaykit-hexagon/building_castle_red.gltf"
+    },
+    {
+      "name": "hex-tower-b",
+      "path": "../assets/kaykit-hexagon/building_tower_B_red.gltf"
+    },
+    {
+      "name": "hex-tower-catapult",
+      "path": "../assets/kaykit-hexagon/building_tower_catapult_red.gltf"
+    },
+    {
+      "name": "hex-ruin",
+      "path": "../assets/kaykit-hexagon/building_destroyed.gltf"
+    },
+    {
+      "name": "hex-grain",
+      "path": "../assets/kaykit-hexagon/building_grain.gltf"
+    },
+    {
+      "name": "hex-wall",
+      "path": "../assets/kaykit-hexagon/wall_straight.gltf"
+    },
+    {
+      "name": "hex-wall-gate",
+      "path": "../assets/kaykit-hexagon/wall_straight_gate.gltf"
+    },
+    {
+      "name": "fence-wood",
+      "path": "../assets/kaykit-hexagon/fence_wood_straight.gltf"
+    },
+    {
+      "name": "fence-stone",
+      "path": "../assets/kaykit-hexagon/fence_stone_straight.gltf"
+    },
+    {
+      "name": "prop-target",
+      "path": "../assets/kaykit-hexagon/target.gltf"
+    },
+    {
+      "name": "prop-bucket-water",
+      "path": "../assets/kaykit-hexagon/bucket_water.gltf"
+    },
+    {
+      "name": "prop-bucket-arrows",
+      "path": "../assets/kaykit-hexagon/bucket_arrows.gltf"
+    },
+    {
+      "name": "prop-wheelbarrow",
+      "path": "../assets/kaykit-hexagon/wheelbarrow.gltf"
+    },
+    {
+      "name": "prop-lumber",
+      "path": "../assets/kaykit-hexagon/resource_lumber.gltf"
+    },
+    {
+      "name": "prop-crate-long",
+      "path": "../assets/kaykit-hexagon/crate_long_A.gltf"
+    },
+    {
+      "name": "prop-flag-blue",
+      "path": "../assets/kaykit-hexagon/flag_blue.gltf"
+    },
+    {
+      "name": "prop-flag-yellow",
+      "path": "../assets/kaykit-hexagon/flag_yellow.gltf"
+    },
+    {
+      "name": "hex-waterlily",
+      "path": "../assets/kaykit-hexagon/waterlily_A.gltf"
+    },
+    {
+      "name": "hex-waterplant",
+      "path": "../assets/kaykit-hexagon/waterplant_A.gltf"
+    },
+    {
+      "name": "hex-rock",
+      "path": "../assets/kaykit-hexagon/rock_single_C.gltf"
+    },
+    {
+      "name": "forest-tree-round",
+      "path": "../assets/kaykit-forest/Tree_3_A_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-tall",
+      "path": "../assets/kaykit-forest/Tree_2_C_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-large",
+      "path": "../assets/kaykit-forest/Tree_1_B_Color1.gltf"
+    },
+    {
+      "name": "forest-tree-bare-b",
+      "path": "../assets/kaykit-forest/Tree_Bare_2_A_Color1.gltf"
+    },
+    {
+      "name": "forest-bush-small",
+      "path": "../assets/kaykit-forest/Bush_1_A_Color1.gltf"
+    },
+    {
+      "name": "forest-bush-wide",
+      "path": "../assets/kaykit-forest/Bush_4_A_Color1.gltf"
+    },
+    {
+      "name": "forest-grass",
+      "path": "../assets/kaykit-forest/Grass_2_A_Color1.gltf"
+    },
+    {
+      "name": "forest-rock-small",
+      "path": "../assets/kaykit-forest/Rock_2_A_Color1.gltf"
+    },
+    {
+      "name": "dungeon-torch",
+      "path": "../assets/kaykit-dungeon/torch_lit.gltf"
+    },
+    {
+      "name": "dungeon-pillar",
+      "path": "../assets/kaykit-dungeon/pillar.gltf"
+    },
+    {
+      "name": "dungeon-pillar-carved",
+      "path": "../assets/kaykit-dungeon/pillar_decorated.gltf"
+    },
+    {
+      "name": "dungeon-column",
+      "path": "../assets/kaykit-dungeon/column.gltf"
+    },
+    {
+      "name": "dungeon-rubble",
+      "path": "../assets/kaykit-dungeon/rubble_large.gltf"
+    },
+    {
+      "name": "dungeon-rubble-half",
+      "path": "../assets/kaykit-dungeon/rubble_half.gltf"
+    },
+    {
+      "name": "dungeon-barrier",
+      "path": "../assets/kaykit-dungeon/barrier.gltf"
+    },
+    {
+      "name": "dungeon-chest",
+      "path": "../assets/kaykit-dungeon/chest_gold.gltf"
+    },
+    {
+      "name": "dungeon-banner-red",
+      "path": "../assets/kaykit-dungeon/banner_red.gltf"
+    },
+    {
+      "name": "dungeon-banner-blue",
+      "path": "../assets/kaykit-dungeon/banner_patternA_blue.gltf"
+    },
+    {
+      "name": "dungeon-keg",
+      "path": "../assets/kaykit-dungeon/keg.gltf"
+    },
+    {
+      "name": "dungeon-barrel",
+      "path": "../assets/kaykit-dungeon/barrel_large.gltf"
+    },
+    {
+      "name": "dungeon-candles",
+      "path": "../assets/kaykit-dungeon/candle_triple.gltf"
+    },
+    {
+      "name": "dungeon-sword-shield",
+      "path": "../assets/kaykit-dungeon/sword_shield.gltf"
+    },
+    {
+      "name": "dungeon-table",
+      "path": "../assets/kaykit-dungeon/table_medium.gltf"
     }
   ],
   "shaders": [

@@ -9,7 +9,8 @@ SHA-256 hash:
 - `kaykit-animations/`: Character Animations rigs (general, movement, melee, ranged).
 - `kaykit-weapons/`: Fantasy Weapons Bits held weapons and shields.
 - `kaykit-hexagon/`: Medieval Hexagon buildings and props.
-- `kaykit-forest/`: Forest Nature trees, bushes and rocks.
+- `kaykit-forest/`: Forest Nature trees, bushes, grass and rocks.
+- `kaykit-dungeon/`: Dungeon pillars, columns, rubble, torches, banners and tavern props.
 
 Models are registered in `config/resources.json`; scenes reference them by name in
 `Data.model`. Equipped weapons change what a hero holds; game stats remain unchanged.
